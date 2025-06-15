@@ -1,0 +1,101 @@
+/* GLOBAL */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.6;
+  transition: background 0.3s ease;
+}
+
+h2, h3 {
+  color: #2b3a67;
+}
+
+nav {
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+nav:hover {
+  background-color: #f0f0f0;
+}
+
+nav a {
+  color: #2b3a67;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #008060;
+}
+
+/* MAIN FIGURE IMAGE */
+figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.5s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+figure img:hover {
+  transform: scale(1.02);
+}
+
+/* SECTION ANIMATION */
+section {
+  animation: fadeInUp 1s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* LIST STYLE */
+ul {
+  padding-left: 1.2rem;
+}
+
+ul li {
+  margin-bottom: 0.5rem;
+}
+
+/* FORM STYLING */
+form input, form button {
+  transition: all 0.3s ease;
+}
+
+form input:focus, form button:hover {
+  border-color: #008060;
+  box-shadow: 0 0 0 3px rgba(0, 128, 96, 0.2);
+}
+
+/* FOOTER */
+footer {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ddd;
+  text-align: center;
+  color: #666;
+}
+
+/* BUTTON */
+button {
+  background-color: #2b3a67;
+  color: #fff;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #008060;
+}
