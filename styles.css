@@ -1,99 +1,80 @@
-/* GLOBAL */
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f9f9f9;
-  color: #333;
-  line-height: 1.6;
-  transition: background 0.3s ease;
+/* Hero Image */
+.hero-image {
+  position: relative;
+  height: 60vh;
+  background-image: url("https://chat.openai.com/cdn-cgi/imagedelivery/FLmWzE4H6z402wI9aCZHqA/960f3865-b239-49a8-1d2d-3e75e2d1d800/public");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-h2, h3 {
-  color: #2b3a67;
-}
-
-nav {
-  background-color: #ffffff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
-}
-
-nav:hover {
-  background-color: #f0f0f0;
-}
-
-nav a {
-  color: #2b3a67;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-
-nav a:hover {
-  color: #008060;
-}
-
-/* MAIN FIGURE IMAGE */
-figure img {
-  width: 100%;
-  height: auto;
+.overlay {
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 2rem;
+  text-align: center;
   border-radius: 8px;
-  transition: transform 0.5s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
-figure img:hover {
-  transform: scale(1.02);
+.overlay h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
 }
 
-/* SECTION ANIMATION */
+.overlay p {
+  font-size: 1.2rem;
+}
+
+/* Sticky nav */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Section Animation */
 section {
-  animation: fadeInUp 1s ease forwards;
+  animation: fadeIn 1s ease forwards;
   opacity: 0;
+  margin-top: 2rem;
 }
 
-@keyframes fadeInUp {
+@keyframes fadeIn {
   from {
-    transform: translateY(20px);
     opacity: 0;
+    transform: translateY(15px);
   }
   to {
-    transform: translateY(0);
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* LIST STYLE */
-ul {
-  padding-left: 1.2rem;
+/* Custom styling */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fefefe;
+  color: #333;
+}
+
+h2 {
+  color: #2b3a67;
 }
 
 ul li {
   margin-bottom: 0.5rem;
 }
 
-/* FORM STYLING */
-form input, form button {
-  transition: all 0.3s ease;
-}
-
-form input:focus, form button:hover {
-  border-color: #008060;
-  box-shadow: 0 0 0 3px rgba(0, 128, 96, 0.2);
-}
-
-/* FOOTER */
-footer {
-  margin-top: 3rem;
-  padding-top: 1rem;
-  border-top: 1px solid #ddd;
-  text-align: center;
-  color: #666;
-}
-
-/* BUTTON */
+/* Button hover */
 button {
   background-color: #2b3a67;
   color: #fff;
   font-weight: bold;
+  transition: background 0.3s ease;
 }
 
 button:hover {
