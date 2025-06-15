@@ -8,11 +8,21 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <nav class="container-fluid">
+    <header>
+      <div class="hero-image">
+        <div class="overlay">
+          <h1>Pondok Pesantren At-Taufiq</h1>
+          <p>Grogol • Diwek • Jombang</p>
+        </div>
+      </div>
+    </header>
+
+    <nav class="container-fluid sticky-nav">
       <ul>
-        <li><strong>Pondok Pesantren At-Taufiq</strong></li>
+        <li><strong>At-Taufiq</strong></li>
       </ul>
       <ul>
+        <li><a href="#tentang">Tentang</a></li>
         <li><a href="#visi">Visi</a></li>
         <li><a href="#misi">Misi</a></li>
         <li><a href="#kontak" role="button">Kontak</a></li>
@@ -21,44 +31,41 @@
 
     <main class="container">
       <div class="grid">
-        <section>
-          <hgroup>
-            <h2>Selamat Datang di Pondok Pesantren At-Taufiq</h2>
-            <h3>Grogol, Diwek, Jombang</h3>
-          </hgroup>
+        <section id="tentang">
+          <h2>Profil Singkat</h2>
           <p>Pondok Pesantren At-Taufiq adalah lembaga pendidikan Islam yang berdiri untuk membentuk pribadi Muslim yang berakhlakul karimah dan berilmu.</p>
-          <figure>
-            <img src="https://chat.openai.com/cdn-cgi/imagedelivery/FLmWzE4H6z402wI9aCZHqA/960f3865-b239-49a8-1d2d-3e75e2d1d800/public" alt="Pondok Pesantren At-Taufiq" />
-            <figcaption>Gerbang Pondok Pesantren At-Taufiq</figcaption>
-          </figure>
+        </section>
 
-          <h3 id="visi">🕌 Visi</h3>
+        <section id="visi">
+          <h2>🕌 Visi</h2>
           <p>"Membentuk pribadi Muslim yang berakhlakul karimah, beriman dan bertakwa, fasih dalam membaca Al-Qur’an, cerdas dalam ilmu pengetahuan, serta sehat dan mandiri."</p>
+        </section>
 
-          <h3 id="misi">🎯 Misi</h3>
+        <section id="misi">
+          <h2>🎯 Misi</h2>
           <ul>
-            <li>Memberikan pelayanan pendidikan berbasis Al-Qur’an, Hadis, dan ilmu pengetahuan modern melalui sistem pesantren dan madrasah.</li>
-            <li>Membantu pemerintah dalam mencetak generasi unggul sejak jenjang KB & RA hingga perguruan tinggi.</li>
-            <li>Membimbing santri dalam pembacaan dan hafalan Al-Qur’an, baik metode bin nadhor maupun bil ghoib.</li>
-            <li>Menguatkan penguasaan Bahasa Arab dan Inggris, serta mempercepat kemampuan baca kitab kuning dengan metode Amsilati.</li>
-            <li>Membekali santri dengan ilmu ruhaniyah, seperti ilmu kalam, tasawuf, ma’rifat, dan hakekat.</li>
-            <li>Memberikan pelayanan kesehatan Islami melalui terapi ruqyah, thibbun nabawi, makanan bergizi gratis, dan fasilitas olahraga yang memadai.</li>
-            <li>Menanamkan jiwa santri entrepreneur, sebagai bekal hidup mandiri dalam menyongsong Indonesia Emas 2045.</li>
+            <li>Pelayanan pendidikan berbasis Al-Qur’an, Hadis & ilmu pengetahuan modern.</li>
+            <li>Mencetak generasi unggul dari KB hingga perguruan tinggi.</li>
+            <li>Pembinaan hafalan Al-Qur’an bin nadhor & bil ghoib.</li>
+            <li>Penguasaan Bahasa Arab & Inggris, metode Amsilati.</li>
+            <li>Ilmu ruhaniyah: kalam, tasawuf, ma’rifat, hakekat.</li>
+            <li>Kesehatan Islami: ruqyah, thibbun nabawi, olahraga.</li>
+            <li>Santri entrepreneur menyongsong Indonesia Emas 2045.</li>
           </ul>
         </section>
       </div>
     </main>
 
-    <section aria-label="Subscribe example">
+    <section aria-label="Formulir kontak">
       <div class="container">
         <article>
           <hgroup>
             <h2 id="kontak">Hubungi Kami</h2>
-            <h3>Untuk informasi lebih lanjut atau pendaftaran santri baru</h3>
+            <h3>Pendaftaran santri baru dan informasi lebih lanjut</h3>
           </hgroup>
           <form class="grid">
-            <input type="text" id="firstname" name="firstname" placeholder="Nama Anda" aria-label="Nama Anda" required />
-            <input type="email" id="email" name="email" placeholder="Alamat Email" aria-label="Alamat Email" required />
+            <input type="text" id="firstname" name="firstname" placeholder="Nama Anda" required />
+            <input type="email" id="email" name="email" placeholder="Email Anda" required />
             <button type="submit" onclick="event.preventDefault()">Kirim</button>
           </form>
         </article>
