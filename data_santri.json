@@ -12,25 +12,31 @@
       "semester_1": {
         "matematika": 85,
         "bahasa_indonesia": 90,
-        "ipa": 80
+        "ipa": 80,
+        "bahasa_arab": 75,
+        "tahfidz_quran": 88
       },
       "semester_2": {
         "matematika": 88,
         "bahasa_indonesia": 92,
-        "ipa": 85
+        "ipa": 85,
+        "bahasa_arab": 80,
+        "tahfidz_quran": 90
       }
     },
     "pelanggaran": [
       {"tanggal": "2024-01-15", "jenis": "Terlambat Sekolah", "poin": 5},
-      {"tanggal": "2024-03-01", "jenis": "Tidak Mengerjakan PR", "poin": 3}
+      {"tanggal": "2024-03-01", "jenis": "Tidak Mengerjakan PR", "poin": 3},
+      {"tanggal": "2024-05-10", "jenis": "Mengganggu Kelas", "poin": 7}
     ],
     "peringatan": [
-      {"tanggal": "2024-04-10", "deskripsi": "Dimohon tingkatkan kedisiplinan."},
-      {"tanggal": "2024-05-20", "deskripsi": "Perlu lebih aktif dalam kegiatan ekstrakurikuler."}
+      {"tanggal": "2024-04-10", "deskripsi": "Dimohon tingkatkan kedisiplinan belajar di malam hari."},
+      {"tanggal": "2024-05-20", "deskripsi": "Perlu lebih aktif dalam kegiatan ekstrakurikuler kepramukaan."}
     ],
     "prestasi": [
-      {"tanggal": "2024-02-28", "nama_prestasi": "Juara 3 Lomba Baca Kitab", "tingkat": "Kabupaten"},
-      {"tanggal": "2024-06-10", "nama_prestasi": "Siswa Teladan Semester 1", "tingkat": "Sekolah"}
+      {"tanggal": "2024-02-28", "nama_prestasi": "Juara 3 Lomba Baca Kitab Kuning", "tingkat": "Kabupaten"},
+      {"tanggal": "2024-06-10", "nama_prestasi": "Siswa Teladan Semester Ganjil 2024", "tingkat": "Sekolah"},
+      {"tanggal": "2024-07-01", "nama_prestasi": "Peserta Terbaik Musabaqah Hifzhil Quran", "tingkat": "Pondok"}
     ]
   },
   {
@@ -46,14 +52,44 @@
       "semester_1": {
         "matematika": 90,
         "bahasa_indonesia": 95,
-        "ipa": 88
+        "ipa": 88,
+        "bahasa_arab": 92,
+        "tahfidz_quran": 95
       }
     },
     "pelanggaran": [],
     "peringatan": [],
     "prestasi": [
-      {"tanggal": "2024-01-20", "nama_prestasi": "Peserta Terbaik Tahfidz Qur'an", "tingkat": "Sekolah"}
+      {"tanggal": "2024-01-20", "nama_prestasi": "Peserta Terbaik Tahfidz Qur'an", "tingkat": "Sekolah"},
+      {"tanggal": "2024-04-05", "nama_prestasi": "Juara 1 Lomba Kaligrafi Arab", "tingkat": "Pondok"}
     ]
+  },
+  {
+    "NIK": "9876543210987654",
+    "nama": "Budi Santoso",
+    "jenis_kelamin": "Laki-laki",
+    "tempat_tanggal_lahir": "Sidoarjo, 05 Maret 2004",
+    "alamat": "Ds. Cendana Blok A-1, Sidoarjo",
+    "nama_ayah": "Bapak Toni",
+    "nama_ibu": "Ibu Lia",
+    "nomor_hp": "081122334455",
+    "raport": {
+      "semester_1": {
+        "matematika": 70,
+        "bahasa_indonesia": 80,
+        "ipa": 65,
+        "bahasa_arab": 70,
+        "tahfidz_quran": 75
+      }
+    },
+    "pelanggaran": [
+      {"tanggal": "2024-02-10", "jenis": "Bolos Pelajaran", "poin": 20},
+      {"tanggal": "2024-04-20", "jenis": "Tidak Memakai Atribut Lengkap", "poin": 5}
+    ],
+    "peringatan": [
+      {"tanggal": "2024-03-01", "deskripsi": "Perlu peningkatan kehadiran di kelas."},
+      {"tanggal": "2024-05-15", "deskripsi": "Dimohon lebih fokus saat pelajaran berlangsung."}
+    ],
+    "prestasi": []
   }
-  // ... tambahkan data santri lainnya dengan struktur yang sama
 ]
