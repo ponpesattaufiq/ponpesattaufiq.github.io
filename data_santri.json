@@ -8,7 +8,7 @@
     "nama_ayah": "Bapak Budi",
     "nama_ibu": "Ibu Siti",
     "nomor_hp": "081234567890"
-  },
+  }, // <--- Tambahkan koma di sini!
   {
     "NIK": "6543210987654321",
     "nama": "Siti Aminah",
@@ -19,5 +19,4 @@
     "nama_ibu": "Ibu Ani",
     "nomor_hp": "087654321098"
   }
-  // Tambahkan data santri lainnya di sini
 ]
