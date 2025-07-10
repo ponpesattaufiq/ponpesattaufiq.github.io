@@ -7,7 +7,31 @@
     "alamat": "Jl. Mawar No. 10, Surabaya",
     "nama_ayah": "Bapak Budi",
     "nama_ibu": "Ibu Siti",
-    "nomor_hp": "081234567890"
+    "nomor_hp": "081234567890",
+    "raport": {
+      "semester_1": {
+        "matematika": 85,
+        "bahasa_indonesia": 90,
+        "ipa": 80
+      },
+      "semester_2": {
+        "matematika": 88,
+        "bahasa_indonesia": 92,
+        "ipa": 85
+      }
+    },
+    "pelanggaran": [
+      {"tanggal": "2024-01-15", "jenis": "Terlambat Sekolah", "poin": 5},
+      {"tanggal": "2024-03-01", "jenis": "Tidak Mengerjakan PR", "poin": 3}
+    ],
+    "peringatan": [
+      {"tanggal": "2024-04-10", "deskripsi": "Dimohon tingkatkan kedisiplinan."},
+      {"tanggal": "2024-05-20", "deskripsi": "Perlu lebih aktif dalam kegiatan ekstrakurikuler."}
+    ],
+    "prestasi": [
+      {"tanggal": "2024-02-28", "nama_prestasi": "Juara 3 Lomba Baca Kitab", "tingkat": "Kabupaten"},
+      {"tanggal": "2024-06-10", "nama_prestasi": "Siswa Teladan Semester 1", "tingkat": "Sekolah"}
+    ]
   },
   {
     "NIK": "6543210987654321",
@@ -17,26 +41,19 @@
     "alamat": "Jl. Melati No. 5, Malang",
     "nama_ayah": "Bapak Joko",
     "nama_ibu": "Ibu Ani",
-    "nomor_hp": "087654321098"
-  },
-  {
-    "NIK": "9876543210987654",
-    "nama": "Budi Santoso",
-    "jenis_kelamin": "Laki-laki",
-    "tempat_tanggal_lahir": "Sidoarjo, 05 Maret 2004",
-    "alamat": "Ds. Cendana Blok A-1, Sidoarjo",
-    "nama_ayah": "Bapak Toni",
-    "nama_ibu": "Ibu Lia",
-    "nomor_hp": "081122334455"
-  },
-  {
-    "NIK": "1122334455667788",
-    "nama": "Nurul Hidayah",
-    "jenis_kelamin": "Perempuan",
-    "tempat_tanggal_lahir": "Gresik, 15 April 2007",
-    "alamat": "Jl. Anggrek No. 20, Gresik",
-    "nama_ayah": "Bapak Doni",
-    "nama_ibu": "Ibu Wati",
-    "nomor_hp": "085544332211"
+    "nomor_hp": "087654321098",
+    "raport": {
+      "semester_1": {
+        "matematika": 90,
+        "bahasa_indonesia": 95,
+        "ipa": 88
+      }
+    },
+    "pelanggaran": [],
+    "peringatan": [],
+    "prestasi": [
+      {"tanggal": "2024-01-20", "nama_prestasi": "Peserta Terbaik Tahfidz Qur'an", "tingkat": "Sekolah"}
+    ]
   }
+  // ... tambahkan data santri lainnya dengan struktur yang sama
 ]
