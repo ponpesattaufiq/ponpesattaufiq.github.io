@@ -18,5 +18,25 @@
     "nama_ayah": "Bapak Joko",
     "nama_ibu": "Ibu Ani",
     "nomor_hp": "087654321098"
+  },
+  {
+    "NIK": "9876543210987654",
+    "nama": "Budi Santoso",
+    "jenis_kelamin": "Laki-laki",
+    "tempat_tanggal_lahir": "Sidoarjo, 05 Maret 2004",
+    "alamat": "Ds. Cendana Blok A-1, Sidoarjo",
+    "nama_ayah": "Bapak Toni",
+    "nama_ibu": "Ibu Lia",
+    "nomor_hp": "081122334455"
+  },
+  {
+    "NIK": "1122334455667788",
+    "nama": "Nurul Hidayah",
+    "jenis_kelamin": "Perempuan",
+    "tempat_tanggal_lahir": "Gresik, 15 April 2007",
+    "alamat": "Jl. Anggrek No. 20, Gresik",
+    "nama_ayah": "Bapak Doni",
+    "nama_ibu": "Ibu Wati",
+    "nomor_hp": "085544332211"
   }
 ]
