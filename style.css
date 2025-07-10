@@ -1,0 +1,88 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Mengatur agar konten dimulai dari atas */
+    min-height: 100vh;
+    margin: 20px; /* Memberi sedikit margin di sekitar konten */
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+
+.search-box {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+#nikInput {
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 70%;
+    max-width: 400px;
+    margin-right: 10px;
+    outline: none;
+}
+
+#searchButton {
+    padding: 12px 25px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#searchButton:hover {
+    background-color: #0056b3;
+}
+
+.result-box {
+    text-align: left;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+.result-item {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.result-label {
+    font-weight: bold;
+    width: 150px; /* Lebar label agar rapi */
+    color: #555;
+}
+
+.result-value {
+    flex-grow: 1;
+    color: #333;
+}
+
+.no-data-message {
+    color: #dc3545;
+    font-weight: bold;
+    margin-top: 20px;
+    font-size: 18px;
+}
