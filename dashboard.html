@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Santri | Sekretariat MUDI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="https://sekretariatmudi.web.id/Md/assets/images/logo.png" alt="Logo MUDI">
+                <span>Sekretariat MUDI</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">HOME</a></li> <li class="dropdown">
+                        <a href="#">PROFILE <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="#">Sejarah</a>
+                            <a href="#">Visi Misi</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#">LAYANAN <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="#">Informasi Akademik</a>
+                            <a href="#">Keuangan</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#">PENDAFTARAN <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="#">Syarat Pendaftaran</a>
+                            <a href="#">Formulir Online</a>
+                        </div>
+                    </li>
+                    <li><a href="#">ALUMNI</a></li>
+                </ul>
+            </nav>
+            <div class="login-button">
+                <a href="#" id="logoutButton" class="btn-login"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero-section">
+        <div class="hero-text">
+            <h1 id="dashboardTitle">Data Raport Santri</h1>
+        </div>
+        <div class="hero-wave"></div>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="container dashboard-container">
+            <h2>Informasi Santri</h2>
+            <div id="santriInfo" class="data-section">
+                </div>
+
+            <h2>Raport Digital</h2>
+            <div id="raportData" class="data-section">
+                <p class="no-data-info">Data raport belum tersedia.</p>
+            </div>
+
+            <h2>Pelanggaran Santri</h2>
+            <div id="pelanggaranData" class="data-section">
+                <p class="no-data-info">Tidak ada data pelanggaran.</p>
+            </div>
+
+            <h2>Peringatan/Pemberitahuan</h2>
+            <div id="peringatanData" class="data-section">
+                <p class="no-data-info">Tidak ada peringatan/pemberitahuan.</p>
+            </div>
+
+            <h2>Prestasi Santri</h2>
+            <div id="prestasiData" class="data-section">
+                <p class="no-data-info">Tidak ada data prestasi.</p>
+            </div>
+
+            <p id="dataUnavailableMessage" class="error-message" style="display: none;">
+                Maaf, data untuk NIK Anda tidak ditemukan. Silakan hubungi admin.
+            </p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
