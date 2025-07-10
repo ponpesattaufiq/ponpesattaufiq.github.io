@@ -167,17 +167,101 @@ body {
     z-index: 3; /* Pastikan di atas hero */
 }
 
+/* Page specific styling (Login Page) */
+.login-page-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 170px); /* Sesuaikan tinggi agar konten berada di tengah vertikal */
+    padding-bottom: 0; /* Hapus padding bawah default */
+}
 
-/* Search Box */
-.container h2 {
+.login-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+.login-container h2 {
+    text-align: center;
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.login-form .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: calc(100% - 24px); /* Kurangi padding */
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.login-form button {
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #8bc34a; /* Hijau cerah */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.login-form button:hover {
+    background-color: #6ab14b;
+}
+
+.error-message {
+    color: #dc3545;
+    font-weight: bold;
+    margin-top: 15px;
+    font-size: 15px;
+    background-color: #ffebe8;
+    border: 1px solid #dc3545;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Dashboard Page Specific Styling */
+.dashboard-container h2 {
     text-align: center;
     font-size: 32px;
     color: #333;
     margin-bottom: 30px;
     position: relative;
+    padding-top: 20px; /* Jarak dari atas container */
 }
-/* Garis bawah pada judul "Pencarian Data Santri" */
-.container h2::after {
+
+.dashboard-container h2::after {
     content: '';
     display: block;
     width: 80px;
@@ -187,95 +271,66 @@ body {
     border-radius: 2px;
 }
 
-
-.search-box {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 40px; /* Lebih banyak ruang di bawah kotak pencarian */
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Shadow untuk kotak pencarian */
-}
-
-#nikInput {
-    padding: 15px 20px; /* Padding lebih besar */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 17px;
-    width: 60%; /* Sesuaikan lebar */
-    max-width: 450px;
-    margin-right: 15px; /* Jarak antara input dan tombol */
-    outline: none;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Sedikit shadow di dalam input */
-}
-
-#nikInput:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-#searchButton {
-    padding: 15px 35px; /* Padding lebih besar */
-    background-color: #8bc34a; /* Hijau cerah */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 17px;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-#searchButton:hover {
-    background-color: #6ab14b; /* Hijau lebih gelap saat hover */
-    transform: translateY(-2px); /* Efek sedikit terangkat */
-}
-
-/* Result Box */
-.result-box {
-    text-align: left;
+.data-section {
     background-color: #fff;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    margin-top: 30px; /* Jarak dari search box */
+    margin-bottom: 30px;
 }
 
-.result-item {
+.data-section h3 {
+    color: #007bff;
+    margin-bottom: 15px;
+    font-size: 24px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.data-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.data-section ul li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #eee;
+}
+.data-section ul li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.data-item {
     display: flex;
-    padding: 10px 0;
-    border-bottom: 1px dashed #eee; /* Garis putus-putus */
-    align-items: baseline; /* Menyelaraskan teks atas */
+    flex-wrap: wrap; /* Mengizinkan wrap pada layar kecil */
+    margin-bottom: 5px;
 }
 
-.result-item:last-child {
-    border-bottom: none; /* Hapus border di item terakhir */
-}
-
-.result-label {
+.data-label {
     font-weight: bold;
-    width: 180px; /* Lebar label agar lebih rapi */
+    width: 180px; /* Lebar label konsisten */
     color: #555;
-    flex-shrink: 0; /* Mencegah label menyusut */
+    flex-shrink: 0;
 }
 
-.result-value {
+.data-value {
     flex-grow: 1;
     color: #333;
 }
 
-.no-data-message {
-    color: #dc3545;
-    font-weight: bold;
-    margin-top: 30px;
-    font-size: 19px;
+.no-data-info {
+    color: #888;
+    font-style: italic;
     text-align: center;
-    background-color: #ffebe8; /* Latar belakang merah muda */
-    border: 1px solid #dc3545;
-    padding: 15px 20px;
-    border-radius: 8px;
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
 }
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -318,23 +373,15 @@ body {
         font-size: 36px;
     }
 
-    .search-box {
-        flex-direction: column;
-        align-items: center;
+    .login-container, .dashboard-container {
+        padding: 20px;
     }
-    #nikInput {
-        width: 90%;
-        margin-right: 0;
-        margin-bottom: 15px;
-    }
-    #searchButton {
-        width: 90%;
-    }
-    .result-item {
+
+    .data-item {
         flex-direction: column;
         align-items: flex-start;
     }
-    .result-label {
+    .data-label {
         width: 100%;
         margin-bottom: 5px;
     }
