@@ -1,15 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
     // === Bagian untuk Halaman Login (index.html) ===
-    if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html')) {
+    // Mengecek apakah berada di halaman index.html
+    const isIndexPage = window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html');
+
+    if (isIndexPage) {
         const loginForm = document.getElementById('loginForm');
-        const loginMessage = document.getElementById('loginMessage');
-        const loginButton = document.getElementById('loginButton');
+        const nikInputSearch = document.getElementById('nikInput'); // Untuk bagian pencarian santri
+        const searchButton = document.getElementById('searchButton'); // Untuk bagian pencarian santri
+        const resultDiv = document.getElementById('result'); // Untuk bagian pencarian santri
+        const noDataMessageDiv = document.getElementById('noDataMessage'); // Untuk bagian pencarian santri
 
         if (loginForm) {
-            loginForm.addEventListener('submit', async (event) => {
-                event.preventDefault(); // Mencegah form submit secara default
+            const loginMessage = document.getElementById('loginMessage');
+            const loginButton = document.getElementById('loginButton');
 
-                loginButton.disabled = true; // Nonaktifkan tombol saat proses
+            loginForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                loginButton.disabled = true;
                 loginButton.textContent = 'Memuat...';
 
                 const username = document.getElementById('username').value.trim();
@@ -25,10 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const user = users.find(u => u.username === username && u.password === password);
 
                     if (user) {
-                        localStorage.setItem('loggedInNIK', user.NIK); // Simpan NIK di localStorage
+                        localStorage.setItem('loggedInNIK', user.NIK);
                         localStorage.setItem('loggedInUsername', user.username);
                         loginMessage.style.display = 'none';
-                        window.location.href = 'dashboard.html'; // Redirect ke halaman dashboard
+                        window.location.href = 'dashboard.html';
                     } else {
                         loginMessage.textContent = 'Username atau Password salah.';
                         loginMessage.style.display = 'block';
@@ -44,17 +52,60 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
+
+        // Fungsionalitas pencarian santri di halaman utama (index.html)
+        if (searchButton && nikInputSearch) {
+            searchButton.addEventListener('click', async () => {
+                const nikToSearch = nikInputSearch.value.trim();
+                resultDiv.innerHTML = ''; // Kosongkan hasil sebelumnya
+                noDataMessageDiv.style.display = 'none'; // Sembunyikan pesan 'tidak ditemukan'
+
+                if (!nikToSearch) {
+                    resultDiv.innerHTML = '<p class="no-data-info">Mohon masukkan NIK atau NISN untuk mencari.</p>';
+                    return;
+                }
+
+                try {
+                    const response = await fetch('data_santri.json');
+                    if (!response.ok) {
+                        throw new Error(`Gagal memuat data santri: ${response.status}`);
+                    }
+                    const santriData = await response.json();
+
+                    const foundSantri = santriData.find(santri => santri.NIK === nikToSearch);
+
+                    if (foundSantri) {
+                        let html = `
+                            <div class="result-item"><div class="result-label">Nama</div><div class="result-value">: ${foundSantri.nama}</div></div>
+                            <div class="result-item"><div class="result-label">NIK</div><div class="result-value">: ${foundSantri.NIK}</div></div>
+                            <div class="result-item"><div class="result-label">Jenis Kelamin</div><div class="result-value">: ${foundSantri.jenis_kelamin}</div></div>
+                            <div class="result-item"><div class="result-label">Tempat, Tgl Lahir</div><div class="result-value">: ${foundSantri.tempat_tanggal_lahir}</div></div>
+                            <div class="result-item"><div class="result-label">Alamat</div><div class="result-value">: ${foundSantri.alamat}</div></div>
+                            <div class="result-item"><div class="result-label">Nama Ayah</div><div class="result-value">: ${foundSantri.nama_ayah}</div></div>
+                            <div class="result-item"><div class="result-label">Nama Ibu</div><div class="result-value">: ${foundSantri.nama_ibu}</div></div>
+                            <div class="result-item"><div class="result-label">Nomor HP</div><div class="result-value">: ${foundSantri.nomor_hp}</div></div>
+                        `;
+                        resultDiv.innerHTML = html;
+                    } else {
+                        noDataMessageDiv.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error("Error memuat data santri:", error);
+                    resultDiv.innerHTML = '<p class="error-message">Terjadi kesalahan saat memuat data santri. Silakan coba lagi nanti.</p>';
+                }
+            });
+        }
     }
+
 
     // === Bagian untuk Halaman Dashboard (dashboard.html) ===
     if (window.location.pathname.endsWith('dashboard.html')) {
         const loggedInNIK = localStorage.getItem('loggedInNIK');
         const logoutButton = document.getElementById('logoutButton');
 
-        // Jika tidak ada NIK yang login, redirect ke halaman login
         if (!loggedInNIK) {
             window.location.href = 'index.html';
-            return; // Hentikan eksekusi script lebih lanjut
+            return;
         }
 
         const santriInfoDiv = document.getElementById('santriInfo');
@@ -68,9 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (logoutButton) {
             logoutButton.addEventListener('click', (event) => {
                 event.preventDefault();
-                localStorage.removeItem('loggedInNIK'); // Hapus NIK dari localStorage
+                localStorage.removeItem('loggedInNIK');
                 localStorage.removeItem('loggedInUsername');
-                window.location.href = 'index.html'; // Redirect ke halaman login
+                window.location.href = 'index.html';
             });
         }
 
@@ -85,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const foundSantri = santriData.find(santri => santri.NIK === loggedInNIK);
 
                 if (foundSantri) {
-                    dashboardTitle.textContent = `Data Santri: ${foundSantri.nama}`; // Update title
+                    dashboardTitle.textContent = `Data Santri: ${foundSantri.nama}`;
                     displaySantriInfo(foundSantri);
                     displayRaport(foundSantri.raport);
                     displayPelanggaran(foundSantri.pelanggaran);
@@ -95,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     santriInfoDiv.innerHTML = '<p class="no-data-info">Data santri tidak ditemukan untuk NIK Anda.</p>';
                     dataUnavailableMessage.style.display = 'block';
-                    // Sembunyikan bagian-bagian lain jika data santri tidak ditemukan
                     raportDataDiv.innerHTML = '<p class="no-data-info">Data raport belum tersedia.</p>';
                     pelanggaranDataDiv.innerHTML = '<p class="no-data-info">Tidak ada data pelanggaran.</p>';
                     peringatanDataDiv.innerHTML = '<p class="no-data-info">Tidak ada peringatan/pemberitahuan.</p>';
@@ -104,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 console.error("Error memuat data santri:", error);
                 santriInfoDiv.innerHTML = '<p class="error-message">Terjadi kesalahan saat memuat data santri. Silakan coba lagi nanti.</p>';
-                dataUnavailableMessage.style.display = 'block'; // Tampilkan pesan error
+                dataUnavailableMessage.style.display = 'block';
             }
         }
 
@@ -123,9 +173,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function displayRaport(raport) {
             if (raport && Object.keys(raport).length > 0) {
-                let raportHtml = '<ul>';
+                let raportHtml = '<div class="raport-sections">';
                 for (const semester in raport) {
-                    raportHtml += `<li><h3>${semester.replace(/_/g, ' ').toUpperCase()}</h3><ul>`;
+                    raportHtml += `<div class="raport-section"><h3>${semester.replace(/_/g, ' ').toUpperCase()}</h3><ul>`;
                     for (const mataPelajaran in raport[semester]) {
                         raportHtml += `
                             <li class="data-item">
@@ -133,9 +183,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div class="data-value">: ${raport[semester][mataPelajaran]}</div>
                             </li>`;
                     }
-                    raportHtml += '</ul></li>';
+                    raportHtml += '</ul></div>';
                 }
-                raportHtml += '</ul>';
+                raportHtml += '</div>';
                 raportDataDiv.innerHTML = raportHtml;
             } else {
                 raportDataDiv.innerHTML = '<p class="no-data-info">Data raport belum tersedia.</p>';
@@ -160,7 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         </li>`;
                 });
                 pelanggaranHtml += '</ul>';
-                pelanggaranDataDiv.innerHTML = pelanggaranHtml;
             } else {
                 pelanggaranDataDiv.innerHTML = '<p class="no-data-info">Tidak ada data pelanggaran.</p>';
             }
@@ -211,6 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        loadSantriData(); // Panggil fungsi untuk memuat data saat dashboard dimuat
+        loadSantriData();
     }
 });
