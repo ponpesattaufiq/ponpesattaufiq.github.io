@@ -1,79 +1,24 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Pondok Pesantren At-Taufiq</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header>
-      <div class="hero-image">
-        <div class="overlay">
-          <h1>Pondok Pesantren At-Taufiq</h1>
-          <p>Grogol • Diwek • Jombang</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencarian Data Santri</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Pencarian Data Santri</h1>
+        <div class="search-box">
+            <input type="text" id="nikInput" placeholder="Masukkan NIK Santri...">
+            <button id="searchButton">Cari</button>
         </div>
-      </div>
-    </header>
-
-    <nav class="container-fluid sticky-nav">
-      <ul>
-        <li><strong>At-Taufiq</strong></li>
-      </ul>
-      <ul>
-        <li><a href="#tentang">Tentang</a></li>
-        <li><a href="#visi">Visi</a></li>
-        <li><a href="#misi">Misi</a></li>
-        <li><a href="#kontak" role="button">Kontak</a></li>
-      </ul>
-    </nav>
-
-    <main class="container">
-      <div class="grid">
-        <section id="tentang">
-          <h2>Profil Singkat</h2>
-          <p>Pondok Pesantren At-Taufiq adalah lembaga pendidikan Islam yang berdiri untuk membentuk pribadi Muslim yang berakhlakul karimah dan berilmu.</p>
-        </section>
-
-        <section id="visi">
-          <h2>🕌 Visi</h2>
-          <p>"Membentuk pribadi Muslim yang berakhlakul karimah, beriman dan bertakwa, fasih dalam membaca Al-Qur’an, cerdas dalam ilmu pengetahuan, serta sehat dan mandiri."</p>
-        </section>
-
-        <section id="misi">
-          <h2>🎯 Misi</h2>
-          <ul>
-            <li>Pelayanan pendidikan berbasis Al-Qur’an, Hadis & ilmu pengetahuan modern.</li>
-            <li>Mencetak generasi unggul dari KB hingga perguruan tinggi.</li>
-            <li>Pembinaan hafalan Al-Qur’an bin nadhor & bil ghoib.</li>
-            <li>Penguasaan Bahasa Arab & Inggris, metode Amsilati.</li>
-            <li>Ilmu ruhaniyah: kalam, tasawuf, ma’rifat, hakekat.</li>
-            <li>Kesehatan Islami: ruqyah, thibbun nabawi, olahraga.</li>
-            <li>Santri entrepreneur menyongsong Indonesia Emas 2045.</li>
-          </ul>
-        </section>
-      </div>
-    </main>
-
-    <section aria-label="Formulir kontak">
-      <div class="container">
-        <article>
-          <hgroup>
-            <h2 id="kontak">Hubungi Kami</h2>
-            <h3>Pendaftaran santri baru dan informasi lebih lanjut</h3>
-          </hgroup>
-          <form class="grid">
-            <input type="text" id="firstname" name="firstname" placeholder="Nama Anda" required />
-            <input type="email" id="email" name="email" placeholder="Email Anda" required />
-            <button type="submit" onclick="event.preventDefault()">Kirim</button>
-          </form>
-        </article>
-      </div>
-    </section>
-
-    <footer class="container">
-      <small><a href="#">Kembali ke atas</a> • <a href="#kontak">Kontak</a></small>
-    </footer>
-  </body>
+        <div id="result" class="result-box">
+            </div>
+        <div id="noDataMessage" class="no-data-message" style="display: none;">
+            Data santri tidak ditemukan.
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
 </html>
