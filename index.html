@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Wali Santri | Sekretariat MUDI</title>
+    <title>Sekretariat MUDI</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -29,6 +29,7 @@
                         <div class="dropdown-content">
                             <a href="#">Informasi Akademik</a>
                             <a href="#">Keuangan</a>
+                            <a href="#search-section">Cari Data Santri</a>
                         </div>
                     </li>
                     <li class="dropdown">
@@ -42,19 +43,113 @@
                 </ul>
             </nav>
             <div class="login-button">
-                <a href="#" class="btn-login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="#login-section" class="btn-login"><i class="fas fa-sign-in-alt"></i> Login</a>
             </div>
         </div>
     </header>
 
-    <div class="hero-section">
-        <div class="hero-text">
-            <h1>Login Wali Santri</h1>
+    <div class="hero-section hero-main">
+        <div class="hero-content">
+            <div class="hero-text-main">
+                <h1>Sekretariat MUDI</h1>
+                <p>Selamat Datang Dwebsite Resmi Sekretariat MUDI Masjid Raya.</p>
+                <p>Semoga dengan hadirnya website ini memudahkan mengakses informasi<br>tentang Dayah <strong>MUDI</strong> Masjid Raya</p>
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary">Pendaftaran Santri Baru</a>
+                    <a href="#" class="btn btn-secondary">Info Dayah MUDI</a>
+                    <a href="#" class="btn btn-tertiary">Info NPSN Muadalah</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://sekretariatmudi.web.id/Md/assets/images/logo-mudi-big.png" alt="Logo MUDI Besar">
+            </div>
         </div>
         <div class="hero-wave"></div>
     </div>
 
-    <div class="content-wrapper login-page-content">
+    <div id="search-section" class="content-section search-santri-section">
+        <div class="container">
+            <h2>Cari Data Santri</h2>
+            <p class="section-description">Pencarian Data santri dengan menggunakan NIS (Nomor Induk Santri) Dayah atau NISN (Nomor Induk Siswa Nasional).</p>
+            <div class="search-box">
+                <input type="text" id="nikInput" placeholder="Masukkan NIS atau NISN">
+                <button id="searchButton">Cari</button>
+            </div>
+            <div class="category-chips">
+                <span>WUSTHA <br> <small>SMP/MTSN</small></span>
+                <span>ULYA <br> <small>SMA/MAS</small></span>
+                <span>LW-ULYA <br> <small>Lulusan Wustha</small></span>
+                <span>PONTREN <br> <small>Hanya Mengaji</small></span>
+                <span>NA <br> <small>Tidak Aktif</small></span>
+                <span>MA <br> <small>Ma'had Aly</small></span>
+            </div>
+            <div id="result" class="result-box">
+                </div>
+            <div id="noDataMessage" class="no-data-message" style="display: none;">
+                Data tidak ditemukan. Pastikan Data yang benar & menggunakan NIS atau NISN
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section santri-stats-section">
+        <div class="container">
+            <h2>Santri MUDI</h2>
+            <p class="section-description">Data ini merupakan data real santri mudi dari jenjang Wustha,Ulya,Pontren,Ma'had Aly.</p>
+            <div class="stats-and-image">
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <i class="fas fa-male"></i>
+                        <span class="stat-number">1940</span>
+                        <span class="stat-label">Putra</span>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-female"></i>
+                        <span class="stat-number">1313</span>
+                        <span class="stat-label">Putri</span>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-database"></i>
+                        <span class="stat-number">3253</span>
+                        <span class="stat-label">Total</span>
+                    </div>
+                </div>
+                <div class="stats-image">
+                    <img src="https://sekretariatmudi.web.id/Md/assets/images/santri.png" alt="Santri Belajar">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section leadership-section">
+        <div class="container">
+            <h2>Mudir & Wadir</h2>
+            <div class="leadership-cards">
+                <div class="leadership-card">
+                    <img src="https://sekretariatmudi.web.id/Md/assets/images/Tgk_abui.png" alt="Mudir">
+                    <h3>MUDIR MA'HAD</h3>
+                    <p>Abu Syekh H. Hasandel Bastry HG</p>
+                    <p class="role">Pimpinan Pondok Pesantren MUDI</p>
+                </div>
+                <div class="leadership-card">
+                    <img src="https://sekretariatmudi.web.id/Md/assets/images/Wadir1.png" alt="Wadir I">
+                    <h3>WADIR I</h3>
+                    <p>Abi H. Zahrul Mubarak HB</p>
+                </div>
+                <div class="leadership-card">
+                    <img src="https://sekretariatmudi.web.id/Md/assets/images/Wadir2.png" alt="Wadir II">
+                    <h3>WADIR II</h3>
+                    <p>Abi H. Sayed Mahyiddin TMS</p>
+                </div>
+                <div class="leadership-card">
+                    <img src="https://sekretariatmudi.web.id/Md/assets/images/Wadir3.png" alt="Wadir III">
+                    <h3>WADIR III</h3>
+                    <p>Tgk. Sulaiman M. Daud</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="login-section" class="content-section login-page-content">
         <div class="container login-container">
             <h2>Masuk ke Akun Anda</h2>
             <form id="loginForm" class="login-form">
@@ -72,6 +167,81 @@
         </div>
     </div>
 
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-columns">
+                <div class="footer-col">
+                    <h3>Pendidikan Di MUDI</h3>
+                    <ul>
+                        <li><a href="#">SPM Wustha (SMP)</a></li>
+                        <li><a href="#">SPM Ulya (SMA)</a></li>
+                        <li><a href="#">Salafi Murni (Hanya Mengaji)</a></li>
+                        <li><a href="#">Ma'had Aly M1 (S1)</a></li>
+                        <li><a href="#">Ma'had Aly M2 (S2)</a></li>
+                        <li><a href="#">Beasiswa PBSB</a></li>
+                        <li><a href="#">UNISAI (S1)</a></li>
+                        <li><a href="#">UNISAI (S2)</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Layanan Sekretariat</h3>
+                    <ul>
+                        <li><a href="#search-section">Cari Data Santri</a></li>
+                        <li><a href="#">Cari NISN Santri</a></li>
+                        <li><a href="#">Verfal Lulusan (Perbaiki Data)</a></li>
+                        <li><a href="#">Jalur PTKIN</a></li>
+                        <li><a href="#">Beasiswa PBSI</a></li>
+                        <li><a href="#">Data Pesantren Indonesia</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Alamat Dayah</h3>
+                    <p>Jln. Mesjid Raya Km 1,5 Desa Mideun Jok Kec. Samalanga Kab. Bireuen - Aceh</p>
+                    <p><i class="fas fa-phone-alt"></i> 085216122323 (Putra)</p>
+                    <p><i class="fas fa-phone-alt"></i> 085216124244 (Putri)</p>
+                    <p><i class="fas fa-envelope"></i> data.informasi.mudi@gmail.com</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; MUDI Mesjid Raya. All Right Reserved. Designed By HTML Codex</p>
+                <div class="footer-links">
+                    <a href="#">Home</a>
+                    <a href="#">Cookies</a>
+                    <a href="#">Help</a>
+                    <a href="#">FQAs</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="scroll-to-top"><i class="fas fa-arrow-up"></i></a>
+
     <script src="script.js"></script>
+    <script>
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Show/hide scroll to top button
+        window.onscroll = function() {
+            var scrollButton = document.querySelector('.scroll-to-top');
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                scrollButton.style.display = "block";
+            } else {
+                scrollButton.style.display = "none";
+            }
+        };
+    </script>
 </body>
 </html>
