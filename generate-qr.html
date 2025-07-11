@@ -61,6 +61,7 @@
             font-size: 1.1em;
             font-weight: 600;
             transition: background-color 0.3s ease;
+            margin-top: 10px; /* Tambahkan sedikit margin */
         }
         button:hover {
             background-color: #218838;
@@ -90,6 +91,12 @@
             color: #888;
             margin-top: 20px;
         }
+        #downloadQrBtn {
+            background-color: #007bff; /* Warna biru untuk tombol download */
+        }
+        #downloadQrBtn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -105,15 +112,19 @@
             <p>Scan QR Code di bawah ini:</p>
             <div id="qrcode"></div>
             <p id="generatedUrl"></p>
+            <button id="downloadQrBtn" style="display:none;">Unduh QR Code (PNG)</button>
         </div>
         <p class="note">Pastikan NIK yang dimasukkan benar. QR Code ini akan mengarah ke halaman detail santri.</p>
     </div>
 
     <script>
+        let currentQrCode; // Variabel global untuk menyimpan instance QR code
+
         function generateQRCode() {
             const nik = document.getElementById('nikInput').value.trim();
             const qrcodeDiv = document.getElementById('qrcode');
             const generatedUrlP = document.getElementById('generatedUrl');
+            const downloadButton = document.getElementById('downloadQrBtn');
 
             if (!nik) {
                 alert('NIK tidak boleh kosong!');
@@ -122,39 +133,68 @@
 
             // Bersihkan QR Code sebelumnya
             qrcodeDiv.innerHTML = '';
+            downloadButton.style.display = 'none'; // Sembunyikan tombol download dulu
 
-            // --- PATH SUDAH DISET BENAR UNTUK ponpesattaufiq.github.io ---
-            // Karena ini adalah User/Organization Page (ponpesattaufiq.github.io),
-            // base path untuk file di root adalah '/'
             const basePath = window.location.origin + '/';
-
-            // URL yang akan disandikan dalam QR Code
-            // Ini akan mengarah ke halaman detail santri Anda dengan NIK sebagai parameter
             const santriDetailUrl = `${basePath}santri-detail.html?nik=${nik}`;
 
-            new QRCode(qrcodeDiv, {
+            // Simpan instance QR code yang dibuat
+            currentQrCode = new QRCode(qrcodeDiv, {
                 text: santriDetailUrl,
-                width: 256, // Ukuran QR Code
+                width: 256,
                 height: 256,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H // High correction level
+                correctLevel: QRCode.CorrectLevel.H
             });
 
             generatedUrlP.textContent = `URL: ${santriDetailUrl}`;
+
+            // Tampilkan div QR Code setelah generate
+            document.getElementById('qrcode-display').style.display = 'flex';
+
+            // Setelah QR code digambar (ada jeda waktu), tampilkan tombol download
+            // Menggunakan setTimeout untuk memastikan QR code sudah selesai digambar ke canvas/svg
+            setTimeout(() => {
+                downloadButton.style.display = 'block';
+            }, 500); // Beri sedikit waktu, bisa disesuaikan
         }
+
+        // Fungsi untuk mengunduh QR Code
+        document.getElementById('downloadQrBtn').addEventListener('click', () => {
+            const nik = document.getElementById('nikInput').value.trim();
+            const qrcodeDiv = document.getElementById('qrcode');
+            let imgDataUrl;
+
+            // qrcode.js akan menambahkan elemen Canvas atau Img (jika SVG) ke dalam div#qrcode
+            // Kita perlu menemukan elemen Canvas di dalamnya
+            const canvasElement = qrcodeDiv.querySelector('canvas');
+            const imgElement = qrcodeDiv.querySelector('img'); // Mungkin juga ada img jika SVG
+
+            if (canvasElement) {
+                imgDataUrl = canvasElement.toDataURL("image/png"); // Dapatkan data URL dari Canvas
+            } else if (imgElement && imgElement.src.startsWith('data:image/')) {
+                // Jika itu adalah SVG yang dirender sebagai data URL gambar
+                imgDataUrl = imgElement.src;
+            } else {
+                alert('QR Code tidak ditemukan atau tidak dalam format yang dapat diunduh.');
+                return;
+            }
+
+            // Buat elemen <a> sementara untuk trigger download
+            const link = document.createElement('a');
+            link.href = imgDataUrl;
+            link.download = `QR_Santri_${nik}.png`; // Nama file yang diunduh
+            document.body.appendChild(link); // Tambahkan ke DOM (sementara)
+            link.click(); // Klik secara programatis
+            document.body.removeChild(link); // Hapus dari DOM
+        });
+
 
         // Sembunyikan div QR Code saat pertama kali dimuat
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('qrcode-display').style.display = 'none';
         });
-
-        // Tampilkan div QR Code setelah generate pertama
-        const originalGenerateQRCode = generateQRCode;
-        generateQRCode = function() {
-            originalGenerateQRCode();
-            document.getElementById('qrcode-display').style.display = 'flex'; // Menggunakan flex untuk centering
-        };
     </script>
 </body>
 </html>
