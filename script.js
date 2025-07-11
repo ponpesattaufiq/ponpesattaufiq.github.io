@@ -2,44 +2,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Common Functions (for both index.html and dashboard.html) ---
 
     // Smooth scroll for internal links
-    // This part ensures that when a user clicks on an anchor link (e.g., <a href="#sectionId">),
-    // the page scrolls smoothly to that section instead of jumping.
-    // It also accounts for a fixed header ('.main-header') by offsetting the scroll position.
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            e.preventDefault(); // Prevent default jump behavior
-            const targetId = this.getAttribute('href').substring(1); // Get the ID from the href
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
             const targetElement = document.getElementById(targetId);
 
             if (targetElement) {
                 const mainHeader = document.querySelector('.main-header');
-                const headerOffset = mainHeader ? mainHeader.offsetHeight : 0; // Get header height if it exists
+                const headerOffset = mainHeader ? mainHeader.offsetHeight : 0;
                 const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-                const offsetPosition = elementPosition - headerOffset - 20; // Adjust for header and a small padding
+                const offsetPosition = elementPosition - headerOffset - 20;
 
                 window.scrollTo({
                     top: offsetPosition,
-                    behavior: 'smooth' // Smooth scroll animation
+                    behavior: 'smooth'
                 });
             }
         });
     });
 
     // Show/hide scroll to top button
-    // This checks the scroll position and shows/hides a 'scrollToTopBtn' accordingly.
     const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-    if (scrollToTopBtn) { // Only run if the button exists on the page
+    if (scrollToTopBtn) {
         window.onscroll = function() {
             if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-                scrollToTopBtn.style.display = "block"; // Show button
+                scrollToTopBtn.style.display = "block";
             } else {
-                scrollToTopBtn.style.display = "none"; // Hide button
+                scrollToTopBtn.style.display = "none";
             }
         };
     }
 
     // Scroll to Top Function
-    // This function is globally accessible and scrolls the page to the very top smoothly.
     window.scrollToTop = function() {
         window.scrollTo({
             top: 0,
@@ -56,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const noDataMessage = document.getElementById('noDataMessage');
 
             // Get specific elements to display results
+            const displaySantriName = document.getElementById('displaySantriName');
             const resultNIK = document.getElementById('resultNIK');
             const resultName = document.getElementById('resultName');
             const resultJenisKelamin = document.getElementById('resultJenisKelamin');
@@ -65,45 +61,124 @@ document.addEventListener('DOMContentLoaded', () => {
             const resultIbu = document.getElementById('resultIbu');
             const resultNoHp = document.getElementById('resultNoHp');
 
+            // Get elements for detailed sections
+            const raportSection = document.getElementById('raport-section');
+            const raportDetails = document.getElementById('raport-details');
+            const pelanggaranSection = document.getElementById('pelanggaran-section');
+            const pelanggaranList = document.getElementById('pelanggaran-list');
+            const peringatanSection = document.getElementById('peringatan-section');
+            const peringatanList = document.getElementById('peringatan-list');
+            const prestasiSection = document.getElementById('prestasi-section');
+            const prestasiList = document.getElementById('prestasi-list');
+
             // Reset display before new search
             resultBox.style.display = 'none';
             noDataMessage.style.display = 'none';
             noDataMessage.textContent = 'Data santri tidak ditemukan.'; // Default message
 
-            // Essential check: Ensure all display elements are present
-            if (!resultNIK || !resultName || !resultJenisKelamin || !resultTTL || !resultAlamat || !resultAyah || !resultIbu || !resultNoHp) {
-                console.error("Error: One or more result display elements not found in index.html. Please ensure all 'result-value' spans have unique IDs (e.g., resultNIK, resultName, etc.) and exist within #resultBox.");
-                noDataMessage.textContent = 'Terjadi kesalahan pada struktur tampilan data. Mohon laporkan ke admin.';
+            // Hide all detailed sections initially
+            raportSection.style.display = 'none';
+            pelanggaranSection.style.display = 'none';
+            peringatanSection.style.display = 'none';
+            prestasiSection.style.display = 'none';
+
+            // Clear previous content
+            raportDetails.innerHTML = '';
+            pelanggaranList.innerHTML = '';
+            peringatanList.innerHTML = '';
+            prestasiList.innerHTML = '';
+
+
+            if (!nikInput) {
+                noDataMessage.textContent = 'Mohon masukkan NIK Santri.';
                 noDataMessage.style.display = 'block';
-                return; // Stop execution if elements are missing
+                return;
             }
 
             try {
-                // Fetch data from 'data_santri.json'
-                const response = await fetch('data_santri.json');
+                // *** CHANGE: Fetch data directly from data/{NIK}.json ***
+                const filePath = `data/${nikInput}.json`;
+                const response = await fetch(filePath);
+
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const allSantri = await response.json(); // data_santri.json is expected to be an array of santri objects
-
-                // Find the santri by NIK
-                const foundSantri = allSantri.find(santri => santri.NIK === nikInput);
-
-                if (foundSantri) {
-                    resultBox.style.display = 'block'; // Show the result box
-                    // Populate the result elements with found data
-                    resultNIK.textContent = foundSantri.NIK || 'Tidak Tersedia';
-                    resultName.textContent = foundSantri.nama || 'Tidak Tersedia';
-                    resultJenisKelamin.textContent = foundSantri.jenis_kelamin || 'Tidak Tersedia';
-                    resultTTL.textContent = foundSantri.tempat_tanggal_lahir || 'Tidak Tersedia';
-                    resultAlamat.textContent = foundSantri.alamat || 'Tidak Tersedia';
-                    resultAyah.textContent = foundSantri.nama_ayah || 'Tidak Tersedia';
-                    resultIbu.textContent = foundSantri.nama_ibu || 'Tidak Tersedia';
-                    resultNoHp.textContent = foundSantri.nomor_hp || 'Tidak Tersedia';
-                } else {
-                    // Display "no data found" message
+                    // If response is not OK (e.g., 404 Not Found)
+                    if (response.status === 404) {
+                        noDataMessage.textContent = 'Data santri tidak ditemukan. Pastikan NIK yang Anda masukkan benar.';
+                    } else {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
                     noDataMessage.style.display = 'block';
-                    noDataMessage.textContent = 'Data santri tidak ditemukan. Pastikan Data yang benar & menggunakan NIK.';
+                    return; // Stop execution
+                }
+
+                const santriData = await response.json(); // Data for a single santri
+
+                if (santriData) {
+                    resultBox.style.display = 'block'; // Show the result box
+
+                    // Populate the result elements with found data (General Info)
+                    displaySantriName.textContent = santriData.nama || 'Tidak Tersedia';
+                    resultNIK.textContent = santriData.NIK || 'Tidak Tersedia';
+                    resultName.textContent = santriData.nama || 'Tidak Tersedia';
+                    resultJenisKelamin.textContent = santriData.jenis_kelamin || 'Tidak Tersedia';
+                    resultTTL.textContent = santriData.tempat_tanggal_lahir || 'Tidak Tersedia';
+                    resultAlamat.textContent = santriData.alamat || 'Tidak Tersedia';
+                    resultAyah.textContent = santriData.nama_ayah || 'Tidak Tersedia';
+                    resultIbu.textContent = santriData.nama_ibu || 'Tidak Tersedia';
+                    resultNoHp.textContent = santriData.nomor_hp || 'Tidak Tersedia';
+
+                    // Populate and display Raport
+                    if (santriData.raport && Object.keys(santriData.raport).length > 0) {
+                        raportSection.style.display = 'block';
+                        let raportHtml = `<table class="data-table"><thead><tr><th>Semester</th><th>Matematika</th><th>B. Indo</th><th>IPA</th><th>B. Arab</th><th>Tahfidz</th></tr></thead><tbody>`;
+                        for (const semesterKey in santriData.raport) {
+                            const semester = santriData.raport[semesterKey];
+                            raportHtml += `<tr>
+                                <td>${semesterKey.replace('_', ' ').replace('semester', 'Semester ')}</td>
+                                <td>${semester.matematika !== undefined ? semester.matematika : '-'}</td>
+                                <td>${semester.bahasa_indonesia !== undefined ? semester.bahasa_indonesia : '-'}</td>
+                                <td>${semester.ipa !== undefined ? semester.ipa : '-'}</td>
+                                <td>${semester.bahasa_arab !== undefined ? semester.bahasa_arab : '-'}</td>
+                                <td>${semester.tahfidz_quran !== undefined ? semester.tahfidz_quran : '-'}</td>
+                            </tr>`;
+                        }
+                        raportHtml += `</tbody></table>`;
+                        raportDetails.innerHTML = raportHtml;
+                    }
+
+                    // Populate and display Pelanggaran
+                    if (santriData.pelanggaran && santriData.pelanggaran.length > 0) {
+                        pelanggaranSection.style.display = 'block';
+                        santriData.pelanggaran.forEach(p => {
+                            const li = document.createElement('li');
+                            li.textContent = `${p.tanggal || 'N/A'}: ${p.jenis || 'N/A'} (Poin: ${p.poin !== undefined ? p.poin : 'N/A'})`;
+                            pelanggaranList.appendChild(li);
+                        });
+                    }
+
+                    // Populate and display Peringatan
+                    if (santriData.peringatan && santriData.peringatan.length > 0) {
+                        peringatanSection.style.display = 'block';
+                        santriData.peringatan.forEach(w => {
+                            const li = document.createElement('li');
+                            li.textContent = `${w.tanggal || 'N/A'}: ${w.deskripsi || 'N/A'}`;
+                            peringatanList.appendChild(li);
+                        });
+                    }
+
+                    // Populate and display Prestasi
+                    if (santriData.prestasi && santriData.prestasi.length > 0) {
+                        prestasiSection.style.display = 'block';
+                        santriData.prestasi.forEach(a => {
+                            const li = document.createElement('li');
+                            li.textContent = `${a.tanggal || 'N/A'}: ${a.nama_prestasi || 'N/A'} (Tingkat: ${a.tingkat || 'N/A'})`;
+                            prestasiList.appendChild(li);
+                        });
+                    }
+
+                } else {
+                    noDataMessage.style.display = 'block';
+                    noDataMessage.textContent = 'Data santri tidak ditemukan.';
                 }
             } catch (error) {
                 console.error('Error fetching santri data for search:', error);
@@ -117,22 +192,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const loginMessage = document.getElementById('loginMessage');
         if (loginForm) {
             loginForm.addEventListener('submit', async function(event) {
-                event.preventDefault(); // Prevent default form submission
+                event.preventDefault();
 
                 const usernameInput = document.getElementById('username').value;
                 const passwordInput = document.getElementById('password').value;
 
-                loginMessage.style.display = 'none'; // Reset login message
+                loginMessage.style.display = 'none';
 
                 try {
-                    // Fetch user data from 'users.json'
+                    // Fetch user data from 'users.json' (assuming this file still holds login credentials)
                     const response = await fetch('users.json');
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
-                    const users = await response.json(); // users.json is expected to be an array of user objects
+                    const users = await response.json();
 
-                    // Find matching user
                     const foundUser = users.find(user => user.username === usernameInput && user.password === passwordInput);
 
                     if (foundUser) {
@@ -141,7 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         localStorage.setItem('currentSantriNIK', foundUser.NIK);
                         window.location.href = 'dashboard.html'; // Redirect to dashboard
                     } else {
-                        // Display login error message
                         loginMessage.textContent = 'Username atau password salah.';
                         loginMessage.style.display = 'block';
                     }
@@ -170,23 +243,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Function to fetch data for a specific NIK from data_santri.json
-    // This is a helper function used specifically for the dashboard to retrieve one santri's data.
+    // Function to fetch data for a specific NIK from data/{NIK}.json
     const fetchSantriDataByNIK = async (nik) => {
         try {
-            const response = await fetch('data_santri.json');
+            // *** CHANGE: Fetch data directly from data/{NIK}.json ***
+            const response = await fetch(`data/${nik}.json`);
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                if (response.status === 404) {
+                    console.warn(`File data/${nik}.json not found.`);
+                } else {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return null;
             }
-            const allSantri = await response.json();
-            return allSantri.find(santri => santri.NIK === nik);
+            return await response.json(); // Directly return the santri object
         } catch (error) {
             console.error('Failed to fetch santri data:', error);
             return null;
         }
     };
-
-    // --- Data Display Functions (for dashboard.html) ---
 
     // Displays general santri information
     const displaySantriInfo = (info) => {
@@ -331,9 +406,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Main function to load dashboard data (only if on dashboard.html)
-    // This is the entry point for dashboard data loading.
     const dashboardContainer = document.querySelector('.dashboard-container');
-    if (dashboardContainer) { // Only run this block if a '.dashboard-container' element exists
+    if (dashboardContainer) {
         const loadDashboardData = async () => {
             const dataUnavailableMessage = document.getElementById('dataUnavailableMessage');
             if (!dataUnavailableMessage) {
@@ -342,25 +416,22 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             dataUnavailableMessage.style.display = 'none';
 
-            let currentSantriNIK = localStorage.getItem('currentSantriNIK'); // Get NIK from local storage
+            let currentSantriNIK = localStorage.getItem('currentSantriNIK');
 
-            // If NIK is not in local storage (e.g., direct access or first time), prompt the user
             if (!currentSantriNIK) {
                 const promptNIK = prompt("Silakan masukkan NIK Santri untuk melihat data (contoh: 123 atau 6543210987654321):");
                 if (promptNIK) {
-                    localStorage.setItem('currentSantriNIK', promptNIK); // Store the NIK
+                    localStorage.setItem('currentSantriNIK', promptNIK);
                     currentSantriNIK = promptNIK;
                 } else {
-                    // If user cancels or doesn't enter NIK
                     dataUnavailableMessage.style.display = 'block';
                     dataUnavailableMessage.textContent = 'NIK tidak dimasukkan. Data tidak dapat dimuat.';
-                    // Clear all data sections
                     displaySantriInfo(null);
                     displayRaportData(null);
                     displayPelanggaranData(null);
                     displayPeringatanData(null);
                     displayPrestasiData(null);
-                    return; // Stop loading data
+                    return;
                 }
             }
 
@@ -369,22 +440,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data) {
                     const dashboardTitle = document.getElementById('dashboardTitle');
                     if (dashboardTitle && data.nama) {
-                        dashboardTitle.textContent = `Data Raport Santri ${data.nama}`; // Update dashboard title
+                        dashboardTitle.textContent = `Data Raport Santri ${data.nama}`;
                     } else if (dashboardTitle) {
-                           dashboardTitle.textContent = `Data Raport Santri`;
+                        dashboardTitle.textContent = `Data Raport Santri`;
                     }
 
-                    // Display all sections of data
-                    displaySantriInfo(data); // Pass the whole data object
+                    displaySantriInfo(data);
                     displayRaportData(data.raport);
                     displayPelanggaranData(data.pelanggaran);
                     displayPeringatanData(data.peringatan);
                     displayPrestasiData(data.prestasi);
                 } else {
-                    // If NIK is found but no data matches, or data is incomplete
-                    dataUnavailableMessage.textContent = `Maaf, data untuk NIK ${currentSantriNIK} Anda tidak ditemukan. Silakan hubungi admin pondok pesantren.`;
+                    dataUnavailableMessage.textContent = `Maaf, data untuk NIK ${currentSantriNIK} tidak ditemukan. Silakan hubungi admin pondok pesantren.`;
                     dataUnavailableMessage.style.display = 'block';
-                    // Clear all data sections
                     displaySantriInfo(null);
                     displayRaportData(null);
                     displayPelanggaranData(null);
@@ -398,6 +466,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        loadDashboardData(); // Call the function to load dashboard data when the page loads
+        loadDashboardData();
+    }
+
+    // Login/Logout button visibility toggle (for index.html header)
+    const mainLoginButton = document.getElementById('mainLoginButton');
+    const logoutButtonHeader = document.getElementById('logoutButton'); // Make sure this refers to the header logout button
+
+    if (mainLoginButton && logoutButtonHeader) {
+        const currentSantriNIK = localStorage.getItem('currentSantriNIK');
+        if (currentSantriNIK) {
+            mainLoginButton.style.display = 'none';
+            logoutButtonHeader.style.display = 'block';
+        } else {
+            mainLoginButton.style.display = 'block';
+            logoutButtonHeader.style.display = 'none';
+        }
     }
 });
