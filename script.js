@@ -50,14 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const resultBox = document.getElementById('resultBox');
             const noDataMessage = document.getElementById('noDataMessage');
 
-            // Ambil elemen-elemen spesifik di dalam resultBox
-            const resultName = resultBox.querySelector('.result-item:nth-child(1) .result-value');
-            const resultJenisKelamin = resultBox.querySelector('.result-item:nth-child(2) .result-value');
-            const resultTTL = resultBox.querySelector('.result-item:nth-child(3) .result-value');
-            const resultAlamat = resultBox.querySelector('.result-item:nth-child(4) .result-value');
-            const resultAyah = resultBox.querySelector('.result-item:nth-child(5) .result-value');
-            const resultIbu = resultBox.querySelector('.result-item:nth-child(6) .result-value');
-            const resultNoHp = resultBox.querySelector('.result-item:nth-child(7) .result-value');
+            // Ambil elemen-elemen spesifik berdasarkan ID
+            const resultNIK = document.getElementById('resultNIK');
+            const resultName = document.getElementById('resultName');
+            const resultJenisKelamin = document.getElementById('resultJenisKelamin');
+            const resultTTL = document.getElementById('resultTTL');
+            const resultAlamat = document.getElementById('resultAlamat');
+            const resultAyah = document.getElementById('resultAyah');
+            const resultIbu = document.getElementById('resultIbu');
+            const resultNoHp = document.getElementById('resultNoHp');
 
 
             // Reset tampilan
@@ -66,8 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
             noDataMessage.textContent = 'Data santri tidak ditemukan.'; // Default message
 
             // Memastikan semua elemen result-value ditemukan sebelum melanjutkan
-            if (!resultName || !resultJenisKelamin || !resultTTL || !resultAlamat || !resultAyah || !resultIbu || !resultNoHp) {
-                console.error("Error: One or more result elements not found in resultBox. Check index.html structure and ensure all .result-item .result-value elements exist.");
+            if (!resultNIK || !resultName || !resultJenisKelamin || !resultTTL || !resultAlamat || !resultAyah || !resultIbu || !resultNoHp) {
+                console.error("Error: One or more result display elements not found in index.html. Please ensure all 'result-value' spans have unique IDs (e.g., resultNIK, resultName, etc.) and exist within #resultBox.");
                 noDataMessage.textContent = 'Terjadi kesalahan pada struktur tampilan data. Mohon laporkan ke admin.';
                 noDataMessage.style.display = 'block';
                 return;
@@ -85,6 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (foundSantri) {
                     resultBox.style.display = 'block';
+                    // Pastikan urutan di bawah ini sesuai dengan urutan ID di index.html dan nama properti di data_santri.json
+                    resultNIK.textContent = foundSantri.NIK || 'Tidak Tersedia';
                     resultName.textContent = foundSantri.nama || 'Tidak Tersedia';
                     resultJenisKelamin.textContent = foundSantri.jenis_kelamin || 'Tidak Tersedia';
                     resultTTL.textContent = foundSantri.tempat_tanggal_lahir || 'Tidak Tersedia';
@@ -94,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     resultNoHp.textContent = foundSantri.nomor_hp || 'Tidak Tersedia';
                 } else {
                     noDataMessage.style.display = 'block';
+                    noDataMessage.textContent = 'Data santri tidak ditemukan. Pastikan Data yang benar & menggunakan NIK.';
                 }
             } catch (error) {
                 console.error('Error fetching santri data for search:', error);
@@ -106,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const loginForm = document.getElementById('loginForm');
         const loginMessage = document.getElementById('loginMessage');
         if (loginForm) {
-            loginForm.addEventListener('submit', async function(event) { // Add async here
+            loginForm.addEventListener('submit', async function(event) {
                 event.preventDefault();
 
                 const usernameInput = document.getElementById('username').value;
@@ -199,27 +203,27 @@ document.addEventListener('DOMContentLoaded', () => {
         if (raportDataDiv) {
             if (raport && Object.keys(raport).length > 0) {
                 let tableHtml = `<table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Semester</th>
-                                            <th>Matematika</th>
-                                            <th>Bahasa Indonesia</th>
-                                            <th>IPA</th>
-                                            <th>Bahasa Arab</th>
-                                            <th>Tahfidz Qur'an</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>`;
+                                        <thead>
+                                            <tr>
+                                                <th>Semester</th>
+                                                <th>Matematika</th>
+                                                <th>Bahasa Indonesia</th>
+                                                <th>IPA</th>
+                                                <th>Bahasa Arab</th>
+                                                <th>Tahfidz Qur'an</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>`;
                 for (const semesterKey in raport) {
                     const semesterData = raport[semesterKey];
                     tableHtml += `<tr>
-                                    <td>${semesterKey.replace('_', ' ').replace('semester', 'Semester ')}</td>
-                                    <td>${semesterData.matematika !== undefined ? semesterData.matematika : '-'}</td>
-                                    <td>${semesterData.bahasa_indonesia !== undefined ? semesterData.bahasa_indonesia : '-'}</td>
-                                    <td>${semesterData.ipa !== undefined ? semesterData.ipa : '-'}</td>
-                                    <td>${semesterData.bahasa_arab !== undefined ? semesterData.bahasa_arab : '-'}</td>
-                                    <td>${semesterData.tahfidz_quran !== undefined ? semesterData.tahfidz_quran : '-'}</td>
-                                  </tr>`;
+                                        <td>${semesterKey.replace('_', ' ').replace('semester', 'Semester ')}</td>
+                                        <td>${semesterData.matematika !== undefined ? semesterData.matematika : '-'}</td>
+                                        <td>${semesterData.bahasa_indonesia !== undefined ? semesterData.bahasa_indonesia : '-'}</td>
+                                        <td>${semesterData.ipa !== undefined ? semesterData.ipa : '-'}</td>
+                                        <td>${semesterData.bahasa_arab !== undefined ? semesterData.bahasa_arab : '-'}</td>
+                                        <td>${semesterData.tahfidz_quran !== undefined ? semesterData.tahfidz_quran : '-'}</td>
+                                    </tr>`;
                 }
                 tableHtml += `</tbody></table>`;
                 raportDataDiv.innerHTML = tableHtml;
@@ -234,20 +238,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pelanggaranDataDiv) {
             if (pelanggaran && pelanggaran.length > 0) {
                 let tableHtml = `<table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Tanggal</th>
-                                            <th>Jenis Pelanggaran</th>
-                                            <th>Poin</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>`;
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Jenis Pelanggaran</th>
+                                                <th>Poin</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>`;
                 pelanggaran.forEach(item => {
                     tableHtml += `<tr>
-                                    <td>${item.tanggal || '-'}</td>
-                                    <td>${item.jenis || '-'}</td>
-                                    <td>${item.poin !== undefined ? item.poin : '-'}</td>
-                                  </tr>`;
+                                        <td>${item.tanggal || '-'}</td>
+                                        <td>${item.jenis || '-'}</td>
+                                        <td>${item.poin !== undefined ? item.poin : '-'}</td>
+                                    </tr>`;
                 });
                 tableHtml += `</tbody></table>`;
                 pelanggaranDataDiv.innerHTML = tableHtml;
@@ -262,20 +266,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (peringatanDataDiv) {
             if (peringatan && peringatan.length > 0) {
                 let tableHtml = `<table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Tanggal</th>
-                                            <th>Deskripsi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>`;
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Deskripsi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>`;
                 peringatan.forEach(item => {
                     tableHtml += `<tr>
-                                    <td>${item.tanggal || '-'}</td>
-                                    <td>${item.deskripsi || '-'}</td>
-                                  </tr>`;
+                                        <td>${item.tanggal || '-'}</td>
+                                        <td>${item.deskripsi || '-'}</td>
+                                    </tr>`;
                 });
                 tableHtml += `</tbody></table>`;
+                peringatanDataDiv.innerHTML = tableHtml;
             } else {
                 peringatanDataDiv.innerHTML = `<p class="no-data-info">Tidak ada peringatan/pemberitahuan.</p>`;
             }
@@ -287,22 +292,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (prestasiDataDiv) {
             if (prestasi && prestasi.length > 0) {
                 let tableHtml = `<table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Tanggal</th>
-                                            <th>Nama Prestasi</th>
-                                            <th>Tingkat</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>`;
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Nama Prestasi</th>
+                                                <th>Tingkat</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>`;
                 prestasi.forEach(item => {
                     tableHtml += `<tr>
-                                    <td>${item.tanggal || '-'}</td>
-                                    <td>${item.nama_prestasi || '-'}</td>
-                                    <td>${item.tingkat || '-'}</td>
-                                  </tr>`;
+                                        <td>${item.tanggal || '-'}</td>
+                                        <td>${item.nama_prestasi || '-'}</td>
+                                        <td>${item.tingkat || '-'}</td>
+                                    </tr>`;
                 });
                 tableHtml += `</tbody></table>`;
+                prestasiDataDiv.innerHTML = tableHtml;
             } else {
                 prestasiDataDiv.innerHTML = `<p class="no-data-info">Tidak ada data prestasi.</p>`;
             }
@@ -347,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (dashboardTitle && data.nama) {
                         dashboardTitle.textContent = `Data Raport Santri ${data.nama}`;
                     } else if (dashboardTitle) {
-                         dashboardTitle.textContent = `Data Raport Santri`;
+                           dashboardTitle.textContent = `Data Raport Santri`;
                     }
 
                     displaySantriInfo(data); // Pass the whole data object
