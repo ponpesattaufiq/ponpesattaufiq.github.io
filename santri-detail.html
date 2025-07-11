@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KARTU TANDA SANTRI</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .detail-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            color: #28a745;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+        .santri-data-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            text-align: left;
+            margin-top: 25px;
+        }
+        .data-item {
+            display: flex;
+            flex-direction: column;
+            padding: 12px 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+        .data-label {
+            font-weight: 600;
+            color: #555;
+            font-size: 0.9em;
+            margin-bottom: 4px;
+        }
+        .data-value {
+            font-size: 1.1em;
+            color: #333;
+        }
+        #loading-message, #not-found-message {
+            font-size: 1.1em;
+            color: #666;
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #ffeeba;
+            border: 1px solid #ffda6e;
+            color: #856404;
+        }
+        #not-found-message {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="detail-container">
+        <h1>Profil Santri</h1>
+        <div id="santri-detail-content">
+            <div class="santri-data-grid">
+                <div class="data-item"><span class="data-label">NIK            :</span> <span class="data-value" id="detail-nik"></span></div>
+                <div class="data-item"><span class="data-label">Nama Lengkap   :</span> <span class="data-value" id="detail-nama"></span></div>
+                <div class="data-item"><span class="data-label">Jenis Kelamin  :</span> <span class="data-value" id="detail-jenis-kelamin"></span></div>
+                <div class="data-item"><span class="data-label">TTL            :</span> <span class="data-value" id="detail-ttl"></span></div>
+                <div class="data-item"><span class="data-label">Alamat         :</span> <span class="data-value" id="detail-alamat"></span></div>
+                <div class="data-item"><span class="data-label">Nama Ayah      :</span> <span class="data-value" id="detail-ayah"></span></div>
+                <div class="data-item"><span class="data-label">Nama Ibu       :</span> <span class="data-value" id="detail-ibu"></span></div>
+                <div class="data-item"><span class="data-label">Nomor HP       :</span> <span class="data-value" id="detail-nohp"></span></div>
+            </div>
+        </div>
+        <p id="loading-message">Memuat data santri...</p>
+        <p id="not-found-message" style="display:none;"></p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const nik = urlParams.get('nik');
+
+            const santriDetailContent = document.getElementById('santri-detail-content');
+            const loadingMessage = document.getElementById('loading-message');
+            const notFoundMessage = document.getElementById('not-found-message');
+
+            santriDetailContent.style.display = 'none'; // Sembunyikan detail sampai data siap
+            loadingMessage.style.display = 'block';
+            notFoundMessage.style.display = 'none';
+
+            if (!nik) {
+                loadingMessage.style.display = 'none';
+                notFoundMessage.textContent = 'NIK santri tidak ditemukan di URL. Silakan scan QR Code yang valid.';
+                notFoundMessage.style.display = 'block';
+                return;
+            }
+
+            try {
+                // --- PENTING: GANTI URL INI DENGAN URL API BACKEND ANDA ---
+                // Ini adalah bagian yang akan terhubung ke MongoDB Anda.
+                // Contoh: Menggunakan Firebase Functions, MongoDB Atlas App Services, Vercel, dll.
+                const apiUrl = `https://your-api-backend.com/santri?nik=${nik}`; // Ganti dengan URL API Anda yang sebenarnya
+
+                const response = await fetch(apiUrl);
+
+                if (!response.ok) {
+                    // Jika respons bukan 2xx OK (misal 404 Not Found, 500 Internal Server Error)
+                    if (response.status === 404) {
+                        notFoundMessage.textContent = 'Data santri dengan NIK tersebut tidak ditemukan.';
+                    } else {
+                        notFoundMessage.textContent = `Gagal memuat data santri. Kode error: ${response.status}`;
+                    }
+                    loadingMessage.style.display = 'none';
+                    notFoundMessage.style.display = 'block';
+                    return;
+                }
+
+                const data = await response.json();
+
+                // Pastikan data yang diterima tidak kosong dan memiliki properti yang diharapkan
+                if (data && data.nik) { // Asumsi NIK selalu ada jika data santri ditemukan
+                    document.getElementById('detail-nik').textContent = data.nik || '-';
+                    document.getElementById('detail-nama').textContent = data.nama || '-';
+                    document.getElementById('detail-jenis-kelamin').textContent = data.jenisKelamin || '-';
+                    document.getElementById('detail-ttl').textContent = data.ttl || '-';
+                    document.getElementById('detail-alamat').textContent = data.alamat || '-';
+                    document.getElementById('detail-ayah').textContent = data.namaAyah || '-';
+                    document.getElementById('detail-ibu').textContent = data.namaIbu || '-';
+                    document.getElementById('detail-nohp').textContent = data.noHp || '-';
+
+                    loadingMessage.style.display = 'none';
+                    santriDetailContent.style.display = 'block'; // Tampilkan konten detail
+                } else {
+                    notFoundMessage.textContent = 'Data santri tidak ditemukan atau format data tidak valid.';
+                    loadingMessage.style.display = 'none';
+                    notFoundMessage.style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('Error saat mengambil data santri:', error);
+                loadingMessage.style.display = 'none';
+                notFoundMessage.textContent = 'Terjadi kesalahan jaringan atau server. Silakan coba lagi nanti.';
+                notFoundMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
