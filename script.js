@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const resultIbu = document.getElementById('resultIbu');
             const resultNoHp = document.getElementById('resultNoHp');
 
-            // Get elements for detailed sections
+            // Get elements for detailed sections (These might be null on index.html, handled below)
             const raportSection = document.getElementById('raport-section');
             const raportDetails = document.getElementById('raport-details');
             const pelanggaranSection = document.getElementById('pelanggaran-section');
@@ -72,26 +72,30 @@ document.addEventListener('DOMContentLoaded', () => {
             const prestasiList = document.getElementById('prestasi-list');
 
             // Reset display before new search
-            resultBox.style.display = 'none';
-            noDataMessage.style.display = 'none';
-            noDataMessage.textContent = 'Data santri tidak ditemukan.'; // Default message
+            if (resultBox) resultBox.style.display = 'none';
+            if (noDataMessage) {
+                noDataMessage.style.display = 'none';
+                noDataMessage.textContent = 'Data santri tidak ditemukan.'; // Default message
+            }
 
-            // Hide all detailed sections initially
-            raportSection.style.display = 'none';
-            pelanggaranSection.style.display = 'none';
-            peringatanSection.style.display = 'none';
-            prestasiSection.style.display = 'none';
+            // Hide all detailed sections initially ONLY IF they exist
+            if (raportSection) raportSection.style.display = 'none';
+            if (pelanggaranSection) pelanggaranSection.style.display = 'none';
+            if (peringatanSection) peringatanSection.style.display = 'none';
+            if (prestasiSection) prestasiSection.style.display = 'none';
 
-            // Clear previous content
-            raportDetails.innerHTML = '';
-            pelanggaranList.innerHTML = '';
-            peringatanList.innerHTML = '';
-            prestasiList.innerHTML = '';
+            // Clear previous content ONLY IF they exist
+            if (raportDetails) raportDetails.innerHTML = '';
+            if (pelanggaranList) pelanggaranList.innerHTML = '';
+            if (peringatanList) peringatanList.innerHTML = '';
+            if (prestasiList) prestasiList.innerHTML = '';
 
 
             if (!nikInput) {
-                noDataMessage.textContent = 'Mohon masukkan NIK Santri.';
-                noDataMessage.style.display = 'block';
+                if (noDataMessage) {
+                    noDataMessage.textContent = 'Mohon masukkan NIK Santri.';
+                    noDataMessage.style.display = 'block';
+                }
                 return;
             }
 
@@ -103,87 +107,51 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!response.ok) {
                     // If response is not OK (e.g., 404 Not Found)
                     if (response.status === 404) {
-                        noDataMessage.textContent = 'Data santri tidak ditemukan. Pastikan NIK yang Anda masukkan benar.';
+                        if (noDataMessage) {
+                            noDataMessage.textContent = 'Data santri tidak ditemukan. Pastikan NIK yang Anda masukkan benar.';
+                        }
                     } else {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
-                    noDataMessage.style.display = 'block';
+                    if (noDataMessage) noDataMessage.style.display = 'block';
                     return; // Stop execution
                 }
 
                 const santriData = await response.json(); // Data for a single santri
 
                 if (santriData) {
-                    resultBox.style.display = 'block'; // Show the result box
+                    if (resultBox) resultBox.style.display = 'block'; // Show the result box
 
-                    // Populate the result elements with found data (General Info)
-                    displaySantriName.textContent = santriData.nama || 'Tidak Tersedia';
-                    resultNIK.textContent = santriData.NIK || 'Tidak Tersedia';
-                    resultName.textContent = santriData.nama || 'Tidak Tersedia';
-                    resultJenisKelamin.textContent = santriData.jenis_kelamin || 'Tidak Tersedia';
-                    resultTTL.textContent = santriData.tempat_tanggal_lahir || 'Tidak Tersedia';
-                    resultAlamat.textContent = santriData.alamat || 'Tidak Tersedia';
-                    resultAyah.textContent = santriData.nama_ayah || 'Tidak Tersedia';
-                    resultIbu.textContent = santriData.nama_ibu || 'Tidak Tersedia';
-                    resultNoHp.textContent = santriData.nomor_hp || 'Tidak Tersedia';
+                    // Populate the result elements with found data (General Info) ONLY IF they exist
+                    if (displaySantriName) displaySantriName.textContent = santriData.nama || 'Tidak Tersedia';
+                    if (resultNIK) resultNIK.textContent = santriData.NIK || 'Tidak Tersedia';
+                    if (resultName) resultName.textContent = santriData.nama || 'Tidak Tersedia';
+                    if (resultJenisKelamin) resultJenisKelamin.textContent = santriData.jenis_kelamin || 'Tidak Tersedia';
+                    if (resultTTL) resultTTL.textContent = santriData.tempat_tanggal_lahir || 'Tidak Tersedia';
+                    if (resultAlamat) resultAlamat.textContent = santriData.alamat || 'Tidak Tersedia';
+                    if (resultAyah) resultAyah.textContent = santriData.nama_ayah || 'Tidak Tersedia';
+                    if (resultIbu) resultIbu.textContent = santriData.nama_ibu || 'Tidak Tersedia';
+                    if (resultNoHp) resultNoHp.textContent = santriData.nomor_hp || 'Tidak Tersedia';
 
-                    // Populate and display Raport
-                    if (santriData.raport && Object.keys(santriData.raport).length > 0) {
-                        raportSection.style.display = 'block';
-                        let raportHtml = `<table class="data-table"><thead><tr><th>Semester</th><th>Matematika</th><th>B. Indo</th><th>IPA</th><th>B. Arab</th><th>Tahfidz</th></tr></thead><tbody>`;
-                        for (const semesterKey in santriData.raport) {
-                            const semester = santriData.raport[semesterKey];
-                            raportHtml += `<tr>
-                                <td>${semesterKey.replace('_', ' ').replace('semester', 'Semester ')}</td>
-                                <td>${semester.matematika !== undefined ? semester.matematika : '-'}</td>
-                                <td>${semester.bahasa_indonesia !== undefined ? semester.bahasa_indonesia : '-'}</td>
-                                <td>${semester.ipa !== undefined ? semester.ipa : '-'}</td>
-                                <td>${semester.bahasa_arab !== undefined ? semester.bahasa_arab : '-'}</td>
-                                <td>${semester.tahfidz_quran !== undefined ? semester.tahfidz_quran : '-'}</td>
-                            </tr>`;
-                        }
-                        raportHtml += `</tbody></table>`;
-                        raportDetails.innerHTML = raportHtml;
-                    }
-
-                    // Populate and display Pelanggaran
-                    if (santriData.pelanggaran && santriData.pelanggaran.length > 0) {
-                        pelanggaranSection.style.display = 'block';
-                        santriData.pelanggaran.forEach(p => {
-                            const li = document.createElement('li');
-                            li.textContent = `${p.tanggal || 'N/A'}: ${p.jenis || 'N/A'} (Poin: ${p.poin !== undefined ? p.poin : 'N/A'})`;
-                            pelanggaranList.appendChild(li);
-                        });
-                    }
-
-                    // Populate and display Peringatan
-                    if (santriData.peringatan && santriData.peringatan.length > 0) {
-                        peringatanSection.style.display = 'block';
-                        santriData.peringatan.forEach(w => {
-                            const li = document.createElement('li');
-                            li.textContent = `${w.tanggal || 'N/A'}: ${w.deskripsi || 'N/A'}`;
-                            peringatanList.appendChild(li);
-                        });
-                    }
-
-                    // Populate and display Prestasi
-                    if (santriData.prestasi && santriData.prestasi.length > 0) {
-                        prestasiSection.style.display = 'block';
-                        santriData.prestasi.forEach(a => {
-                            const li = document.createElement('li');
-                            li.textContent = `${a.tanggal || 'N/A'}: ${a.nama_prestasi || 'N/A'} (Tingkat: ${a.tingkat || 'N/A'})`;
-                            prestasiList.appendChild(li);
-                        });
-                    }
-
+                    // --- IMPORTANT: Removed the logic to display raport, pelanggaran, peringatan,
+                    //              and prestasi here for index.html.
+                    //              These sections should only be handled and displayed on dashboard.html
+                    //              after successful login.
+                    //              If you have these elements in index.html for some reason,
+                    //              they will remain hidden as per the "Hide all detailed sections initially" block above.
+                    //              It is highly recommended to remove them from index.html if they are not meant to be shown.
                 } else {
-                    noDataMessage.style.display = 'block';
-                    noDataMessage.textContent = 'Data santri tidak ditemukan.';
+                    if (noDataMessage) {
+                        noDataMessage.style.display = 'block';
+                        noDataMessage.textContent = 'Data santri tidak ditemukan.';
+                    }
                 }
             } catch (error) {
                 console.error('Error fetching santri data for search:', error);
-                noDataMessage.textContent = 'Terjadi kesalahan saat mencari data. Silakan coba lagi nanti.';
-                noDataMessage.style.display = 'block';
+                if (noDataMessage) {
+                    noDataMessage.textContent = 'Terjadi kesalahan saat mencari data. Silakan coba lagi nanti.';
+                    noDataMessage.style.display = 'block';
+                }
             }
         });
 
@@ -197,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const usernameInput = document.getElementById('username').value;
                 const passwordInput = document.getElementById('password').value;
 
-                loginMessage.style.display = 'none';
+                if (loginMessage) loginMessage.style.display = 'none';
 
                 try {
                     // Fetch user data from 'users.json' (assuming this file still holds login credentials)
@@ -215,13 +183,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         localStorage.setItem('currentSantriNIK', foundUser.NIK);
                         window.location.href = 'dashboard.html'; // Redirect to dashboard
                     } else {
-                        loginMessage.textContent = 'Username atau password salah.';
-                        loginMessage.style.display = 'block';
+                        if (loginMessage) {
+                            loginMessage.textContent = 'Username atau password salah.';
+                            loginMessage.style.display = 'block';
+                        }
                     }
                 } catch (error) {
                     console.error('Error during login:', error);
-                    loginMessage.textContent = 'Terjadi kesalahan saat login. Silakan coba lagi nanti.';
-                    loginMessage.style.display = 'block';
+                    if (loginMessage) {
+                        loginMessage.textContent = 'Terjadi kesalahan saat login. Silakan coba lagi nanti.';
+                        loginMessage.style.display = 'block';
+                    }
                 }
             });
         }
@@ -290,27 +262,27 @@ document.addEventListener('DOMContentLoaded', () => {
         if (raportDataDiv) {
             if (raport && Object.keys(raport).length > 0) {
                 let tableHtml = `<table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Semester</th>
-                                            <th>Matematika</th>
-                                            <th>Bahasa Indonesia</th>
-                                            <th>IPA</th>
-                                            <th>Bahasa Arab</th>
-                                            <th>Tahfidz Qur'an</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>`;
+                                        <thead>
+                                            <tr>
+                                                <th>Semester</th>
+                                                <th>Matematika</th>
+                                                <th>Bahasa Indonesia</th>
+                                                <th>IPA</th>
+                                                <th>Bahasa Arab</th>
+                                                <th>Tahfidz Qur'an</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>`;
                 for (const semesterKey in raport) {
                     const semesterData = raport[semesterKey];
                     tableHtml += `<tr>
-                                    <td>${semesterKey.replace('_', ' ').replace('semester', 'Semester ')}</td>
-                                    <td>${semesterData.matematika !== undefined ? semesterData.matematika : '-'}</td>
-                                    <td>${semesterData.bahasa_indonesia !== undefined ? semesterData.bahasa_indonesia : '-'}</td>
-                                    <td>${semesterData.ipa !== undefined ? semesterData.ipa : '-'}</td>
-                                    <td>${semesterData.bahasa_arab !== undefined ? semesterData.bahasa_arab : '-'}</td>
-                                    <td>${semesterData.tahfidz_quran !== undefined ? semesterData.tahfidz_quran : '-'}</td>
-                                </tr>`;
+                                        <td>${semesterKey.replace('_', ' ').replace('semester', 'Semester ')}</td>
+                                        <td>${semesterData.matematika !== undefined ? semesterData.matematika : '-'}</td>
+                                        <td>${semesterData.bahasa_indonesia !== undefined ? semesterData.bahasa_indonesia : '-'}</td>
+                                        <td>${semesterData.ipa !== undefined ? semesterData.ipa : '-'}</td>
+                                        <td>${semesterData.bahasa_arab !== undefined ? semesterData.bahasa_arab : '-'}</td>
+                                        <td>${semesterData.tahfidz_quran !== undefined ? semesterData.tahfidz_quran : '-'}</td>
+                                    </tr>`;
                 }
                 tableHtml += `</tbody></table>`;
                 raportDataDiv.innerHTML = tableHtml;
@@ -326,20 +298,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pelanggaranDataDiv) {
             if (pelanggaran && pelanggaran.length > 0) {
                 let tableHtml = `<table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Tanggal</th>
-                                            <th>Jenis Pelanggaran</th>
-                                            <th>Poin</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>`;
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Jenis Pelanggaran</th>
+                                                <th>Poin</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>`;
                 pelanggaran.forEach(item => {
                     tableHtml += `<tr>
-                                    <td>${item.tanggal || '-'}</td>
-                                    <td>${item.jenis || '-'}</td>
-                                    <td>${item.poin !== undefined ? item.poin : '-'}</td>
-                                </tr>`;
+                                        <td>${item.tanggal || '-'}</td>
+                                        <td>${item.jenis || '-'}</td>
+                                        <td>${item.poin !== undefined ? item.poin : '-'}</td>
+                                    </tr>`;
                 });
                 tableHtml += `</tbody></table>`;
                 pelanggaranDataDiv.innerHTML = tableHtml;
@@ -355,18 +327,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (peringatanDataDiv) {
             if (peringatan && peringatan.length > 0) {
                 let tableHtml = `<table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Tanggal</th>
-                                            <th>Deskripsi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>`;
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Deskripsi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>`;
                 peringatan.forEach(item => {
                     tableHtml += `<tr>
-                                    <td>${item.tanggal || '-'}</td>
-                                    <td>${item.deskripsi || '-'}</td>
-                                </tr>`;
+                                        <td>${item.tanggal || '-'}</td>
+                                        <td>${item.deskripsi || '-'}</td>
+                                    </tr>`;
                 });
                 tableHtml += `</tbody></table>`;
                 peringatanDataDiv.innerHTML = tableHtml;
@@ -382,20 +354,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (prestasiDataDiv) {
             if (prestasi && prestasi.length > 0) {
                 let tableHtml = `<table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Tanggal</th>
-                                            <th>Nama Prestasi</th>
-                                            <th>Tingkat</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>`;
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Nama Prestasi</th>
+                                                <th>Tingkat</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>`;
                 prestasi.forEach(item => {
                     tableHtml += `<tr>
-                                    <td>${item.tanggal || '-'}</td>
-                                    <td>${item.nama_prestasi || '-'}</td>
-                                    <td>${item.tingkat || '-'}</td>
-                                </tr>`;
+                                        <td>${item.tanggal || '-'}</td>
+                                        <td>${item.nama_prestasi || '-'}</td>
+                                        <td>${item.tingkat || '-'}</td>
+                                    </tr>`;
                 });
                 tableHtml += `</tbody></table>`;
                 prestasiDataDiv.innerHTML = tableHtml;
@@ -411,8 +383,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const loadDashboardData = async () => {
             const dataUnavailableMessage = document.getElementById('dataUnavailableMessage');
             if (!dataUnavailableMessage) {
-                console.error("Element with ID 'dataUnavailableMessage' not found in dashboard.html.");
-                return;
+                console.error("Element with ID 'dataUnavailableMessage' not found in dashboard.html. This is crucial for error messages.");
+                return; // Exit if critical element is missing
             }
             dataUnavailableMessage.style.display = 'none';
 
@@ -426,6 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     dataUnavailableMessage.style.display = 'block';
                     dataUnavailableMessage.textContent = 'NIK tidak dimasukkan. Data tidak dapat dimuat.';
+                    // Clear displayed info if NIK is not provided
                     displaySantriInfo(null);
                     displayRaportData(null);
                     displayPelanggaranData(null);
@@ -453,6 +426,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     dataUnavailableMessage.textContent = `Maaf, data untuk NIK ${currentSantriNIK} tidak ditemukan. Silakan hubungi admin pondok pesantren.`;
                     dataUnavailableMessage.style.display = 'block';
+                    // Clear displayed info if no data is found
                     displaySantriInfo(null);
                     displayRaportData(null);
                     displayPelanggaranData(null);
@@ -469,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadDashboardData();
     }
 
-    // Login/Logout button visibility toggle (for index.html header)
+    // Login/Logout button visibility toggle (for header)
     const mainLoginButton = document.getElementById('mainLoginButton');
     const logoutButtonHeader = document.getElementById('logoutButton'); // Make sure this refers to the header logout button
 
