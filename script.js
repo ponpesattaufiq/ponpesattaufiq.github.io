@@ -1,3 +1,20 @@
+// --- PWA Service Worker Registration ---
+// Pastikan file service-worker.js dan manifest.json ada di root folder Anda
+// serta ikon-ikon yang disebutkan dalam manifest.json (misal: logo-192x192.png, logo-512x512.png)
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+                console.log('Service Worker registered:', registration);
+            })
+            .catch(error => {
+                console.error('Service Worker registration failed:', error);
+            });
+    });
+}
+// --- End PWA Service Worker Registration ---
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- Common Functions (for both index.html and dashboard.html) ---
 
@@ -61,15 +78,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const resultIbu = document.getElementById('resultIbu');
             const resultNoHp = document.getElementById('resultNoHp');
 
-            // Get elements for detailed sections (These might be null on index.html, handled below)
-            const raportSection = document.getElementById('raport-section');
-            const raportDetails = document.getElementById('raport-details');
-            const pelanggaranSection = document.getElementById('pelanggaran-section');
-            const pelanggaranList = document.getElementById('pelanggaran-list');
-            const peringatanSection = document.getElementById('peringatan-section');
-            const peringatanList = document.getElementById('peringatan-list');
-            const prestasiSection = document.getElementById('prestasi-section');
-            const prestasiList = document.getElementById('prestasi-list');
+            // --- Bagian ini sudah dikomentari/dihapus di revisi sebelumnya
+            //     dan tidak seharusnya ada di index.html.
+            //     Tetap pastikan elemen-elemen ini TIDAK ada di index.html.
+            // const raportSection = document.getElementById('raport-section');
+            // const raportDetails = document.getElementById('raport-details');
+            // const pelanggaranSection = document.getElementById('pelanggaran-section');
+            // const pelanggaranList = document.getElementById('pelanggaran-list');
+            // const peringatanSection = document.getElementById('peringatan-section');
+            // const peringatanList = document.getElementById('peringatan-list');
+            // const prestasiSection = document.getElementById('prestasi-section');
+            // const prestasiList = document.getElementById('prestasi-list');
 
             // Reset display before new search
             if (resultBox) resultBox.style.display = 'none';
@@ -78,17 +97,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 noDataMessage.textContent = 'Data santri tidak ditemukan.'; // Default message
             }
 
-            // Hide all detailed sections initially ONLY IF they exist
-            if (raportSection) raportSection.style.display = 'none';
-            if (pelanggaranSection) pelanggaranSection.style.display = 'none';
-            if (peringatanSection) peringatanSection.style.display = 'none';
-            if (prestasiSection) prestasiSection.style.display = 'none';
+            // --- Pastikan baris-baris ini tidak aktif di index.html karena elemennya tidak ada.
+            // if (raportSection) raportSection.style.display = 'none';
+            // if (pelanggaranSection) pelanggaranSection.style.display = 'none';
+            // if (peringatanSection) peringatanSection.style.display = 'none';
+            // if (prestasiSection) prestasiSection.style.display = 'none';
 
-            // Clear previous content ONLY IF they exist
-            if (raportDetails) raportDetails.innerHTML = '';
-            if (pelanggaranList) pelanggaranList.innerHTML = '';
-            if (peringatanList) peringatanList.innerHTML = '';
-            if (prestasiList) prestasiList.innerHTML = '';
+            // if (raportDetails) raportDetails.innerHTML = '';
+            // if (pelanggaranList) pelanggaranList.innerHTML = '';
+            // if (peringatanList) peringatanList.innerHTML = '';
+            // if (prestasiList) prestasiList.innerHTML = '';
 
 
             if (!nikInput) {
@@ -134,12 +152,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (resultNoHp) resultNoHp.textContent = santriData.nomor_hp || 'Tidak Tersedia';
 
                     // --- IMPORTANT: Removed the logic to display raport, pelanggaran, peringatan,
-                    //              and prestasi here for index.html.
-                    //              These sections should only be handled and displayed on dashboard.html
-                    //              after successful login.
-                    //              If you have these elements in index.html for some reason,
-                    //              they will remain hidden as per the "Hide all detailed sections initially" block above.
-                    //              It is highly recommended to remove them from index.html if they are not meant to be shown.
+                    //               and prestasi here for index.html.
+                    //               These sections should only be handled and displayed on dashboard.html
+                    //               after successful login.
+                    //               If you have these elements in index.html for some reason,
+                    //               they will remain hidden as per the "Hide all detailed sections initially" block above.
+                    //               It is highly recommended to remove them from index.html if they are not meant to be shown.
                 } else {
                     if (noDataMessage) {
                         noDataMessage.style.display = 'block';
@@ -262,27 +280,27 @@ document.addEventListener('DOMContentLoaded', () => {
         if (raportDataDiv) {
             if (raport && Object.keys(raport).length > 0) {
                 let tableHtml = `<table class="data-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Semester</th>
-                                                <th>Matematika</th>
-                                                <th>Bahasa Indonesia</th>
-                                                <th>IPA</th>
-                                                <th>Bahasa Arab</th>
-                                                <th>Tahfidz Qur'an</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>`;
+                                    <thead>
+                                        <tr>
+                                            <th>Semester</th>
+                                            <th>Matematika</th>
+                                            <th>Bahasa Indonesia</th>
+                                            <th>IPA</th>
+                                            <th>Bahasa Arab</th>
+                                            <th>Tahfidz Qur'an</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`;
                 for (const semesterKey in raport) {
                     const semesterData = raport[semesterKey];
                     tableHtml += `<tr>
-                                        <td>${semesterKey.replace('_', ' ').replace('semester', 'Semester ')}</td>
-                                        <td>${semesterData.matematika !== undefined ? semesterData.matematika : '-'}</td>
-                                        <td>${semesterData.bahasa_indonesia !== undefined ? semesterData.bahasa_indonesia : '-'}</td>
-                                        <td>${semesterData.ipa !== undefined ? semesterData.ipa : '-'}</td>
-                                        <td>${semesterData.bahasa_arab !== undefined ? semesterData.bahasa_arab : '-'}</td>
-                                        <td>${semesterData.tahfidz_quran !== undefined ? semesterData.tahfidz_quran : '-'}</td>
-                                    </tr>`;
+                                    <td>${semesterKey.replace('_', ' ').replace('semester', 'Semester ')}</td>
+                                    <td>${semesterData.matematika !== undefined ? semesterData.matematika : '-'}</td>
+                                    <td>${semesterData.bahasa_indonesia !== undefined ? semesterData.bahasa_indonesia : '-'}</td>
+                                    <td>${semesterData.ipa !== undefined ? semesterData.ipa : '-'}</td>
+                                    <td>${semesterData.bahasa_arab !== undefined ? semesterData.bahasa_arab : '-'}</td>
+                                    <td>${semesterData.tahfidz_quran !== undefined ? semesterData.tahfidz_quran : '-'}</td>
+                                </tr>`;
                 }
                 tableHtml += `</tbody></table>`;
                 raportDataDiv.innerHTML = tableHtml;
@@ -298,20 +316,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pelanggaranDataDiv) {
             if (pelanggaran && pelanggaran.length > 0) {
                 let tableHtml = `<table class="data-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Tanggal</th>
-                                                <th>Jenis Pelanggaran</th>
-                                                <th>Poin</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>`;
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal</th>
+                                            <th>Jenis Pelanggaran</th>
+                                            <th>Poin</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`;
                 pelanggaran.forEach(item => {
                     tableHtml += `<tr>
-                                        <td>${item.tanggal || '-'}</td>
-                                        <td>${item.jenis || '-'}</td>
-                                        <td>${item.poin !== undefined ? item.poin : '-'}</td>
-                                    </tr>`;
+                                    <td>${item.tanggal || '-'}</td>
+                                    <td>${item.jenis || '-'}</td>
+                                    <td>${item.poin !== undefined ? item.poin : '-'}</td>
+                                </tr>`;
                 });
                 tableHtml += `</tbody></table>`;
                 pelanggaranDataDiv.innerHTML = tableHtml;
@@ -327,18 +345,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (peringatanDataDiv) {
             if (peringatan && peringatan.length > 0) {
                 let tableHtml = `<table class="data-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Tanggal</th>
-                                                <th>Deskripsi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>`;
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal</th>
+                                            <th>Deskripsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`;
                 peringatan.forEach(item => {
                     tableHtml += `<tr>
-                                        <td>${item.tanggal || '-'}</td>
-                                        <td>${item.deskripsi || '-'}</td>
-                                    </tr>`;
+                                    <td>${item.tanggal || '-'}</td>
+                                    <td>${item.deskripsi || '-'}</td>
+                                </tr>`;
                 });
                 tableHtml += `</tbody></table>`;
                 peringatanDataDiv.innerHTML = tableHtml;
@@ -354,20 +372,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (prestasiDataDiv) {
             if (prestasi && prestasi.length > 0) {
                 let tableHtml = `<table class="data-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Tanggal</th>
-                                                <th>Nama Prestasi</th>
-                                                <th>Tingkat</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>`;
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal</th>
+                                            <th>Nama Prestasi</th>
+                                            <th>Tingkat</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`;
                 prestasi.forEach(item => {
                     tableHtml += `<tr>
-                                        <td>${item.tanggal || '-'}</td>
-                                        <td>${item.nama_prestasi || '-'}</td>
-                                        <td>${item.tingkat || '-'}</td>
-                                    </tr>`;
+                                    <td>${item.tanggal || '-'}</td>
+                                    <td>${item.nama_prestasi || '-'}</td>
+                                    <td>${item.tingkat || '-'}</td>
+                                </tr>`;
                 });
                 tableHtml += `</tbody></table>`;
                 prestasiDataDiv.innerHTML = tableHtml;
