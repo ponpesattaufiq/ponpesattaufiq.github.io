@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GENERATE QR</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .qr-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 {
+            color: #28a745;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #qrcode-display {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        #qrcode-display p {
+            font-size: 1.1em;
+            color: #666;
+            word-break: break-all;
+        }
+        #qrcode {
+            border: 2px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            display: inline-block; /* Agar border membungkus QR */
+        }
+        .note {
+            font-size: 0.9em;
+            color: #888;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="qr-container">
+        <h1>Generate QR Code Santri</h1>
+        <div class="form-group">
+            <label for="nikInput">Masukkan NIK Santri</label>
+            <input type="text" id="nikInput" placeholder="Contoh : 1234567890123456">
+        </div>
+        <button onclick="generateQRCode()">Generate QR Code</button>
+
+        <div id="qrcode-display">
+            <p>Scan QR Code di bawah ini</p>
+            <div id="qrcode"></div>
+            <p id="generatedUrl"></p>
+        </div>
+        <p class="note">Pastikan NIK yang dimasukkan benar. QR Code ini akan mengarah ke halaman detail santri.</p>
+    </div>
+
+    <script>
+        function generateQRCode() {
+            const nik = document.getElementById('nikInput').value.trim();
+            const qrcodeDiv = document.getElementById('qrcode');
+            const generatedUrlP = document.getElementById('generatedUrl');
+
+            if (!nik) {
+                alert('NIK tidak boleh kosong!');
+                return;
+            }
+
+            // Bersihkan QR Code sebelumnya
+            qrcodeDiv.innerHTML = '';
+
+            // --- PENTING: SESUAIKAN BASE PATH UNTUK GITHUB PAGES ANDA ---
+            // Jika repositori Anda adalah 'yourusername.github.io', gunakan:
+            // const basePath = window.location.origin + '/';
+            // Jika repositori Anda adalah 'yourusername.github.io/ponpes-attaufiq', gunakan:
+            const repoName = 'ponpesattaufiq.github.io'; // Ganti dengan nama repositori Anda
+            const basePath = window.location.origin + '/' + repoName + '/';
+
+            // URL yang akan disandikan dalam QR Code
+            // Ini akan mengarah ke halaman detail santri Anda dengan NIK sebagai parameter
+            const santriDetailUrl = `${basePath}santri-detail.html?nik=${nik}`;
+
+            new QRCode(qrcodeDiv, {
+                text: santriDetailUrl,
+                width: 256, // Ukuran QR Code
+                height: 256,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H // High correction level
+            });
+
+            generatedUrlP.textContent = `URL: ${santriDetailUrl}`;
+        }
+
+        // Sembunyikan div QR Code saat pertama kali dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('qrcode-display').style.display = 'none';
+        });
+
+        // Tampilkan div QR Code setelah generate pertama
+        const originalGenerateQRCode = generateQRCode;
+        generateQRCode = function() {
+            originalGenerateQRCode();
+            document.getElementById('qrcode-display').style.display = 'flex'; // Menggunakan flex untuk centering
+        };
+    </script>
+</body>
+</html>
