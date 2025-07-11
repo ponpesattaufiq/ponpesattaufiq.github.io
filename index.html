@@ -6,25 +6,26 @@
     <title>PONPES AT-TAUFIQ</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/png">
 </head>
 <body>
     <header class="main-header">
-        <div class="header-content">
-            <div class="logo">
+        <div class="header-content container">
+            <a href="#" class="logo animate-fade-in">
                 <img src="logo.png" alt="Logo PONDOK">
                 <span>AT-TAUFIQ</span>
-            </div>
+            </a>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="#">HOME</a></li>
-                    <li class="dropdown">
+                    <li class="nav-item animate-fade-in delay-1"><a href="#">HOME</a></li>
+                    <li class="nav-item dropdown animate-fade-in delay-2">
                         <a href="#">PROFILE <i class="fas fa-chevron-down"></i></a>
                         <div class="dropdown-content">
                             <a href="#">Sejarah</a>
                             <a href="#">Visi Misi</a>
                         </div>
                     </li>
-                    <li class="dropdown">
+                    <li class="nav-item dropdown animate-fade-in delay-3">
                         <a href="#">LAYANAN <i class="fas fa-chevron-down"></i></a>
                         <div class="dropdown-content">
                             <a href="#">Informasi Akademik</a>
@@ -32,152 +33,159 @@
                             <a href="#search-section">Cari Data Santri</a>
                         </div>
                     </li>
-                    <li class="dropdown">
+                    <li class="nav-item dropdown animate-fade-in delay-4">
                         <a href="#">PENDAFTARAN <i class="fas fa-chevron-down"></i></a>
                         <div class="dropdown-content">
                             <a href="#">Syarat Pendaftaran</a>
                             <a href="#">Formulir Online</a>
                         </div>
                     </li>
-                    <li><a href="#">ALUMNI</a></li>
+                    <li class="nav-item animate-fade-in delay-5"><a href="#">ALUMNI</a></li>
                 </ul>
             </nav>
-            <div class="login-button">
+            <div class="login-button animate-fade-in delay-6">
                 <a href="#login-section" class="btn-login"><i class="fas fa-sign-in-alt"></i> Login</a>
             </div>
         </div>
     </header>
 
-    <div class="hero-section hero-main">
-        <div class="hero-content">
-            <div class="hero-text-main">
-                <h1>PONPES AT-TAUFIQ</h1>
-                <p>BOGEM - GROGOL - DIWEK - JOMBANG - JAWA TIMUR</p>
-                <p>Selamat Datang Di website Resmi Pondok Pesantren At-Taufiq</p>
-                <p>Semoga dengan hadirnya website ini memudahkan mengakses informasi<br>tentang <strong>PonPes At-Taufiq</strong></p>
-                <div class="hero-buttons">
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfzSEfwcwN__3z9TJOcHfaig2iS4F-nwFxlwk6ZomKwhBpxCw/viewform?pli=1" class="btn btn-primary">Pendaftaran Santri Baru Online</a>
-                    <a href="#" class="btn btn-secondary">Info PonPes</a>
-                    <a href="#" class="btn btn-tertiary">Info NPSN</a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <img src="logo.png" alt="Logo attaufiq Besar">
-            </div>
-        </div>
-        <div class="hero-wave"></div>
-    </div>
-
-    <div id="search-section" class="content-section search-santri-section">
-        <div class="container">
-            <h2>Cari Data Santri</h2>
-            <p class="section-description">Pencarian Data santri dengan menggunakan NIS.</p>
-            <div class="search-box">
-                <input type="text" id="nikInput" placeholder="Masukkan NIS atau NISN">
-                <button id="searchButton">Cari</button>
-            </div>
-            <div class="category-chips">
-                <span>ULA <br> <small>SMP/MTS/SMA/SMK/MA</small></span>
-                <span>WUSTHO <br> <small>SMA/SMK/MA</small></span>
-            </div>
-            <div id="result" class="result-box">
-                </div>
-            <div id="noDataMessage" class="no-data-message" style="display: none;">
-                Data tidak ditemukan. Pastikan Data yang benar & menggunakan NIS
-            </div>
-        </div>
-    </div>
-
-    <div class="content-section santri-stats-section">
-        <div class="container">
-            <h2>Santri At-Taufiq</h2>
-            <p class="section-description">Data ini merupakan data real santri At-Taufiq.</p>
-            <div class="stats-and-image">
-                <div class="stats-cards">
-                    <div class="stat-card">
-                        <i class="fas fa-male"></i>
-                        <span class="stat-number">50</span>
-                        <span class="stat-label">Putra</span>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fas fa-female"></i>
-                        <span class="stat-number">60</span>
-                        <span class="stat-label">Putri</span>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fas fa-database"></i>
-                        <span class="stat-number">110</span>
-                        <span class="stat-label">Total</span>
+    <main>
+        <section class="hero-main content-section">
+            <div class="hero-content container">
+                <div class="hero-text-main animate-slide-right">
+                    <h1>PONPES AT-TAUFIQ</h1>
+                    <p>BOGEM - GROGOL - DIWEK - JOMBANG - JAWA TIMUR</p>
+                    <p>Selamat Datang Di website Resmi Pondok Pesantren At-Taufiq</p>
+                    <p>Semoga dengan hadirnya website ini memudahkan mengakses informasi<br>tentang <strong>PonPes At-Taufiq</strong></p>
+                    <div class="hero-buttons">
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfzSEfwcwN__3z9TJOcHfaig2iS4F-nwFxlwk6ZomKwhBpxCw/viewform?pli=1" class="btn btn-primary animate-pop-up">Pendaftaran Santri Baru Online</a>
+                        <a href="#" class="btn btn-secondary animate-pop-up delay-1">Info PonPes</a>
+                        <a href="#" class="btn btn-tertiary animate-pop-up delay-2">Info NPSN</a>
                     </div>
                 </div>
-                <div class="stats-image">
-                    <img src="santri.png" alt="Santri Belajar">
+                <div class="hero-image animate-slide-left">
+                    <img src="logo.png" alt="Logo attaufiq Besar">
                 </div>
             </div>
-        </div>
-    </div>
+            <div class="hero-wave"></div>
+        </section>
 
-    <div class="content-section leadership-section">
-        <div class="container">
-            <h2>PENGASUH</h2>
-            <div class="leadership-cards">
-                <div class="leadership-card">
-                    <img src="yai.png" alt="KYAI">
-                    <h3>PENGASUH</h3>
-                    <p>KH. Abdul Mu'min Shobari</p>
-                    <p class="role">Pimpinan Pondok Pesantren At-Taufiq</p>
+        <section id="search-section" class="content-section search-santri-section">
+            <div class="container">
+                <h2 class="animate-fade-in">Cari Data Santri</h2>
+                <p class="section-description animate-fade-in">Pencarian Data santri dengan menggunakan NIS.</p>
+                <div class="search-box animate-scale-in">
+                    <input type="text" id="nikInput" placeholder="Masukkan NIS atau NISN">
+                    <button id="searchButton">Cari</button>
                 </div>
-                <div class="leadership-card">
-                    <img src="bnyai.png" alt="BU NYAI">
-                    <h3>PENGASUH</h3>
-                    <p>Ir. HJ. Inna Zuraidah</p>
+                <div class="category-chips animate-fade-in-up">
+                    <span>ULA <br> <small>SMP/MTS/SMA/SMK/MA</small></span>
+                    <span>WUSTHO <br> <small>SMA/SMK/MA</small></span>
+                </div>
+                <div id="resultBox" class="result-box animate-fade-in-scale" style="display: none;">
+                    <div class="result-item"><span class="result-label">Nama:</span> <span class="result-value"></span></div>
+                    <div class="result-item"><span class="result-label">NIS/NISN:</span> <span class="result-value"></span></div>
+                    <div class="result-item"><span class="result-label">Jenjang:</span> <span class="result-value"></span></div>
+                    <div class="result-item"><span class="result-label">Status:</span> <span class="result-value"></span></div>
+                    <div class="result-item"><span class="result-label">Angkatan:</span> <span class="result-value"></span></div>
+                </div>
+                <div id="noDataMessage" class="no-data-message animate-fade-in" style="display: none;">
+                    Data tidak ditemukan. Pastikan Data yang benar & menggunakan NIS
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <div id="login-section" class="content-section login-page-content">
-        <div class="container login-container">
-            <h2>Masuk ke Akun Anda</h2>
-            <form id="loginForm" class="login-form">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" required>
+        <section class="content-section santri-stats-section">
+            <div class="container">
+                <h2 class="animate-fade-in">Santri At-Taufiq</h2>
+                <p class="section-description animate-fade-in">Data ini merupakan data real santri At-Taufiq.</p>
+                <div class="stats-and-image">
+                    <div class="stats-cards">
+                        <div class="stat-card animate-bounce-in delay-1">
+                            <i class="fas fa-male"></i>
+                            <span class="stat-number">50</span>
+                            <span class="stat-label">Putra</span>
+                        </div>
+                        <div class="stat-card animate-bounce-in delay-2">
+                            <i class="fas fa-female"></i>
+                            <span class="stat-number">60</span>
+                            <span class="stat-label">Putri</span>
+                        </div>
+                        <div class="stat-card animate-bounce-in delay-3">
+                            <i class="fas fa-database"></i>
+                            <span class="stat-number">110</span>
+                            <span class="stat-label">Total</span>
+                        </div>
+                    </div>
+                    <div class="stats-image animate-fade-in-slide">
+                        <img src="santri.png" alt="Santri Belajar">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
+            </div>
+        </section>
+
+        <section class="content-section leadership-section">
+            <div class="container">
+                <h2 class="animate-fade-in">PENGASUH</h2>
+                <div class="leadership-cards">
+                    <div class="leadership-card animate-flip-in delay-1">
+                        <img src="yai.png" alt="KYAI">
+                        <h3>PENGASUH</h3>
+                        <p>KH. Abdul Mu'min Shobari</p>
+                        <p class="role">Pimpinan Pondok Pesantren At-Taufiq</p>
+                    </div>
+                    <div class="leadership-card animate-flip-in delay-2">
+                        <img src="bnyai.png" alt="BU NYAI">
+                        <h3>PENGASUH</h3>
+                        <p>Ir. HJ. Inna Zuraidah</p>
+                    </div>
                 </div>
-                <button type="submit" id="loginButton">Login</button>
-                <p id="loginMessage" class="error-message" style="display: none;"></p>
-            </form>
-        </div>
-    </div>
+            </div>
+        </section>
+
+        <section id="login-section" class="content-section login-page-content">
+            <div class="container login-container animate-scale-in">
+                <h2 class="animate-fade-in">Masuk ke Akun Anda</h2>
+                <form id="loginForm" class="login-form">
+                    <div class="form-group animate-fade-in-up delay-1">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group animate-fade-in-up delay-2">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" id="loginButton" class="animate-pop-up delay-3">Login</button>
+                    <p id="loginMessage" class="error-message" style="display: none;"></p>
+                </form>
+            </div>
+        </section>
+    </main>
 
     <footer class="main-footer">
         <div class="container footer-content">
             <div class="footer-columns">
-                <div class="footer-col">
+                <div class="footer-col animate-fade-in-up delay-1">
                     <h3>Pendidikan Di At-Taufiq</h3>
                     <ul>
-                        <li><a href="#">Madrasah Diniyah</a></li>
-                        <li><a href="#">KB / RA</a></li>
-                        <li><a href="#">SD IT</a></li>
-                        <li><a href="#">Madrasah Tsanawiyah</a></li>
-                        <li><a href="#">Madrasah Aliyah</a></li>
-                        <li><a href="#">SMK Nusantara</a></li>
+                        <li><a href="#"><i class="fas fa-caret-right"></i> Madrasah Diniyah</a></li>
+                        <li><a href="#"><i class="fas fa-caret-right"></i> KB / RA</a></li>
+                        <li><a href="#"><i class="fas fa-caret-right"></i> SD IT</a></li>
+                        <li><a href="#"><i class="fas fa-caret-right"></i> Madrasah Tsanawiyah</a></li>
+                        <li><a href="#"><i class="fas fa-caret-right"></i> Madrasah Aliyah</a></li>
+                        <li><a href="#"><i class="fas fa-caret-right"></i> SMK Nusantara</a></li>
                     </ul>
                 </div>
-                <div class="footer-col">
+                <div class="footer-col animate-fade-in-up delay-2">
                     <h3>Layanan Sekretariat</h3>
                     <ul>
-                        <li><a href="#search-section">Cari Data Santri</a></li>
-                        <li><a href="#">Data Pesantren Indonesia</a></li>
+                        <li><a href="#search-section"><i class="fas fa-caret-right"></i> Cari Data Santri</a></li>
+                        <li><a href="#"><i class="fas fa-caret-right"></i> Data Pesantren Indonesia</a></li>
                     </ul>
                 </div>
-                <div class="footer-col">
+                <div class="footer-col animate-fade-in-up delay-3">
                     <h3>Alamat</h3>
-                    <p>Jln. KH. Shobari No.48B Bogem, Grogol, Diwek, Jombang, Jawa Timur, Indonesia</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Jln. KH. Shobari No.48B Bogem, Grogol, Diwek, Jombang, Jawa Timur, Indonesia</p>
                     <p><i class="fas fa-phone-alt"></i> 123456 (Putra)</p>
                     <p><i class="fas fa-phone-alt"></i> 123456 (Putri)</p>
                     <p><i class="fas fa-envelope"></i> ponpesattaufiq.bogem@gmail.com</p>
@@ -200,29 +208,10 @@
         </div>
     </footer>
 
-    <a href="#" class="scroll-to-top"><i class="fas fa-arrow-up"></i></a>
+    <button onclick="scrollToTop()" id="scrollToTopBtn" class="scroll-to-top animate-bounce-in">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <script src="script.js"></script>
-    <script>
-        // Smooth scroll for internal links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Show/hide scroll to top button
-        window.onscroll = function() {
-            var scrollButton = document.querySelector('.scroll-to-top');
-            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-                scrollButton.style.display = "block";
-            } else {
-                scrollButton.style.display = "none";
-            }
-        };
-    </script>
 </body>
 </html>
