@@ -97,17 +97,19 @@
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
             const urlParams = new URLSearchParams(window.location.search);
-            const nik = urlParams.get('nik');
+            // Penting: Di URL, parameter harusnya tetap 'nik' atau 'NIK' (konsisten dengan generate-qr.html)
+            // Saya akan asumsikan dari QR Code tetap mengirim 'nik' kecil di URL, tapi JSON pakai 'NIK' besar
+            const nikFromUrl = urlParams.get('nik'); // Mengambil 'nik' dari URL
 
             const santriDetailContent = document.getElementById('santri-detail-content');
             const loadingMessage = document.getElementById('loading-message');
             const notFoundMessage = document.getElementById('not-found-message');
 
-            santriDetailContent.style.display = 'none'; // Sembunyikan detail sampai data siap
+            santriDetailContent.style.display = 'none';
             loadingMessage.style.display = 'block';
             notFoundMessage.style.display = 'none';
 
-            if (!nik) {
+            if (!nikFromUrl) {
                 loadingMessage.style.display = 'none';
                 notFoundMessage.textContent = 'NIK santri tidak ditemukan di URL. Silakan scan QR Code yang valid.';
                 notFoundMessage.style.display = 'block';
@@ -115,22 +117,14 @@
             }
 
             try {
-                // --- PENTING SANGAT: GANTI URL INI DENGAN URL API BACKEND ANDA ---
-                // Ini adalah URL API yang akan Anda buat dan host di **tempat lain**
-                // yang terhubung ke database MongoDB Anda.
-                // Contoh URL yang MUNGKIN:
-                // - Jika pakai MongoDB Atlas App Services: https://data.mongodb-api.com/app/v1.0/endpoint/your-app-id/santri?nik=${nik}
-                // - Jika pakai Vercel/Netlify Functions: https://your-backend-api.vercel.app/api/santri?nik=${nik}
-                // - Jika pakai Firebase Functions: https://your-region-your-project.cloudfunctions.net/getSantri?nik=${nik}
-                
-                const apiUrl = `https://your-backend-api-url.com/santri?nik=${nik}`; // <<< GANTI INI DENGAN URL API ANDA YANG ASLI
+                // Path ke file JSON sesuai NIK dari URL
+                const dataUrl = `/data/${nikFromUrl}.json`;
 
-                const response = await fetch(apiUrl);
+                const response = await fetch(dataUrl);
 
                 if (!response.ok) {
-                    // Jika respons bukan 2xx OK (misal 404 Not Found, 500 Internal Server Error)
                     if (response.status === 404) {
-                        notFoundMessage.textContent = 'Data santri dengan NIK tersebut tidak ditemukan.';
+                        notFoundMessage.textContent = 'Data santri dengan NIK tersebut tidak ditemukan. Pastikan file JSON ada di folder data/.';
                     } else {
                         notFoundMessage.textContent = `Gagal memuat data santri. Kode error: ${response.status}`;
                     }
@@ -141,21 +135,21 @@
 
                 const data = await response.json();
 
-                // Pastikan data yang diterima tidak kosong dan memiliki properti yang diharapkan
-                if (data && data.nik) { // Asumsi NIK selalu ada jika data santri ditemukan
-                    document.getElementById('detail-nik').textContent = data.nik || '-';
+                // --- PERUBAHAN PENTING DI SINI: SESUAIKAN DENGAN NAMA KUNCI JSON ANDA ---
+                if (data && data.NIK) { // Memeriksa data.NIK (huruf besar)
+                    document.getElementById('detail-nik').textContent = data.NIK || '-'; // data.NIK
                     document.getElementById('detail-nama').textContent = data.nama || '-';
-                    document.getElementById('detail-jenis-kelamin').textContent = data.jenisKelamin || '-';
-                    document.getElementById('detail-ttl').textContent = data.ttl || '-';
+                    document.getElementById('detail-jenis-kelamin').textContent = data.jenis_kelamin || '-'; // data.jenis_kelamin
+                    document.getElementById('detail-ttl').textContent = data.tempat_tanggal_lahir || '-'; // data.tempat_tanggal_lahir
                     document.getElementById('detail-alamat').textContent = data.alamat || '-';
-                    document.getElementById('detail-ayah').textContent = data.namaAyah || '-';
-                    document.getElementById('detail-ibu').textContent = data.namaIbu || '-';
-                    document.getElementById('detail-nohp').textContent = data.noHp || '-';
+                    document.getElementById('detail-ayah').textContent = data.nama_ayah || '-'; // data.nama_ayah
+                    document.getElementById('detail-ibu').textContent = data.nama_ibu || '-'; // data.nama_ibu
+                    document.getElementById('detail-nohp').textContent = data.nomor_hp || '-'; // data.nomor_hp
 
                     loadingMessage.style.display = 'none';
-                    santriDetailContent.style.display = 'block'; // Tampilkan konten detail
+                    santriDetailContent.style.display = 'block';
                 } else {
-                    notFoundMessage.textContent = 'Data santri tidak ditemukan atau format data tidak valid.';
+                    notFoundMessage.textContent = 'Data santri tidak ditemukan atau format data dalam file JSON tidak valid (mungkin kunci NIK tidak ada).';
                     loadingMessage.style.display = 'none';
                     notFoundMessage.style.display = 'block';
                 }
@@ -163,7 +157,7 @@
             } catch (error) {
                 console.error('Error saat mengambil data santri:', error);
                 loadingMessage.style.display = 'none';
-                notFoundMessage.textContent = 'Terjadi kesalahan jaringan atau server. Silakan coba lagi nanti.';
+                notFoundMessage.textContent = 'Terjadi kesalahan saat memproses data. Pastikan format JSON benar.';
                 notFoundMessage.style.display = 'block';
             }
         });
