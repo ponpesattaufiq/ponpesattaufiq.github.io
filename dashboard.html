@@ -30,7 +30,7 @@
                         <div class="dropdown-content">
                             <a href="#">Informasi Akademik</a>
                             <a href="#">Keuangan</a>
-                            </div>
+                        </div>
                     </li>
                     <li class="nav-item dropdown animate-fade-in delay-4">
                         <a href="#">PENDAFTARAN <i class="fas fa-chevron-down"></i></a>
@@ -48,7 +48,8 @@
         </div>
     </header>
 
-    <div class="hero-section hero-dashboard"> <div class="hero-text">
+    <div class="hero-section hero-dashboard">
+        <div class="hero-text">
             <h1 id="dashboardTitle">Data Raport Santri</h1>
         </div>
         <div class="hero-wave"></div>
@@ -56,34 +57,34 @@
 
     <div class="content-wrapper">
         <div class="container dashboard-container">
+            <p id="dataUnavailableMessage" class="error-message animate-fade-in" style="display: none;">
+                Maaf, data tidak dapat dimuat.
+            </p>
+
             <h2 class="animate-fade-in-up">Informasi Santri</h2>
             <div id="santriInfo" class="data-section animate-scale-in delay-1">
-                <p class="no-data-info">Data informasi santri tidak ditemukan.</p>
+                <p class="no-data-info">Memuat informasi santri...</p>
             </div>
 
             <h2 class="animate-fade-in-up delay-2">Raport Digital</h2>
             <div id="raportData" class="data-section animate-scale-in delay-3">
-                <p class="no-data-info">Data raport belum tersedia.</p>
+                <p class="no-data-info">Memuat data raport...</p>
             </div>
 
             <h2 class="animate-fade-in-up delay-4">Pelanggaran Santri</h2>
             <div id="pelanggaranData" class="data-section animate-scale-in delay-5">
-                <p class="no-data-info">Tidak ada data pelanggaran.</p>
+                <p class="no-data-info">Memuat data pelanggaran...</p>
             </div>
 
             <h2 class="animate-fade-in-up delay-6">Peringatan/Pemberitahuan</h2>
             <div id="peringatanData" class="data-section animate-scale-in delay-7">
-                <p class="no-data-info">Tidak ada peringatan/pemberitahuan.</p>
+                <p class="no-data-info">Memuat data peringatan/pemberitahuan...</p>
             </div>
 
             <h2 class="animate-fade-in-up delay-8">Prestasi Santri</h2>
             <div id="prestasiData" class="data-section animate-scale-in delay-9">
-                <p class="no-data-info">Tidak ada data prestasi.</p>
+                <p class="no-data-info">Memuat data prestasi...</p>
             </div>
-
-            <p id="dataUnavailableMessage" class="error-message animate-fade-in" style="display: none;">
-                Maaf, data untuk NIS Anda tidak ditemukan. Silakan hubungi admin pondok pesantren.
-            </p>
         </div>
     </div>
 
