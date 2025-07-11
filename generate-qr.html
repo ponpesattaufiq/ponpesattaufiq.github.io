@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GENERATE QR</title>
+    <title>Generate QR Code Santri</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -97,7 +97,7 @@
         <h1>Generate QR Code Santri</h1>
         <div class="form-group">
             <label for="nikInput">Masukkan NIK Santri</label>
-            <input type="text" id="nikInput" placeholder="Contoh : 1234567890123456">
+            <input type="text" id="nikInput" placeholder="Contoh: 1234567890123456">
         </div>
         <button onclick="generateQRCode()">Generate QR Code</button>
 
@@ -123,12 +123,10 @@
             // Bersihkan QR Code sebelumnya
             qrcodeDiv.innerHTML = '';
 
-            // --- PENTING: SESUAIKAN BASE PATH UNTUK GITHUB PAGES ANDA ---
-            // Jika repositori Anda adalah 'yourusername.github.io', gunakan:
-            // const basePath = window.location.origin + '/';
-            // Jika repositori Anda adalah 'yourusername.github.io/ponpes-attaufiq', gunakan:
-            const repoName = 'ponpesattaufiq.github.io'; // Ganti dengan nama repositori Anda
-            const basePath = window.location.origin + '/' + repoName + '/';
+            // --- PATH SUDAH DISET BENAR UNTUK ponpesattaufiq.github.io ---
+            // Karena ini adalah User/Organization Page (ponpesattaufiq.github.io),
+            // base path untuk file di root adalah '/'
+            const basePath = window.location.origin + '/';
 
             // URL yang akan disandikan dalam QR Code
             // Ini akan mengarah ke halaman detail santri Anda dengan NIK sebagai parameter
