@@ -61,7 +61,7 @@
             font-size: 1.1em;
             font-weight: 600;
             transition: background-color 0.3s ease;
-            margin-top: 10px; /* Tambahkan sedikit margin */
+            margin-top: 10px;
         }
         button:hover {
             background-color: #218838;
@@ -84,7 +84,7 @@
             border: 2px solid #ddd;
             padding: 10px;
             border-radius: 8px;
-            display: inline-block; /* Agar border membungkus QR */
+            display: inline-block;
         }
         .note {
             font-size: 0.9em;
@@ -92,10 +92,14 @@
             margin-top: 20px;
         }
         #downloadQrBtn {
-            background-color: #007bff; /* Warna biru untuk tombol download */
+            background-color: #007bff;
         }
         #downloadQrBtn:hover {
             background-color: #0056b3;
+        }
+        /* Hidden canvas for high-res download */
+        #hiddenCanvas {
+            display: none; /* Ini penting agar canvas tidak terlihat */
         }
     </style>
 </head>
@@ -115,11 +119,11 @@
             <button id="downloadQrBtn" style="display:none;">Unduh QR Code (PNG)</button>
         </div>
         <p class="note">Pastikan NIK yang dimasukkan benar. QR Code ini akan mengarah ke halaman detail santri.</p>
+
+        <canvas id="hiddenCanvas"></canvas>
     </div>
 
     <script>
-        let currentQrCode; // Variabel global untuk menyimpan instance QR code
-
         function generateQRCode() {
             const nik = document.getElementById('nikInput').value.trim();
             const qrcodeDiv = document.getElementById('qrcode');
@@ -131,65 +135,101 @@
                 return;
             }
 
-            // Bersihkan QR Code sebelumnya
+            // Bersihkan QR Code yang ditampilkan sebelumnya
             qrcodeDiv.innerHTML = '';
-            downloadButton.style.display = 'none'; // Sembunyikan tombol download dulu
+            downloadButton.style.display = 'none';
 
             const basePath = window.location.origin + '/';
             const santriDetailUrl = `${basePath}santri-detail.html?nik=${nik}`;
 
-            // Simpan instance QR code yang dibuat
-            currentQrCode = new QRCode(qrcodeDiv, {
+            // Generate QR Code for DISPLAY (normal resolution, directly into the div)
+            // Ini adalah QR yang akan terlihat di layar
+            new QRCode(qrcodeDiv, {
                 text: santriDetailUrl,
-                width: 256,
+                width: 256, // Ukuran untuk tampilan di layar
                 height: 256,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
+                correctLevel: QRCode.CorrectLevel.H,
+                render: 'canvas' // Pastikan menggunakan Canvas untuk konsistensi
             });
 
             generatedUrlP.textContent = `URL: ${santriDetailUrl}`;
 
-            // Tampilkan div QR Code setelah generate
+            // Tampilkan area tampilan QR code
             document.getElementById('qrcode-display').style.display = 'flex';
 
-            // Setelah QR code digambar (ada jeda waktu), tampilkan tombol download
-            // Menggunakan setTimeout untuk memastikan QR code sudah selesai digambar ke canvas/svg
+            // Tampilkan tombol download setelah sedikit jeda untuk memastikan QR code tampilan sudah dirender
             setTimeout(() => {
                 downloadButton.style.display = 'block';
-            }, 500); // Beri sedikit waktu, bisa disesuaikan
+            }, 500); 
         }
 
-        // Fungsi untuk mengunduh QR Code
+        // Fungsi untuk mengunduh QR Code (High Resolution)
         document.getElementById('downloadQrBtn').addEventListener('click', () => {
             const nik = document.getElementById('nikInput').value.trim();
-            const qrcodeDiv = document.getElementById('qrcode');
-            let imgDataUrl;
+            const santriDetailUrl = `${window.location.origin}/santri-detail.html?nik=${nik}`;
 
-            // qrcode.js akan menambahkan elemen Canvas atau Img (jika SVG) ke dalam div#qrcode
-            // Kita perlu menemukan elemen Canvas di dalamnya
-            const canvasElement = qrcodeDiv.querySelector('canvas');
-            const imgElement = qrcodeDiv.querySelector('img'); // Mungkin juga ada img jika SVG
+            // Dapatkan canvas tersembunyi
+            const hiddenCanvas = document.getElementById('hiddenCanvas');
+            const ctx = hiddenCanvas.getContext('2d');
 
-            if (canvasElement) {
-                imgDataUrl = canvasElement.toDataURL("image/png"); // Dapatkan data URL dari Canvas
-            } else if (imgElement && imgElement.src.startsWith('data:image/')) {
-                // Jika itu adalah SVG yang dirender sebagai data URL gambar
-                imgDataUrl = imgElement.src;
-            } else {
-                alert('QR Code tidak ditemukan atau tidak dalam format yang dapat diunduh.');
-                return;
-            }
+            // Tentukan resolusi optimal untuk download
+            // Menggunakan ukuran dasar 512px atau 1024px adalah umum untuk kualitas tinggi
+            // dan dikalikan dengan devicePixelRatio untuk kepadatan piksel yang sebenarnya
+            const baseSize = 512; // Coba 512 atau 1024 untuk resolusi sangat tinggi
+            const pixelRatio = window.devicePixelRatio || 1; 
+            const actualSize = baseSize * pixelRatio; // Ukuran canvas aktual dalam piksel perangkat
 
-            // Buat elemen <a> sementara untuk trigger download
-            const link = document.createElement('a');
-            link.href = imgDataUrl;
-            link.download = `QR_Santri_${nik}.png`; // Nama file yang diunduh
-            document.body.appendChild(link); // Tambahkan ke DOM (sementara)
-            link.click(); // Klik secara programatis
-            document.body.removeChild(link); // Hapus dari DOM
+            hiddenCanvas.width = actualSize;
+            hiddenCanvas.height = actualSize;
+
+            // Bersihkan canvas tersembunyi
+            ctx.clearRect(0, 0, hiddenCanvas.width, hiddenCanvas.height);
+
+            // Buat div sementara untuk menjadi host QR code beresolusi tinggi
+            // Ini adalah workaround untuk qrcode.js agar bisa merender ke canvas baru
+            const tempDiv = document.createElement('div');
+            tempDiv.style.position = 'absolute';
+            tempDiv.style.left = '-9999px'; // Sembunyikan dari tampilan
+            document.body.appendChild(tempDiv);
+
+            // Generate QR code ke div sementara ini dengan resolusi tinggi
+            new QRCode(tempDiv, {
+                text: santriDetailUrl,
+                width: actualSize,
+                height: actualSize,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H,
+                render: 'canvas' // Paksa rendering ke canvas
+            });
+
+            // Tunggu sebentar agar QR code dirender ke canvas sementara
+            setTimeout(() => {
+                const tempCanvas = tempDiv.querySelector('canvas');
+                if (tempCanvas) {
+                    // Gambar konten dari canvas sementara ke canvas tersembunyi utama kita
+                    // Ini mentransfer gambar QR code resolusi tinggi
+                    ctx.drawImage(tempCanvas, 0, 0, actualSize, actualSize);
+
+                    // Dapatkan data URL (PNG) dari canvas tersembunyi beresolusi tinggi
+                    const imgDataUrl = hiddenCanvas.toDataURL("image/png");
+
+                    // Buat link sementara untuk memicu download
+                    const link = document.createElement('a');
+                    link.href = imgDataUrl;
+                    link.download = `QR_Santri_${nik}.png`; // Nama file
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    alert('Gagal membuat QR Code resolusi tinggi untuk diunduh. Canvas tidak ditemukan.');
+                }
+                // Bersihkan div sementara
+                document.body.removeChild(tempDiv);
+            }, 100); // Jeda kecil untuk rendering temp canvas
         });
-
 
         // Sembunyikan div QR Code saat pertama kali dimuat
         document.addEventListener('DOMContentLoaded', () => {
