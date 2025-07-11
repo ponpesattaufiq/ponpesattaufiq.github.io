@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Santri - Ponpes At-Taufiq</title>
+    <title>KARTU TANDA SANTRI</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -77,17 +77,17 @@
 </head>
 <body>
     <div class="detail-container">
-        <h1>Profil Santri</h1>
+        <h1>KARTU TANDA SANTRI</h1>
         <div id="santri-detail-content">
             <div class="santri-data-grid">
-                <div class="data-item"><span class="data-label">NIK:</span> <span class="data-value" id="detail-nik"></span></div>
-                <div class="data-item"><span class="data-label">Nama Lengkap:</span> <span class="data-value" id="detail-nama"></span></div>
-                <div class="data-item"><span class="data-label">Jenis Kelamin:</span> <span class="data-value" id="detail-jenis-kelamin"></span></div>
-                <div class="data-item"><span class="data-label">Tanggal Lahir:</span> <span class="data-value" id="detail-ttl"></span></div>
-                <div class="data-item"><span class="data-label">Alamat:</span> <span class="data-value" id="detail-alamat"></span></div>
-                <div class="data-item"><span class="data-label">Nama Ayah:</span> <span class="data-value" id="detail-ayah"></span></div>
-                <div class="data-item"><span class="data-label">Nama Ibu:</span> <span class="data-value" id="detail-ibu"></span></div>
-                <div class="data-item"><span class="data-label">Nomor HP:</span> <span class="data-value" id="detail-nohp"></span></div>
+                <div class="data-item"><span class="data-label">NIK</span> <span class="data-value" id="detail-nik"></span></div>
+                <div class="data-item"><span class="data-label">Nama Lengkap</span> <span class="data-value" id="detail-nama"></span></div>
+                <div class="data-item"><span class="data-label">Jenis Kelamin</span> <span class="data-value" id="detail-jenis-kelamin"></span></div>
+                <div class="data-item"><span class="data-label">Tanggal Lahir</span> <span class="data-value" id="detail-ttl"></span></div>
+                <div class="data-item"><span class="data-label">Alamat</span> <span class="data-value" id="detail-alamat"></span></div>
+                <div class="data-item"><span class="data-label">Nama Ayah</span> <span class="data-value" id="detail-ayah"></span></div>
+                <div class="data-item"><span class="data-label">Nama Ibu</span> <span class="data-value" id="detail-ibu"></span></div>
+                <div class="data-item"><span class="data-label">Nomor HP</span> <span class="data-value" id="detail-nohp"></span></div>
             </div>
         </div>
         <p id="loading-message">Memuat data santri...</p>
@@ -124,7 +124,7 @@
 
                 if (!response.ok) {
                     if (response.status === 404) {
-                        notFoundMessage.textContent = 'Data santri dengan NIK tersebut tidak ditemukan. Pastikan file JSON ada di folder data/.';
+                        notFoundMessage.textContent = 'Data santri dengan NIK tersebut tidak ditemukan.';
                     } else {
                         notFoundMessage.textContent = `Gagal memuat data santri. Kode error: ${response.status}`;
                     }
@@ -149,7 +149,7 @@
                     loadingMessage.style.display = 'none';
                     santriDetailContent.style.display = 'block';
                 } else {
-                    notFoundMessage.textContent = 'Data santri tidak ditemukan atau format data dalam file JSON tidak valid (mungkin kunci NIK tidak ada).';
+                    notFoundMessage.textContent = 'Data santri tidak ditemukan atau format salah..';
                     loadingMessage.style.display = 'none';
                     notFoundMessage.style.display = 'block';
                 }
@@ -157,7 +157,7 @@
             } catch (error) {
                 console.error('Error saat mengambil data santri:', error);
                 loadingMessage.style.display = 'none';
-                notFoundMessage.textContent = 'Terjadi kesalahan saat memproses data. Pastikan format JSON benar.';
+                notFoundMessage.textContent = 'Terjadi kesalahan saat memproses data.';
                 notFoundMessage.style.display = 'block';
             }
         });
