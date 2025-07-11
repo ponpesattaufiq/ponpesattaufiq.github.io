@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KARTU TANDA SANTRI</title>
+    <title>Data Santri - Ponpes At-Taufiq</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -80,14 +80,14 @@
         <h1>Profil Santri</h1>
         <div id="santri-detail-content">
             <div class="santri-data-grid">
-                <div class="data-item"><span class="data-label">NIK            :</span> <span class="data-value" id="detail-nik"></span></div>
-                <div class="data-item"><span class="data-label">Nama Lengkap   :</span> <span class="data-value" id="detail-nama"></span></div>
-                <div class="data-item"><span class="data-label">Jenis Kelamin  :</span> <span class="data-value" id="detail-jenis-kelamin"></span></div>
-                <div class="data-item"><span class="data-label">TTL            :</span> <span class="data-value" id="detail-ttl"></span></div>
-                <div class="data-item"><span class="data-label">Alamat         :</span> <span class="data-value" id="detail-alamat"></span></div>
-                <div class="data-item"><span class="data-label">Nama Ayah      :</span> <span class="data-value" id="detail-ayah"></span></div>
-                <div class="data-item"><span class="data-label">Nama Ibu       :</span> <span class="data-value" id="detail-ibu"></span></div>
-                <div class="data-item"><span class="data-label">Nomor HP       :</span> <span class="data-value" id="detail-nohp"></span></div>
+                <div class="data-item"><span class="data-label">NIK:</span> <span class="data-value" id="detail-nik"></span></div>
+                <div class="data-item"><span class="data-label">Nama Lengkap:</span> <span class="data-value" id="detail-nama"></span></div>
+                <div class="data-item"><span class="data-label">Jenis Kelamin:</span> <span class="data-value" id="detail-jenis-kelamin"></span></div>
+                <div class="data-item"><span class="data-label">Tanggal Lahir:</span> <span class="data-value" id="detail-ttl"></span></div>
+                <div class="data-item"><span class="data-label">Alamat:</span> <span class="data-value" id="detail-alamat"></span></div>
+                <div class="data-item"><span class="data-label">Nama Ayah:</span> <span class="data-value" id="detail-ayah"></span></div>
+                <div class="data-item"><span class="data-label">Nama Ibu:</span> <span class="data-value" id="detail-ibu"></span></div>
+                <div class="data-item"><span class="data-label">Nomor HP:</span> <span class="data-value" id="detail-nohp"></span></div>
             </div>
         </div>
         <p id="loading-message">Memuat data santri...</p>
@@ -115,10 +115,15 @@
             }
 
             try {
-                // --- PENTING: GANTI URL INI DENGAN URL API BACKEND ANDA ---
-                // Ini adalah bagian yang akan terhubung ke MongoDB Anda.
-                // Contoh: Menggunakan Firebase Functions, MongoDB Atlas App Services, Vercel, dll.
-                const apiUrl = `https://your-api-backend.com/santri?nik=${nik}`; // Ganti dengan URL API Anda yang sebenarnya
+                // --- PENTING SANGAT: GANTI URL INI DENGAN URL API BACKEND ANDA ---
+                // Ini adalah URL API yang akan Anda buat dan host di **tempat lain**
+                // yang terhubung ke database MongoDB Anda.
+                // Contoh URL yang MUNGKIN:
+                // - Jika pakai MongoDB Atlas App Services: https://data.mongodb-api.com/app/v1.0/endpoint/your-app-id/santri?nik=${nik}
+                // - Jika pakai Vercel/Netlify Functions: https://your-backend-api.vercel.app/api/santri?nik=${nik}
+                // - Jika pakai Firebase Functions: https://your-region-your-project.cloudfunctions.net/getSantri?nik=${nik}
+                
+                const apiUrl = `https://your-backend-api-url.com/santri?nik=${nik}`; // <<< GANTI INI DENGAN URL API ANDA YANG ASLI
 
                 const response = await fetch(apiUrl);
 
