@@ -1,265 +1,353 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // === Bagian untuk Halaman Login (index.html) ===
-    // Mengecek apakah berada di halaman index.html
-    const isIndexPage = window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html');
+    // --- Common Functions (for both index.html and dashboard.html) ---
 
-    if (isIndexPage) {
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                const headerOffset = document.querySelector('.main-header').offsetHeight;
+                const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                const offsetPosition = elementPosition - headerOffset - 20;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Show/hide scroll to top button
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    if (scrollToTopBtn) {
+        window.onscroll = function() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        };
+    }
+
+    // Scroll to Top Function
+    window.scrollToTop = function() { // Made global to be called from onclick
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    // --- Index Page Specific Functionality ---
+    const searchButton = document.getElementById('searchButton');
+    if (searchButton) { // Only run this if on index.html
+        searchButton.addEventListener('click', function() {
+            const nikInput = document.getElementById('nikInput').value.trim();
+            const resultBox = document.getElementById('resultBox');
+            const noDataMessage = document.getElementById('noDataMessage');
+
+            // Reset tampilan
+            resultBox.style.display = 'none';
+            noDataMessage.style.display = 'none';
+
+            // Simulate data lookup
+            if (nikInput === '12345' || nikInput === '98765') { // Example valid NIK/NISN
+                resultBox.style.display = 'block';
+                resultBox.querySelector('.result-item:nth-child(1) .result-value').textContent = 'Nama Santri Contoh';
+                resultBox.querySelector('.result-item:nth-child(2) .result-value').textContent = nikInput;
+                resultBox.querySelector('.result-item:nth-child(3) .result-value').textContent = 'ULA';
+                resultBox.querySelector('.result-item:nth-child(4) .result-value').textContent = 'Aktif';
+                resultBox.querySelector('.result-item:nth-child(5) .result-value').textContent = '2022';
+            } else {
+                noDataMessage.style.display = 'block';
+            }
+        });
+
+        // Handle login form submission
         const loginForm = document.getElementById('loginForm');
-        const nikInputSearch = document.getElementById('nikInput'); // Untuk bagian pencarian santri
-        const searchButton = document.getElementById('searchButton'); // Untuk bagian pencarian santri
-        const resultDiv = document.getElementById('result'); // Untuk bagian pencarian santri
-        const noDataMessageDiv = document.getElementById('noDataMessage'); // Untuk bagian pencarian santri
-
+        const loginMessage = document.getElementById('loginMessage');
         if (loginForm) {
-            const loginMessage = document.getElementById('loginMessage');
-            const loginButton = document.getElementById('loginButton');
+            loginForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
 
-            loginForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
 
-                loginButton.disabled = true;
-                loginButton.textContent = 'Memuat...';
-
-                const username = document.getElementById('username').value.trim();
-                const password = document.getElementById('password').value.trim();
-
-                try {
-                    const response = await fetch('users.json');
-                    if (!response.ok) {
-                        throw new Error(`Gagal memuat data pengguna: ${response.status}`);
-                    }
-                    const users = await response.json();
-
-                    const user = users.find(u => u.username === username && u.password === password);
-
-                    if (user) {
-                        localStorage.setItem('loggedInNIK', user.NIK);
-                        localStorage.setItem('loggedInUsername', user.username);
-                        loginMessage.style.display = 'none';
-                        window.location.href = 'dashboard.html';
-                    } else {
-                        loginMessage.textContent = 'Username atau Password salah.';
-                        loginMessage.style.display = 'block';
-                        loginButton.disabled = false;
-                        loginButton.textContent = 'Login';
-                    }
-                } catch (error) {
-                    console.error("Login Error:", error);
-                    loginMessage.textContent = 'Terjadi kesalahan saat mencoba login. Silakan coba lagi.';
+                // Simple hardcoded check for demonstration
+                if (username === 'admin' && password === 'admin123') {
+                    loginMessage.style.display = 'none';
+                    alert('Login successful! Redirecting to dashboard...');
+                    // In a real application, you'd store a token/session here
+                    window.location.href = 'dashboard.html'; // Redirect to dashboard
+                } else {
+                    loginMessage.textContent = 'Username atau password salah.';
                     loginMessage.style.display = 'block';
-                    loginButton.disabled = false;
-                    loginButton.textContent = 'Login';
-                }
-            });
-        }
-
-        // Fungsionalitas pencarian santri di halaman utama (index.html)
-        if (searchButton && nikInputSearch) {
-            searchButton.addEventListener('click', async () => {
-                const nikToSearch = nikInputSearch.value.trim();
-                resultDiv.innerHTML = ''; // Kosongkan hasil sebelumnya
-                noDataMessageDiv.style.display = 'none'; // Sembunyikan pesan 'tidak ditemukan'
-
-                if (!nikToSearch) {
-                    resultDiv.innerHTML = '<p class="no-data-info">Mohon masukkan NIK atau NISN untuk mencari.</p>';
-                    return;
-                }
-
-                try {
-                    const response = await fetch('data_santri.json');
-                    if (!response.ok) {
-                        throw new Error(`Gagal memuat data santri: ${response.status}`);
-                    }
-                    const santriData = await response.json();
-
-                    const foundSantri = santriData.find(santri => santri.NIK === nikToSearch);
-
-                    if (foundSantri) {
-                        let html = `
-                            <div class="result-item"><div class="result-label">Nama</div><div class="result-value">: ${foundSantri.nama}</div></div>
-                            <div class="result-item"><div class="result-label">NIK</div><div class="result-value">: ${foundSantri.NIK}</div></div>
-                            <div class="result-item"><div class="result-label">Jenis Kelamin</div><div class="result-value">: ${foundSantri.jenis_kelamin}</div></div>
-                            <div class="result-item"><div class="result-label">Tempat, Tgl Lahir</div><div class="result-value">: ${foundSantri.tempat_tanggal_lahir}</div></div>
-                            <div class="result-item"><div class="result-label">Alamat</div><div class="result-value">: ${foundSantri.alamat}</div></div>
-                            <div class="result-item"><div class="result-label">Nama Ayah</div><div class="result-value">: ${foundSantri.nama_ayah}</div></div>
-                            <div class="result-item"><div class="result-label">Nama Ibu</div><div class="result-value">: ${foundSantri.nama_ibu}</div></div>
-                            <div class="result-item"><div class="result-label">Nomor HP</div><div class="result-value">: ${foundSantri.nomor_hp}</div></div>
-                        `;
-                        resultDiv.innerHTML = html;
-                    } else {
-                        noDataMessageDiv.style.display = 'block';
-                    }
-                } catch (error) {
-                    console.error("Error memuat data santri:", error);
-                    resultDiv.innerHTML = '<p class="error-message">Terjadi kesalahan saat memuat data santri. Silakan coba lagi nanti.</p>';
                 }
             });
         }
     }
 
 
-    // === Bagian untuk Halaman Dashboard (dashboard.html) ===
-    if (window.location.pathname.endsWith('dashboard.html')) {
-        const loggedInNIK = localStorage.getItem('loggedInNIK');
-        const logoutButton = document.getElementById('logoutButton');
+    // --- Dashboard Page Specific Functionality ---
 
-        if (!loggedInNIK) {
-            window.location.href = 'index.html';
-            return;
-        }
+    // Logout functionality (for dashboard.html)
+    const logoutButton = document.getElementById('logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            const confirmLogout = confirm('Apakah Anda yakin ingin keluar?');
+            if (confirmLogout) {
+                // In a real application, you would:
+                // 1. Clear user session/token from localStorage or cookies
+                // 2. Redirect to a login page or home page
+                // Example: localStorage.removeItem('authToken');
+                window.location.href = 'index.html'; // Redirect to home/login
+            }
+        });
+    }
 
+    // Function to simulate fetching data (replace with actual API calls)
+    const fetchSantriData = async (nis) => {
+        // In a real scenario, this would be an API call, e.g.:
+        // const response = await fetch(`/api/santri/${nis}`);
+        // if (!response.ok) throw new Error('Data not found');
+        // return await response.json();
+
+        // Mock data for demonstration
+        const mockData = {
+            '12345': {
+                info: {
+                    nis: '12345',
+                    nama: 'Muhammad Alif',
+                    kelas: 'XII IPS',
+                    jurusan: 'Ilmu Pengetahuan Sosial',
+                    alamat: 'Jl. Contoh No. 123, Surabaya'
+                },
+                raport: [
+                    { semester: 'Ganjil 2024/2025', mata_pelajaran: 'Aqidah Akhlak', nilai: 85 },
+                    { semester: 'Ganjil 2024/2025', mata_pelajaran: 'Fiqh', nilai: 90 },
+                    { semester: 'Ganjil 2024/2025', mata_pelajaran: 'Bahasa Arab', nilai: 88 },
+                    { semester: 'Genap 2023/2024', mata_pelajaran: 'Aqidah Akhlak', nilai: 82 },
+                    { semester: 'Genap 2023/2024', mata_pel.ajaran: 'Fiqh', nilai: 87 },
+                ],
+                pelanggaran: [
+                    { tanggal: '2025-01-15', jenis: 'Terlambat Datang', poin: 5 },
+                    { tanggal: '2024-11-20', jenis: 'Tidak Memakai Peci', poin: 2 },
+                ],
+                peringatan: [
+                    { tanggal: '2025-02-01', pesan: 'Mohon segera melunasi SPP bulan Januari.' },
+                ],
+                prestasi: [
+                    { tanggal: '2024-10-01', jenis: 'Juara 3 Lomba Pidato Bahasa Arab', tingkat: 'Kabupaten' },
+                ]
+            },
+            '67890': {
+                 info: {
+                    nis: '67890',
+                    nama: 'Siti Fatimah',
+                    kelas: 'XI IPA',
+                    jurusan: 'Ilmu Pengetahuan Alam',
+                    alamat: 'Jl. Anggrek No. 45, Sidoarjo'
+                },
+                raport: [], // No raport data
+                pelanggaran: [],
+                peringatan: [],
+                prestasi: [
+                    { tanggal: '2025-03-10', jenis: 'Juara 1 MTQ Tingkat Pondok', tingkat: 'Pondok' },
+                ]
+            }
+        };
+
+        // Simulate network delay
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve(mockData[nis]);
+            }, 500);
+        });
+    };
+
+    // --- Data Display Functions (for dashboard.html) ---
+
+    const displaySantriInfo = (info) => {
         const santriInfoDiv = document.getElementById('santriInfo');
-        const raportDataDiv = document.getElementById('raportData');
-        const pelanggaranDataDiv = document.getElementById('pelanggaranData');
-        const peringatanDataDiv = document.getElementById('peringatanData');
-        const prestasiDataDiv = document.getElementById('prestasiData');
-        const dataUnavailableMessage = document.getElementById('dataUnavailableMessage');
-        const dashboardTitle = document.getElementById('dashboardTitle');
-
-        if (logoutButton) {
-            logoutButton.addEventListener('click', (event) => {
-                event.preventDefault();
-                localStorage.removeItem('loggedInNIK');
-                localStorage.removeItem('loggedInUsername');
-                window.location.href = 'index.html';
-            });
+        if (info) {
+            santriInfoDiv.innerHTML = `
+                <p><strong>NIS:</strong> ${info.nis}</p>
+                <p><strong>Nama:</strong> ${info.nama}</p>
+                <p><strong>Kelas:</strong> ${info.kelas}</p>
+                <p><strong>Jurusan:</strong> ${info.jurusan}</p>
+                <p><strong>Alamat:</strong> ${info.alamat}</p>
+            `;
+        } else {
+            santriInfoDiv.innerHTML = `<p class="no-data-info">Data informasi santri tidak ditemukan.</p>`;
         }
+    };
 
-        async function loadSantriData() {
-            try {
-                const response = await fetch('data_santri.json');
-                if (!response.ok) {
-                    throw new Error(`Gagal memuat data santri: ${response.status}`);
-                }
-                const santriData = await response.json();
+    const displayRaportData = (raport) => {
+        const raportDataDiv = document.getElementById('raportData');
+        if (raport && raport.length > 0) {
+            let tableHtml = `<table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Semester</th>
+                                        <th>Mata Pelajaran</th>
+                                        <th>Nilai</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+            raport.forEach(item => {
+                tableHtml += `<tr>
+                                <td>${item.semester}</td>
+                                <td>${item.mata_pelajaran}</td>
+                                <td>${item.nilai}</td>
+                              </tr>`;
+            });
+            tableHtml += `</tbody></table>`;
+            raportDataDiv.innerHTML = tableHtml;
+        } else {
+            raportDataDiv.innerHTML = `<p class="no-data-info">Data raport belum tersedia.</p>`;
+        }
+    };
 
-                const foundSantri = santriData.find(santri => santri.NIK === loggedInNIK);
+    const displayPelanggaranData = (pelanggaran) => {
+        const pelanggaranDataDiv = document.getElementById('pelanggaranData');
+        if (pelanggaran && pelanggaran.length > 0) {
+            let tableHtml = `<table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Jenis Pelanggaran</th>
+                                        <th>Poin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+            pelanggaran.forEach(item => {
+                tableHtml += `<tr>
+                                <td>${item.tanggal}</td>
+                                <td>${item.jenis}</td>
+                                <td>${item.poin}</td>
+                              </tr>`;
+            });
+            tableHtml += `</tbody></table>`;
+        } else {
+            pelanggaranDataDiv.innerHTML = `<p class="no-data-info">Tidak ada data pelanggaran.</p>`;
+        }
+    };
 
-                if (foundSantri) {
-                    dashboardTitle.textContent = `Data Santri: ${foundSantri.nama}`;
-                    displaySantriInfo(foundSantri);
-                    displayRaport(foundSantri.raport);
-                    displayPelanggaran(foundSantri.pelanggaran);
-                    displayPeringatan(foundSantri.peringatan);
-                    displayPrestasi(foundSantri.prestasi);
-                    dataUnavailableMessage.style.display = 'none';
+    const displayPeringatanData = (peringatan) => {
+        const peringatanDataDiv = document.getElementById('peringatanData');
+        if (peringatan && peringatan.length > 0) {
+            let tableHtml = `<table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Pesan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+            peringatan.forEach(item => {
+                tableHtml += `<tr>
+                                <td>${item.tanggal}</td>
+                                <td>${item.pesan}</td>
+                              </tr>`;
+            });
+            tableHtml += `</tbody></table>`;
+        } else {
+            peringatanDataDiv.innerHTML = `<p class="no-data-info">Tidak ada peringatan/pemberitahuan.</p>`;
+        }
+    };
+
+    const displayPrestasiData = (prestasi) => {
+        const prestasiDataDiv = document.getElementById('prestasiData');
+        if (prestasi && prestasi.length > 0) {
+            let tableHtml = `<table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Jenis Prestasi</th>
+                                        <th>Tingkat</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+            prestasi.forEach(item => {
+                tableHtml += `<tr>
+                                <td>${item.tanggal}</td>
+                                <td>${item.jenis}</td>
+                                <td>${item.tingkat}</td>
+                              </tr>`;
+            });
+            tableHtml += `</tbody></table>`;
+        } else {
+            prestasiDataDiv.innerHTML = `<p class="no-data-info">Tidak ada data prestasi.</p>`;
+        }
+    };
+
+    // Main function to load dashboard data (only if on dashboard.html)
+    const dashboardContainer = document.querySelector('.dashboard-container');
+    if (dashboardContainer) { // Check if dashboard container exists
+        const loadDashboardData = async () => {
+            const dataUnavailableMessage = document.getElementById('dataUnavailableMessage');
+            dataUnavailableMessage.style.display = 'none'; // Hide by default
+
+            // In a real application, NIS would come from user session/login.
+            // For demonstration, let's use a NIS stored in localStorage after login.
+            const nis = localStorage.getItem('currentSantriNIS');
+
+            if (!nis) {
+                // If no NIS found in local storage, prompt for it (for direct access to dashboard)
+                const promptNis = prompt("Silakan masukkan NIS Santri untuk melihat data (contoh: 12345 atau 67890):");
+                if (promptNis) {
+                    localStorage.setItem('currentSantriNIS', promptNis);
+                    window.location.reload(); // Reload to apply the NIS
+                    return;
                 } else {
-                    santriInfoDiv.innerHTML = '<p class="no-data-info">Data santri tidak ditemukan untuk NIK Anda.</p>';
                     dataUnavailableMessage.style.display = 'block';
-                    raportDataDiv.innerHTML = '<p class="no-data-info">Data raport belum tersedia.</p>';
-                    pelanggaranDataDiv.innerHTML = '<p class="no-data-info">Tidak ada data pelanggaran.</p>';
-                    peringatanDataDiv.innerHTML = '<p class="no-data-info">Tidak ada peringatan/pemberitahuan.</p>';
-                    prestasiDataDiv.innerHTML = '<p class="no-data-info">Tidak ada data prestasi.</p>';
+                    dataUnavailableMessage.textContent = 'NIS tidak dimasukkan. Data tidak dapat dimuat.';
+                    // Clear all data sections
+                    document.getElementById('santriInfo').innerHTML = `<p class="no-data-info">Data informasi santri tidak ditemukan.</p>`;
+                    document.getElementById('raportData').innerHTML = `<p class="no-data-info">Data raport belum tersedia.</p>`;
+                    document.getElementById('pelanggaranData').innerHTML = `<p class="no-data-info">Tidak ada data pelanggaran.</p>`;
+                    document.getElementById('peringatanData').innerHTML = `<p class="no-data-info">Tidak ada peringatan/pemberitahuan.</p>`;
+                    document.getElementById('prestasiData').innerHTML = `<p class="no-data-info">Tidak ada data prestasi.</p>`;
+                    return;
+                }
+            }
+
+
+            try {
+                const data = await fetchSantriData(nis);
+                if (data) {
+                    // Update dashboard title with santri's name if available
+                    const dashboardTitle = document.getElementById('dashboardTitle');
+                    if (dashboardTitle && data.info && data.info.nama) {
+                        dashboardTitle.textContent = `Data Raport Santri ${data.info.nama}`;
+                    }
+
+                    displaySantriInfo(data.info);
+                    displayRaportData(data.raport);
+                    displayPelanggaranData(data.pelanggaran);
+                    displayPeringatanData(data.peringatan);
+                    displayPrestasiData(data.prestasi);
+                } else {
+                    dataUnavailableMessage.style.display = 'block';
+                    // Clear existing data sections if no data found for the given NIS
+                    document.getElementById('santriInfo').innerHTML = `<p class="no-data-info">Data informasi santri tidak ditemukan.</p>`;
+                    document.getElementById('raportData').innerHTML = `<p class="no-data-info">Data raport belum tersedia.</p>`;
+                    document.getElementById('pelanggaranData').innerHTML = `<p class="no-data-info">Tidak ada data pelanggaran.</p>`;
+                    document.getElementById('peringatanData').innerHTML = `<p class="no-data-info">Tidak ada peringatan/pemberitahuan.</p>`;
+                    document.getElementById('prestasiData').innerHTML = `<p class="no-data-info">Tidak ada data prestasi.</p>`;
                 }
             } catch (error) {
-                console.error("Error memuat data santri:", error);
-                santriInfoDiv.innerHTML = '<p class="error-message">Terjadi kesalahan saat memuat data santri. Silakan coba lagi nanti.</p>';
+                console.error('Error loading dashboard data:', error);
+                dataUnavailableMessage.textContent = 'Terjadi kesalahan saat memuat data. Silakan coba lagi nanti.';
                 dataUnavailableMessage.style.display = 'block';
             }
-        }
+        };
 
-        function displaySantriInfo(santri) {
-            santriInfoDiv.innerHTML = `
-                <div class="data-item"><div class="data-label">Nama Santri</div><div class="data-value">: ${santri.nama}</div></div>
-                <div class="data-item"><div class="data-label">NIK</div><div class="data-value">: ${santri.NIK}</div></div>
-                <div class="data-item"><div class="data-label">Jenis Kelamin</div><div class="data-value">: ${santri.jenis_kelamin}</div></div>
-                <div class="data-item"><div class="data-label">Tempat, Tgl Lahir</div><div class="data-value">: ${santri.tempat_tanggal_lahir}</div></div>
-                <div class="data-item"><div class="data-label">Alamat</div><div class="data-value">: ${santri.alamat}</div></div>
-                <div class="data-item"><div class="data-label">Nama Ayah</div><div class="data-value">: ${santri.nama_ayah}</div></div>
-                <div class="data-item"><div class="data-label">Nama Ibu</div><div class="data-value">: ${santri.nama_ibu}</div></div>
-                <div class="data-item"><div class="data-label">Nomor HP</div><div class="data-value">: ${santri.nomor_hp}</div></div>
-            `;
-        }
-
-        function displayRaport(raport) {
-            if (raport && Object.keys(raport).length > 0) {
-                let raportHtml = '<div class="raport-sections">';
-                for (const semester in raport) {
-                    raportHtml += `<div class="raport-section"><h3>${semester.replace(/_/g, ' ').toUpperCase()}</h3><ul>`;
-                    for (const mataPelajaran in raport[semester]) {
-                        raportHtml += `
-                            <li class="data-item">
-                                <div class="data-label">${mataPelajaran.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</div>
-                                <div class="data-value">: ${raport[semester][mataPelajaran]}</div>
-                            </li>`;
-                    }
-                    raportHtml += '</ul></div>';
-                }
-                raportHtml += '</div>';
-                raportDataDiv.innerHTML = raportHtml;
-            } else {
-                raportDataDiv.innerHTML = '<p class="no-data-info">Data raport belum tersedia.</p>';
-            }
-        }
-
-        function displayPelanggaran(pelanggaran) {
-            if (pelanggaran && pelanggaran.length > 0) {
-                let pelanggaranHtml = '<ul>';
-                pelanggaran.forEach(p => {
-                    pelanggaranHtml += `
-                        <li>
-                            <div class="data-item">
-                                <div class="data-label">Tanggal</div><div class="data-value">: ${p.tanggal}</div>
-                            </div>
-                            <div class="data-item">
-                                <div class="data-label">Jenis Pelanggaran</div><div class="data-value">: ${p.jenis}</div>
-                            </div>
-                            <div class="data-item">
-                                <div class="data-label">Poin</div><div class="data-value">: ${p.poin}</div>
-                            </div>
-                        </li>`;
-                });
-                pelanggaranHtml += '</ul>';
-            } else {
-                pelanggaranDataDiv.innerHTML = '<p class="no-data-info">Tidak ada data pelanggaran.</p>';
-            }
-        }
-
-        function displayPeringatan(peringatan) {
-            if (peringatan && peringatan.length > 0) {
-                let peringatanHtml = '<ul>';
-                peringatan.forEach(pe => {
-                    peringatanHtml += `
-                        <li>
-                            <div class="data-item">
-                                <div class="data-label">Tanggal</div><div class="data-value">: ${pe.tanggal}</div>
-                            </div>
-                            <div class="data-item">
-                                <div class="data-label">Deskripsi</div><div class="data-value">: ${pe.deskripsi}</div>
-                            </div>
-                        </li>`;
-                });
-                peringatanHtml += '</ul>';
-                peringatanDataDiv.innerHTML = peringatanHtml;
-            } else {
-                peringatanDataDiv.innerHTML = '<p class="no-data-info">Tidak ada peringatan/pemberitahuan.</p>';
-            }
-        }
-
-        function displayPrestasi(prestasi) {
-            if (prestasi && prestasi.length > 0) {
-                let prestasiHtml = '<ul>';
-                prestasi.forEach(pr => {
-                    prestasiHtml += `
-                        <li>
-                            <div class="data-item">
-                                <div class="data-label">Tanggal</div><div class="data-value">: ${pr.tanggal}</div>
-                            </div>
-                            <div class="data-item">
-                                <div class="data-label">Prestasi</div><div class="data-value">: ${pr.nama_prestasi}</div>
-                            </div>
-                            <div class="data-item">
-                                <div class="data-label">Tingkat</div><div class="data-value">: ${pr.tingkat}</div>
-                            </div>
-                        </li>`;
-                });
-                prestasiHtml += '</ul>';
-                prestasiDataDiv.innerHTML = prestasiHtml;
-            } else {
-                prestasiDataDiv.innerHTML = '<p class="no-data-info">Tidak ada data prestasi.</p>';
-            }
-        }
-
-        loadSantriData();
+        // Load data when the dashboard page loads
+        loadDashboardData();
     }
 });
