@@ -1,0 +1,40 @@
+{
+  "NIK": "123",
+  "nama": "khafid",
+  "jenis_kelamin": "Laki-laki",
+  "tempat_tanggal_lahir": "Surabaya, 10 Januari 2005",
+  "alamat": "Jl. Mawar No. 10, Surabaya",
+  "nama_ayah": "Bapak Budi",
+  "nama_ibu": "Ibu Siti",
+  "nomor_hp": "081234567890",
+  "raport": {
+    "semester_1": {
+      "matematika": 85,
+      "bahasa_indonesia": 90,
+      "ipa": 80,
+      "bahasa_arab": 75,
+      "tahfidz_quran": 88
+    },
+    "semester_2": {
+      "matematika": 88,
+      "bahasa_indonesia": 92,
+      "ipa": 85,
+      "bahasa_arab": 80,
+      "tahfidz_quran": 90
+    }
+  },
+  "pelanggaran": [
+    {"tanggal": "2024-01-15", "jenis": "Terlambat Sekolah", "poin": 5},
+    {"tanggal": "2024-03-01", "jenis": "Tidak Mengerjakan PR", "poin": 3},
+    {"tanggal": "2024-05-10", "jenis": "Mengganggu Kelas", "poin": 7}
+  ],
+  "peringatan": [
+    {"tanggal": "2024-04-10", "deskripsi": "Dimohon tingkatkan kedisiplinan belajar di malam hari."},
+    {"tanggal": "2022-05-20", "deskripsi": "Perlu lebih aktif dalam kegiatan ekstrakurikuler kepramukaan."}
+  ],
+  "prestasi": [
+    {"tanggal": "2024-02-28", "nama_prestasi": "Juara 3 Lomba Baca Kitab Kuning", "tingkat": "Kabupaten"},
+    {"tanggal": "2024-06-10", "nama_prestasi": "Siswa Teladan Semester Ganjil 2024", "tingkat": "Sekolah"},
+    {"tanggal": "2024-07-01", "nama_prestasi": "Peserta Terbaik Musabaqah Hifzhil Quran", "tingkat": "Pondok"}
+  ]
+}
