@@ -458,9 +458,11 @@ ul {
     box-shadow: 0 4px 10px var(--shadow-light);
 }
 
-#nikInput {
+/* MODIFIKASI DIMULAI DI SINI UNTUK #nikInput DAN #angkatanSearchInput */
+#nikInput,
+#angkatanSearchInput { /* Tambahkan #angkatanSearchInput di sini */
     padding: 15px 20px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color); /* Gunakan variabel CSS untuk konsistensi */
     border-radius: 5px;
     font-size: 17px;
     width: 60%;
@@ -471,10 +473,13 @@ ul {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-#nikInput:focus {
+#nikInput:focus,
+#angkatanSearchInput:focus { /* Tambahkan #angkatanSearchInput di sini */
     border-color: var(--primary-color); /* Green on focus */
     box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 }
+/* MODIFIKASI BERAKHIR DI SINI UNTUK #nikInput DAN #angkatanSearchInput */
+
 
 #searchButton {
     padding: 15px 35px;
@@ -1256,33 +1261,28 @@ ul {
 
 @media (max-width: 768px) {
     .header-content {
-        /* Removed flex-direction: column; align-items: flex-start; from here,
-           as main-nav and login-button will be an overlay now.
-           Only logo and hamburger menu will be in the header-content. */
-        justify-content: space-between; /* Keep logo and hamburger aligned */
+        justify-content: space-between;
         align-items: center;
     }
 
-    /* Hide desktop nav and login button by default */
     .main-nav {
         position: fixed;
         top: 0;
-        right: 0; /* Starts hidden off-screen */
-        width: 280px; /* Width of the sidebar */
+        right: 0;
+        width: 280px;
         height: 100%;
-        background-color: var(--dark-blue); /* Dark background for mobile nav */
-        padding: 80px 20px 20px; /* Space for logo/hamburger at top */
+        background-color: var(--dark-blue);
+        padding: 80px 20px 20px;
         box-shadow: -2px 0 10px var(--shadow-medium);
-        transform: translateX(100%); /* Initially slide out to the right */
+        transform: translateX(100%);
         transition: transform 0.4s ease-out, visibility 0.4s ease-out, opacity 0.4s ease-out;
-        z-index: 999; /* Below header, above content */
-        overflow-y: auto; /* Enable scrolling for long menus */
-        visibility: hidden; /* Hide completely when not active */
+        z-index: 999;
+        overflow-y: auto;
+        visibility: hidden;
         opacity: 0;
-        display: block; /* Override default flex property for mobile nav */
+        display: block;
     }
 
-    /* When active, slide in */
     .main-nav.active {
         transform: translateX(0);
         visibility: visible;
@@ -1291,175 +1291,51 @@ ul {
 
     .main-nav ul {
         flex-direction: column;
-        align-items: flex-start; /* Align items to the left within the sidebar */
-        gap: 0; /* Remove gap between li items, use padding */
+        align-items: flex-start;
+        gap: 0;
     }
     .main-nav ul li {
-        width: 100%; /* Full width for each nav item */
-        text-align: left; /* Align text left */
+        width: 100%;
+        text-align: left;
         margin-left: 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Separator */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     .main-nav ul li:last-child {
         border-bottom: none;
     }
     .main-nav ul li a {
-        color: var(--white); /* White text for contrast on dark blue */
-        padding: 15px 0; /* More padding for touch targets */
-        display: block; /* Make link fill the whole list item */
-        width: 100%;
-        font-weight: 500;
-    }
-    .main-nav ul li a:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        color: var(--primary-color);
-    }
-    /* Remove underline effect for mobile nav, or change it */
-    .main-nav ul li a::after {
-        display: none;
+        color: var(--white);
+        padding: 15px 0;
     }
 
-    .dropdown-content {
-        position: static; /* Dropdown content flows naturally below parent link */
-        box-shadow: none;
-        border-top: none;
-        padding-left: 15px; /* Indent dropdown items */
-        background-color: rgba(0, 0, 0, 0.2); /* Slightly darker background for sub-menu */
-        width: 100%;
-        opacity: 1; /* Always visible when parent is clicked/toggled */
-        visibility: visible;
-        transform: translateY(0);
-        border-radius: 0; /* No border radius for flowing sub-menu */
-    }
-
-    .dropdown-content a {
-        color: var(--white); /* White text for dropdown items too */
-        padding: 10px 16px; /* Slightly less padding for sub-items */
-    }
-    .dropdown-content a:hover {
-        background-color: rgba(255, 255, 255, 0.05); /* Lighter hover for sub-items */
-        color: var(--secondary-color); /* Amber hover for sub-items */
-    }
-
-    /* Ensure dropdown arrow is visible and works for mobile menu */
-    .dropdown > a i.fas.fa-chevron-down {
-        margin-left: auto; /* Push arrow to the right */
-        transition: transform 0.3s ease;
-    }
-    /* Rotate arrow when dropdown is open (JS will add a class like .open) */
-    .dropdown.open > a i.fas.fa-chevron-down {
-        transform: rotate(180deg);
-    }
-
-    /* Login Button in mobile nav */
-    .login-button {
-        display: block; /* Always visible in mobile nav */
-        margin-top: 30px; /* Space from menu items */
-        width: 100%;
-        text-align: center;
-        padding: 0 20px; /* Match menu padding */
-    }
-    .login-button .btn-login {
-        width: 100%;
-        justify-content: center;
-        background-color: var(--primary-color); /* Use primary color for login in mobile nav */
-    }
-    .login-button .btn-login:hover {
-        background-color: #218838;
-        transform: none; /* Remove subtle transform for mobile buttons */
-        box-shadow: none;
-    }
-
-    .hamburger-menu {
-        display: flex; /* Show hamburger menu */
-    }
-
-
-    .hero-text-main h1 {
-        font-size: 40px;
-    }
-    .hero-text-main p {
-        font-size: 16px;
-    }
-    .hero-buttons {
-        justify-content: center;
-    }
-    .btn {
-        width: 100%;
-    }
-
+    /* PENYESUAIAN UNTUK SEARCH BOX DI MOBILE */
     .search-box {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: column; /* Tumpuk input secara vertikal */
+        align-items: center;   /* Pusatkan input secara horizontal */
+        padding: 20px; /* Sedikit padding lebih untuk kotak pencarian di mobile */
     }
-    #nikInput {
-        width: 90%;
-        margin-right: 0;
-        margin-bottom: 15px;
+
+    #nikInput,
+    #angkatanSearchInput {
+        width: 100%; /* Ambil lebar penuh di mobile */
+        margin-right: 0; /* Hapus margin kanan */
+        margin-bottom: 15px; /* Tambahkan margin bawah untuk spasi antar input */
+        max-width: none; /* Hapus batasan max-width */
     }
+
     #searchButton {
-        width: 90%;
-    }
-    .result-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .result-label {
-        width: 100%;
-        margin-bottom: 5px;
+        width: 100%; /* Buat tombol 'Cari' juga lebar penuh di mobile */
+        margin-top: 5px; /* Sedikit spasi di atas tombol */
+        padding: 15px; /* Pastikan padding tombol sama */
     }
 
-    .santri-stats-section .container { /* Target container specifically within this section */
-        flex-direction: column;
-    }
-    .stat-card {
-        width: 100%; /* Full width on smaller screens */
-    }
-
-    .leadership-cards {
-        grid-template-columns: 1fr; /* Single column layout */
-    }
-
-    .footer-columns {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-    .footer-col h3::after {
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .footer-bottom {
-        flex-direction: column;
-        gap: 10px;
-    }
-    .footer-links a {
-        margin-left: 0;
-        margin-right: 10px;
-    }
-
-    /* Dashboard specific responsive */
-    .dashboard-container h2 {
-        font-size: 1.7rem;
-        text-align: center;
-        width: 100%; /* Ensures the border-bottom spans full width when text is centered */
-    }
-}
-
-@media (max-width: 480px) {
-    .logo img {
-        height: 40px;
-    }
-
-    .logo span {
-        font-size: 1.2rem;
-    }
-
-    .hero-text h1 {
-        font-size: 2rem;
-    }
-
-    .data-table th, .data-table td {
-        padding: 8px 10px;
-        font-size: 0.9rem;
+    /* Untuk layar yang sangat kecil */
+    @media (max-width: 480px) {
+        #nikInput,
+        #angkatanSearchInput,
+        #searchButton {
+            padding: 12px 15px; /* Padding sedikit lebih kecil */
+            font-size: 16px;
+        }
     }
 }
