@@ -97,9 +97,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
             const urlParams = new URLSearchParams(window.location.search);
-            // Penting: Di URL, parameter harusnya tetap 'nik' atau 'NIK' (konsisten dengan generate-qr.html)
-            // Saya akan asumsikan dari QR Code tetap mengirim 'nik' kecil di URL, tapi JSON pakai 'NIK' besar
             const nikFromUrl = urlParams.get('nik'); // Mengambil 'nik' dari URL
+            const angkatanFromUrl = urlParams.get('angkatan'); // <--- MENAMBAHKAN INI: Mengambil 'angkatan' dari URL
 
             const santriDetailContent = document.getElementById('santri-detail-content');
             const loadingMessage = document.getElementById('loading-message');
@@ -109,26 +108,33 @@
             loadingMessage.style.display = 'block';
             notFoundMessage.style.display = 'none';
 
-            if (!nikFromUrl) {
+            // <--- MENAMBAHKAN VALIDASI UNTUK NIK DAN ANGKATAN
+            if (!nikFromUrl || !angkatanFromUrl) {
                 loadingMessage.style.display = 'none';
-                notFoundMessage.textContent = 'NIK santri tidak ditemukan di URL. Silakan scan QR Code yang valid.';
+                if (!nikFromUrl && !angkatanFromUrl) {
+                    notFoundMessage.textContent = 'NIK dan Angkatan santri tidak ditemukan di URL. Pastikan Anda mengaksesnya melalui QR Code atau link yang benar.';
+                } else if (!nikFromUrl) {
+                    notFoundMessage.textContent = 'NIK santri tidak ditemukan di URL. Pastikan Anda mengaksesnya melalui QR Code atau link yang benar.';
+                } else { // !angkatanFromUrl
+                    notFoundMessage.textContent = 'Angkatan santri tidak ditemukan di URL. Pastikan Anda mengaksesnya melalui QR Code atau link yang benar.';
+                }
                 notFoundMessage.style.display = 'block';
                 return;
             }
 
             try {
-                // Path ke file JSON sesuai NIK dari URL
-                const dataUrl = `/data/${nikFromUrl}.json`;
+                // <--- MENGUBAH PATH KE FILE JSON SESUAI DENGAN STRUKTUR BARU
+                const dataUrl = `/data/${angkatanFromUrl}/${nikFromUrl}.json`;
 
                 const response = await fetch(dataUrl);
 
                 if (!response.ok) {
+                    loadingMessage.style.display = 'none';
                     if (response.status === 404) {
-                        notFoundMessage.textContent = 'Data santri dengan NIK tersebut tidak ditemukan.';
+                        notFoundMessage.textContent = `Data santri dengan NIK ${nikFromUrl} untuk angkatan ${angkatanFromUrl} tidak ditemukan.`;
                     } else {
                         notFoundMessage.textContent = `Gagal memuat data santri. Kode error: ${response.status}`;
                     }
-                    loadingMessage.style.display = 'none';
                     notFoundMessage.style.display = 'block';
                     return;
                 }
@@ -136,20 +142,22 @@
                 const data = await response.json();
 
                 // --- PERUBAHAN PENTING DI SINI: SESUAIKAN DENGAN NAMA KUNCI JSON ANDA ---
-                if (data && data.NIK) { // Memeriksa data.NIK (huruf besar)
-                    document.getElementById('detail-nik').textContent = data.NIK || '-'; // data.NIK
+                // Pastikan nama properti di JSON Anda (misal: "NIK", "nama", "jenis_kelamin")
+                // sesuai dengan yang Anda panggil di `data.NIK`, `data.nama`, dll.
+                if (data && data.NIK) {
+                    document.getElementById('detail-nik').textContent = data.NIK || '-';
                     document.getElementById('detail-nama').textContent = data.nama || '-';
-                    document.getElementById('detail-jenis-kelamin').textContent = data.jenis_kelamin || '-'; // data.jenis_kelamin
-                    document.getElementById('detail-ttl').textContent = data.tempat_tanggal_lahir || '-'; // data.tempat_tanggal_lahir
+                    document.getElementById('detail-jenis-kelamin').textContent = data.jenis_kelamin || '-';
+                    document.getElementById('detail-ttl').textContent = data.tempat_tanggal_lahir || '-';
                     document.getElementById('detail-alamat').textContent = data.alamat || '-';
-                    document.getElementById('detail-ayah').textContent = data.nama_ayah || '-'; // data.nama_ayah
-                    document.getElementById('detail-ibu').textContent = data.nama_ibu || '-'; // data.nama_ibu
-                    document.getElementById('detail-nohp').textContent = data.nomor_hp || '-'; // data.nomor_hp
+                    document.getElementById('detail-ayah').textContent = data.nama_ayah || '-';
+                    document.getElementById('detail-ibu').textContent = data.nama_ibu || '-';
+                    document.getElementById('detail-nohp').textContent = data.nomor_hp || '-';
 
                     loadingMessage.style.display = 'none';
                     santriDetailContent.style.display = 'block';
                 } else {
-                    notFoundMessage.textContent = 'Data santri tidak ditemukan atau format salah..';
+                    notFoundMessage.textContent = 'Data santri tidak ditemukan atau format JSON tidak sesuai.';
                     loadingMessage.style.display = 'none';
                     notFoundMessage.style.display = 'block';
                 }
