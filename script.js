@@ -64,6 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchButton) { // Only execute this block if 'searchButton' exists (i.e., on index.html)
         searchButton.addEventListener('click', async function() {
             const nikInput = document.getElementById('nikInput').value.trim();
+            // --- BARIS BARU: Ambil nilai angkatan dari input baru di index.html ---
+            const angkatanInput = document.getElementById('angkatanSearchInput').value.trim();
+
             const resultBox = document.getElementById('resultBox');
             const noDataMessage = document.getElementById('noDataMessage');
 
@@ -78,18 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const resultIbu = document.getElementById('resultIbu');
             const resultNoHp = document.getElementById('resultNoHp');
 
-            // --- Bagian ini sudah dikomentari/dihapus di revisi sebelumnya
-            //     dan tidak seharusnya ada di index.html.
-            //     Tetap pastikan elemen-elemen ini TIDAK ada di index.html.
-            // const raportSection = document.getElementById('raport-section');
-            // const raportDetails = document.getElementById('raport-details');
-            // const pelanggaranSection = document.getElementById('pelanggaran-section');
-            // const pelanggaranList = document.getElementById('pelanggaran-list');
-            // const peringatanSection = document.getElementById('peringatan-section');
-            // const peringatanList = document.getElementById('peringatan-list');
-            // const prestasiSection = document.getElementById('prestasi-section');
-            // const prestasiList = document.getElementById('prestasi-list');
-
             // Reset display before new search
             if (resultBox) resultBox.style.display = 'none';
             if (noDataMessage) {
@@ -97,36 +88,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 noDataMessage.textContent = 'Data santri tidak ditemukan.'; // Default message
             }
 
-            // --- Pastikan baris-baris ini tidak aktif di index.html karena elemennya tidak ada.
-            // if (raportSection) raportSection.style.display = 'none';
-            // if (pelanggaranSection) pelanggaranSection.style.display = 'none';
-            // if (peringatanSection) peringatanSection.style.display = 'none';
-            // if (prestasiSection) prestasiSection.style.display = 'none';
-
-            // if (raportDetails) raportDetails.innerHTML = '';
-            // if (pelanggaranList) pelanggaranList.innerHTML = '';
-            // if (peringatanList) peringatanList.innerHTML = '';
-            // if (prestasiList) prestasiList.innerHTML = '';
-
-
-            if (!nikInput) {
+            // --- PERUBAHAN: Validasi NIK dan Angkatan ---
+            if (!nikInput && !angkatanInput) {
+                if (noDataMessage) {
+                    noDataMessage.textContent = 'Mohon masukkan NIK dan Angkatan Santri.';
+                    noDataMessage.style.display = 'block';
+                }
+                return;
+            } else if (!nikInput) {
                 if (noDataMessage) {
                     noDataMessage.textContent = 'Mohon masukkan NIK Santri.';
                     noDataMessage.style.display = 'block';
                 }
                 return;
+            } else if (!angkatanInput) {
+                if (noDataMessage) {
+                    noDataMessage.textContent = 'Mohon masukkan Angkatan Santri.';
+                    noDataMessage.style.display = 'block';
+                }
+                return;
             }
 
+
             try {
-                // *** CHANGE: Fetch data directly from data/{NIK}.json ***
-                const filePath = `data/${nikInput}.json`;
+                // *** PERUBAHAN UTAMA: Ubah path file JSON untuk menyertakan angkatan ***
+                const filePath = `data/${angkatanInput}/${nikInput}.json`;
                 const response = await fetch(filePath);
 
                 if (!response.ok) {
                     // If response is not OK (e.g., 404 Not Found)
                     if (response.status === 404) {
                         if (noDataMessage) {
-                            noDataMessage.textContent = 'Data santri tidak ditemukan. Pastikan NIK yang Anda masukkan benar.';
+                            // --- PERUBAHAN: Pesan error lebih spesifik ---
+                            noDataMessage.textContent = `Data santri dengan NIK ${nikInput} untuk angkatan ${angkatanInput} tidak ditemukan. Pastikan NIK dan Angkatan benar.`;
                         }
                     } else {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -151,13 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (resultIbu) resultIbu.textContent = santriData.nama_ibu || 'Tidak Tersedia';
                     if (resultNoHp) resultNoHp.textContent = santriData.nomor_hp || 'Tidak Tersedia';
 
-                    // --- IMPORTANT: Removed the logic to display raport, pelanggaran, peringatan,
-                    //               and prestasi here for index.html.
-                    //               These sections should only be handled and displayed on dashboard.html
-                    //               after successful login.
-                    //               If you have these elements in index.html for some reason,
-                    //               they will remain hidden as per the "Hide all detailed sections initially" block above.
-                    //               It is highly recommended to remove them from index.html if they are not meant to be shown.
                 } else {
                     if (noDataMessage) {
                         noDataMessage.style.display = 'block';
@@ -182,6 +169,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const usernameInput = document.getElementById('username').value;
                 const passwordInput = document.getElementById('password').value;
+                // --- PERHATIAN: Untuk login, jika Anda ingin juga memvalidasi atau menggunakan angkatan,
+                // --- Anda perlu menambahkan input 'angkatan' di formulir login dan mengambil nilainya di sini.
+                // --- Serta memastikan 'users.json' memiliki properti 'angkatan' untuk setiap user.
+                // --- Saat ini, saya TIDAK mengubah logika login untuk angkatan karena belum diminta secara spesifik.
 
                 if (loginMessage) loginMessage.style.display = 'none';
 
@@ -199,6 +190,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         alert('Login berhasil! Mengarahkan ke dashboard...');
                         // Store the NIK of the logged-in user in localStorage for dashboard access
                         localStorage.setItem('currentSantriNIK', foundUser.NIK);
+                        // --- Jika Anda ingin dashboard juga memuat data berdasarkan angkatan login,
+                        // --- Anda perlu menyimpan angkatan di localStorage dari 'foundUser' juga.
+                        // --- Misalnya: localStorage.setItem('currentSantriAngkatan', foundUser.angkatan);
                         window.location.href = 'dashboard.html'; // Redirect to dashboard
                     } else {
                         if (loginMessage) {
@@ -228,19 +222,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const confirmLogout = confirm('Apakah Anda yakin ingin keluar?');
             if (confirmLogout) {
                 localStorage.removeItem('currentSantriNIK'); // Clear stored NIK
+                // --- Jika Anda menyimpan 'angkatan' saat login, Anda juga perlu menghapusnya di sini:
+                // --- localStorage.removeItem('currentSantriAngkatan');
                 window.location.href = 'index.html'; // Redirect to index page
             }
         });
     }
 
-    // Function to fetch data for a specific NIK from data/{NIK}.json
-    const fetchSantriDataByNIK = async (nik) => {
+    // Function to fetch data for a specific NIK from data/{ANGKATAN}/{NIK}.json
+    // --- PERUBAHAN: Fungsi ini sekarang menerima 'angkatan' sebagai parameter kedua ---
+    const fetchSantriDataByNIK = async (nik, angkatan) => {
+        if (!nik || !angkatan) {
+            console.error("NIK atau Angkatan tidak diberikan untuk fetchSantriDataByNIK.");
+            return null;
+        }
         try {
-            // *** CHANGE: Fetch data directly from data/{NIK}.json ***
-            const response = await fetch(`data/${nik}.json`);
+            // *** PERUBAHAN: Ubah path fetch data untuk menyertakan angkatan ***
+            const response = await fetch(`data/${angkatan}/${nik}.json`);
             if (!response.ok) {
                 if (response.status === 404) {
-                    console.warn(`File data/${nik}.json not found.`);
+                    console.warn(`File data/${angkatan}/${nik}.json not found.`);
                 } else {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -294,13 +295,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 for (const semesterKey in raport) {
                     const semesterData = raport[semesterKey];
                     tableHtml += `<tr>
-                                    <td>${semesterKey.replace('_', ' ').replace('semester', 'Semester ')}</td>
-                                    <td>${semesterData.matematika !== undefined ? semesterData.matematika : '-'}</td>
-                                    <td>${semesterData.bahasa_indonesia !== undefined ? semesterData.bahasa_indonesia : '-'}</td>
-                                    <td>${semesterData.ipa !== undefined ? semesterData.ipa : '-'}</td>
-                                    <td>${semesterData.bahasa_arab !== undefined ? semesterData.bahasa_arab : '-'}</td>
-                                    <td>${semesterData.tahfidz_quran !== undefined ? semesterData.tahfidz_quran : '-'}</td>
-                                </tr>`;
+                                        <td>${semesterKey.replace('_', ' ').replace('semester', 'Semester ')}</td>
+                                        <td>${semesterData.matematika !== undefined ? semesterData.matematika : '-'}</td>
+                                        <td>${semesterData.bahasa_indonesia !== undefined ? semesterData.bahasa_indonesia : '-'}</td>
+                                        <td>${semesterData.ipa !== undefined ? semesterData.ipa : '-'}</td>
+                                        <td>${semesterData.bahasa_arab !== undefined ? semesterData.bahasa_arab : '-'}</td>
+                                        <td>${semesterData.tahfidz_quran !== undefined ? semesterData.tahfidz_quran : '-'}</td>
+                                    </tr>`;
                 }
                 tableHtml += `</tbody></table>`;
                 raportDataDiv.innerHTML = tableHtml;
@@ -326,10 +327,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <tbody>`;
                 pelanggaran.forEach(item => {
                     tableHtml += `<tr>
-                                    <td>${item.tanggal || '-'}</td>
-                                    <td>${item.jenis || '-'}</td>
-                                    <td>${item.poin !== undefined ? item.poin : '-'}</td>
-                                </tr>`;
+                                        <td>${item.tanggal || '-'}</td>
+                                        <td>${item.jenis || '-'}</td>
+                                        <td>${item.poin !== undefined ? item.poin : '-'}</td>
+                                    </tr>`;
                 });
                 tableHtml += `</tbody></table>`;
                 pelanggaranDataDiv.innerHTML = tableHtml;
@@ -354,9 +355,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <tbody>`;
                 peringatan.forEach(item => {
                     tableHtml += `<tr>
-                                    <td>${item.tanggal || '-'}</td>
-                                    <td>${item.deskripsi || '-'}</td>
-                                </tr>`;
+                                        <td>${item.tanggal || '-'}</td>
+                                        <td>${item.deskripsi || '-'}</td>
+                                    </tr>`;
                 });
                 tableHtml += `</tbody></table>`;
                 peringatanDataDiv.innerHTML = tableHtml;
@@ -382,10 +383,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <tbody>`;
                 prestasi.forEach(item => {
                     tableHtml += `<tr>
-                                    <td>${item.tanggal || '-'}</td>
-                                    <td>${item.nama_prestasi || '-'}</td>
-                                    <td>${item.tingkat || '-'}</td>
-                                </tr>`;
+                                        <td>${item.tanggal || '-'}</td>
+                                        <td>${item.nama_prestasi || '-'}</td>
+                                        <td>${item.tingkat || '-'}</td>
+                                    </tr>`;
                 });
                 tableHtml += `</tbody></table>`;
                 prestasiDataDiv.innerHTML = tableHtml;
@@ -407,16 +408,24 @@ document.addEventListener('DOMContentLoaded', () => {
             dataUnavailableMessage.style.display = 'none';
 
             let currentSantriNIK = localStorage.getItem('currentSantriNIK');
+            // --- BARU: Ambil angkatan juga dari localStorage jika sudah disimpan saat login ---
+            // --- CATATAN: Ini mengasumsikan Anda akan memodifikasi login di atas untuk menyimpan angkatan juga.
+            // --- Jika tidak, Anda mungkin perlu cara lain untuk mendapatkan angkatan di dashboard.
+            let currentSantriAngkatan = localStorage.getItem('currentSantriAngkatan'); // Contoh penambahan
 
-            if (!currentSantriNIK) {
+            if (!currentSantriNIK || !currentSantriAngkatan) { // --- PERUBAHAN: Validasi NIK dan Angkatan untuk dashboard ---
                 const promptNIK = prompt("Silakan masukkan NIK Santri untuk melihat data (contoh: 123 atau 6543210987654321):");
-                if (promptNIK) {
+                const promptAngkatan = prompt("Silakan masukkan Angkatan Santri (contoh: 2024-2025):"); // --- BARU
+                
+                if (promptNIK && promptAngkatan) { // --- PERUBAHAN
                     localStorage.setItem('currentSantriNIK', promptNIK);
+                    localStorage.setItem('currentSantriAngkatan', promptAngkatan); // --- BARU
                     currentSantriNIK = promptNIK;
+                    currentSantriAngkatan = promptAngkatan; // --- BARU
                 } else {
                     dataUnavailableMessage.style.display = 'block';
-                    dataUnavailableMessage.textContent = 'NIK tidak dimasukkan. Data tidak dapat dimuat.';
-                    // Clear displayed info if NIK is not provided
+                    dataUnavailableMessage.textContent = 'NIK atau Angkatan tidak dimasukkan. Data tidak dapat dimuat.'; // --- PERUBAHAN
+                    // Clear displayed info if NIK or Angkatan is not provided
                     displaySantriInfo(null);
                     displayRaportData(null);
                     displayPelanggaranData(null);
@@ -427,7 +436,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                const data = await fetchSantriDataByNIK(currentSantriNIK); // Fetch data using the NIK
+                // --- PERUBAHAN: Panggil fetchSantriDataByNIK dengan angkatan juga ---
+                const data = await fetchSantriDataByNIK(currentSantriNIK, currentSantriAngkatan); // Fetch data using the NIK and Angkatan
                 if (data) {
                     const dashboardTitle = document.getElementById('dashboardTitle');
                     if (dashboardTitle && data.nama) {
@@ -442,7 +452,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     displayPeringatanData(data.peringatan);
                     displayPrestasiData(data.prestasi);
                 } else {
-                    dataUnavailableMessage.textContent = `Maaf, data untuk NIK ${currentSantriNIK} tidak ditemukan. Silakan hubungi admin pondok pesantren.`;
+                    // --- PERUBAHAN: Pesan error lebih spesifik untuk dashboard ---
+                    dataUnavailableMessage.textContent = `Maaf, data untuk NIK ${currentSantriNIK} Angkatan ${currentSantriAngkatan} tidak ditemukan. Silakan hubungi admin pondok pesantren.`;
                     dataUnavailableMessage.style.display = 'block';
                     // Clear displayed info if no data is found
                     displaySantriInfo(null);
@@ -467,7 +478,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (mainLoginButton && logoutButtonHeader) {
         const currentSantriNIK = localStorage.getItem('currentSantriNIK');
-        if (currentSantriNIK) {
+        // --- BARU: Periksa juga angkatan jika ingin visibilitas bergantung pada login penuh ---
+        const currentSantriAngkatan = localStorage.getItem('currentSantriAngkatan');
+
+        if (currentSantriNIK && currentSantriAngkatan) { // --- PERUBAHAN: Cek NIK dan Angkatan
             mainLoginButton.style.display = 'none';
             logoutButtonHeader.style.display = 'block';
         } else {
