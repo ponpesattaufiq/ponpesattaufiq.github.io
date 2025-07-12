@@ -2,16 +2,19 @@
   {
     "username": "khafid",
     "NIK": "123",
-    "password": "123"
+    "password": "123",
+     "angkatan": "2021-2022" 
   },
   {
     "username": "sitiwali",
     "NIK": "6543210987654321",
-    "password": "password456"
+    "password": "password456",
+     "angkatan": "2024-2025" 
   },
   {
     "username": "budiwali",
     "NIK": "9876543210987654",
-    "password": "password789"
+    "password": "password789",
+     "angkatan": "2024-2025" 
   }
 ]
