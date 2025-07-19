@@ -1,0 +1,34 @@
+[
+  {
+    "nik": "1234567890123456",
+    "nama_lengkap": "Budi Santoso",
+    "jenis_kelamin": "Laki-laki",
+    "tempat_tgl_lahir": "Jombang, 01-01-2005",
+    "alamat": "Jl. Merdeka No. 10, Jombang",
+    "photo_url": "https://placehold.co/150x200/cccccc/333333?text=BUDI_PHOTO"
+  },
+  {
+    "nik": "6543210987654321",
+    "nama_lengkap": "Siti Aminah",
+    "jenis_kelamin": "Perempuan",
+    "tempat_tgl_lahir": "Kediri, 15-03-2006",
+    "alamat": "Jl. Pahlawan No. 5, Kediri",
+    "photo_url": "https://placehold.co/150x200/cccccc/333333?text=SITI_PHOTO"
+  },
+  {
+    "nik": "1122334455667788",
+    "nama_lengkap": "Ahmad Fauzi",
+    "jenis_kelamin": "Laki-laki",
+    "tempat_tgl_lahir": "Surabaya, 20-07-2004",
+    "alamat": "Jl. Kenanga No. 22, Surabaya",
+    "photo_url": "https://placehold.co/150x200/cccccc/333333?text=AHMAD_PHOTO"
+  },
+  {
+    "nik": "9988776655443322",
+    "nama_lengkap": "Fatimah Az-Zahra",
+    "jenis_kelamin": "Perempuan",
+    "tempat_tgl_lahir": "Malang, 10-11-2005",
+    "alamat": "Jl. Mawar No. 7, Malang",
+    "photo_url": "https://placehold.co/150x200/cccccc/333333?text=FATIMAH_PHOTO"
+  }
+]
