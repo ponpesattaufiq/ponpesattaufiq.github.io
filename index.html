@@ -173,6 +173,7 @@
             font-weight: 500; /* Medium font weight */
             font-size: 8px; /* Set font size to 8px as requested */
             line-height: 1.2; /* Adjusted line height for small font size */
+            text-align: left; /* Make text left-aligned */
         }
         .santri-card-display .santri-data-field {
             position: absolute;
@@ -217,11 +218,10 @@
         <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
             <!-- Logo and Mobile Menu Button -->
             <div class="flex justify-between items-center w-full md:w-auto mb-4 md:mb-0">
-                <!-- Logo -->
+                <!-- Logo dan teks "Pondok Pesantren At-Taufiq" -->
                 <a href="#beranda" class="flex items-center space-x-3">
-                    <!-- Updated image path for logo -->
                     <img src="assets/images/logo.png" alt="Logo At-Taufiq" class="rounded-full w-12 h-12">
-                    <span class="text-2xl font-bold text-yellow-400">At-Taufiq</span>
+                    <span class="text-2xl font-bold text-yellow-400">Pondok Pesantren At-Taufiq</span>
                 </a>
 
                 <!-- Mobile Menu Button -->
@@ -305,9 +305,9 @@
         <!-- Updated image path for hero background -->
         <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('assets/images/hero-background.jpg');"></div>
         <div class="container mx-auto text-center relative z-10 px-4">
-            <!-- Image added here, centered and responsive -->
-            <img src="assets/images/tulisan-mahad.png" alt="Tulisan Mahad At-Taufiq" class="mx-auto mb-4 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-auto" data-aos="fade-up" data-aos-delay="100">
-            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6 text-white" data-aos="fade-up" data-aos-delay="200">PONDOK PESANTREN AT-TAUFIQ</h1>
+            <!-- New rectangular image added here, centered and responsive -->
+            <img src="assets/images/Tambahkan judul (1).jpg" alt="Pondok Pesantren At-Taufiq" class="mx-auto mb-4 w-full max-w-xl h-auto" data-aos="fade-up" data-aos-delay="100">
+            <!-- Removed the previous "tulisan mahad.png" image and "PONDOK PESANTREN AT-TAUFIQ" heading -->
             <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto text-gray-200" data-aos="fade-up" data-aos-delay="400">Membentuk Generasi Qur'ani yang Berakhlak Mulia dan Berilmu Pengetahuan.</p>
         </div>
     </section>
@@ -624,62 +624,57 @@
 
                     // NIK: coords="729,303,374,276" shape="rect"
                     // Left: 374 / 960 = 0.389583 -> 38.96%
-                    // Top: 276 / 600 = 0.46 -> 46%
+                    // Top: 276 / 600 = 0.46 -> 46% (moved up by 1% of total height) -> 45%
                     // Width: (729 - 374) / 960 = 355 / 960 = 0.36979 -> 36.98%
                     // Height: (303 - 276) / 600 = 27 / 600 = 0.045 -> 4.5%
 
                     // Nama: coords="730,340,375,313" shape="rect"
                     // Left: 375 / 960 = 0.390625 -> 39.06%
-                    // Top: 313 / 600 = 0.52166 -> 52.17%
+                    // Top: 313 / 600 = 0.52166 -> 52.17% (moved up by 1% of total height) -> 51.17%
                     // Width: (730 - 375) / 960 = 355 / 960 = 0.36979 -> 36.98%
                     // Height: (340 - 313) / 600 = 27 / 600 = 0.045 -> 4.5%
 
                     // Jenis Kelamin: coords="731,383,376,356" shape="rect"
                     // Left: 376 / 960 = 0.39166 -> 39.17%
-                    // Top: 356 / 600 = 0.59333 -> 59.33%
+                    // Top: 356 / 600 = 0.59333 -> 59.33% (moved up by 1% of total height) -> 58.33%
                     // Width: (731 - 376) / 960 = 355 / 960 = 0.36979 -> 36.98%
                     // Height: (383 - 356) / 600 = 27 / 600 = 0.045 -> 4.5%
 
                     // TTL: coords="730,432,375,405" shape="rect"
                     // Left: 375 / 960 = 0.390625 -> 39.06%
-                    // Top: 405 / 600 = 0.675 -> 67.5%
+                    // Top: 405 / 600 = 0.675 -> 67.5% (moved up by 1% of total height) -> 66.5%
                     // Width: (730 - 375) / 960 = 355 / 960 = 0.36979 -> 36.98%
                     // Height: (432 - 405) / 600 = 27 / 600 = 0.045 -> 4.5%
 
                     // Alamat: coords="729,528,375,446" shape="rect"
                     // Left: 375 / 960 = 0.390625 -> 39.06%
-                    // Top: 446 / 600 = 0.74333 -> 74.33%
+                    // Top: 446 / 600 = 0.74333 -> 74.33% (moved up by 1% of total height) -> 73.33%
                     // Width: (729 - 375) / 960 = 354 / 960 = 0.36875 -> 36.88%
                     // Height: (528 - 446) / 600 = 82 / 600 = 0.13666 -> 13.67%
 
-                    // Photo: coords="948,496,757,262" shape="rect"
-                    // Left: 757 / 960 = 0.78854 -> 78.85%
-                    // Top: 262 / 600 = 0.43666 -> 43.67%
-                    // Width: (948 - 757) / 960 = 191 / 960 = 0.19895 -> 19.9%
-                    // Height: (496 - 262) / 600 = 234 / 600 = 0.39 -> 39%
-
+                    // Photo coordinates remain the same as they are not text fields.
 
                     santriResultsDiv.innerHTML = `
                         <div class="santri-card-display bg-white rounded-lg shadow-lg overflow-hidden relative mx-auto">
                             <div class="absolute top-0 left-0 w-full h-full text-gray-900">
                                 <!-- NIK Value -->
-                                <p class="santri-data-field" style="top: 46%; left: 38.96%; width: 36.98%;">
+                                <p class="santri-data-field" style="top: 45%; left: 38.96%; width: 36.98%;">
                                     ${santri.nik || 'N/A'}
                                 </p>
                                 <!-- Nama Value -->
-                                <p class="santri-data-field" style="top: 52.17%; left: 39.06%; width: 36.98%;">
+                                <p class="santri-data-field" style="top: 51.17%; left: 39.06%; width: 36.98%;">
                                     ${santri.nama_lengkap || 'N/A'}
                                 </p>
                                 <!-- Jenis Kelamin Value -->
-                                <p class="santri-data-field" style="top: 59.33%; left: 39.17%; width: 36.98%;">
+                                <p class="santri-data-field" style="top: 58.33%; left: 39.17%; width: 36.98%;">
                                     ${santri.jenis_kelamin || 'N/A'}
                                 </p>
                                 <!-- Tempat Tgl Lahir Value -->
-                                <p class="santri-data-field" style="top: 67.5%; left: 39.06%; width: 36.98%;">
+                                <p class="santri-data-field" style="top: 66.5%; left: 39.06%; width: 36.98%;">
                                     ${santri.tempat_tgl_lahir || 'N/A'}
                                 </p>
                                 <!-- Alamat Value -->
-                                <p class="santri-data-field" style="top: 74.33%; left: 39.06%; width: 36.88%;">
+                                <p class="santri-data-field" style="top: 73.33%; left: 39.06%; width: 36.88%;">
                                     ${santri.alamat || 'N/A'}
                                 </p>
                                 <!-- Photo -->
