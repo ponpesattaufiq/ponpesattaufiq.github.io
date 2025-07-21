@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BROSUR | PONPES AT-TAUFIQ</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- AOS (Animate On Scroll) CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #f8fafc; /* Light gray text */
+            overflow-x: hidden;
+        }
+        .nav-link {
+            position: relative;
+            padding-bottom: 4px;
+            transition: all 0.3s ease-in-out;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #facc15; /* Yellow 400 for highlight */
+            transition: width 0.3s ease-in-out;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #2d3748;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .dropdown-item {
+            color: #f8fafc;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .dropdown-item:hover {
+            background-color: #4a5568;
+        }
+        .mobile-dropdown-menu {
+            display: none;
+            flex-direction: column;
+            padding-left: 1rem;
+            background-color: #2d3748;
+            border-radius: 0.5rem;
+            margin-top: 0.25rem;
+            margin-bottom: 0.25rem;
+        }
+        .mobile-dropdown-menu.active {
+            display: flex;
+        }
+    </style>
+</head>
+<body class="text-gray-100">
+
+    <!-- Header Section -->
+    <header class="bg-gray-900 shadow-lg py-4 px-6 md:px-12 sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <!-- Logo and Mobile Menu Button -->
+            <div class="flex justify-between items-center w-full md:w-auto mb-4 md:mb-0">
+                <a href="../index.html" class="flex items-center">
+                    <img src="../assets/images/Tambahkan judul (1).jpg" alt="Pondok Pesantren At-Taufiq" class="h-10 md:h-12 w-auto">
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none text-yellow-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Navigation Menu (Desktop) -->
+            <nav class="hidden md:flex flex-grow justify-center space-x-8">
+                <a href="../index.html" class="text-lg font-medium text-gray-100 hover:text-yellow-400 nav-link">Home</a>
+
+                <!-- Profile Dropdown -->
+                <div class="relative dropdown">
+                    <button class="text-lg font-medium text-gray-100 hover:text-yellow-400 focus:outline-none py-2 px-4 rounded-md">
+                        Profile
+                        <svg class="inline-block w-4 h-4 ml-1 -mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="dropdown-menu mt-2">
+                        <a href="profile-pesantren.html" class="dropdown-item">Profile Pesantren</a>
+                        <a href="biografi-pengasuh.html" class="dropdown-item">Biografi Pengasuh</a>
+                        <a href="visi-misi.html" class="dropdown-item">Visi Misi</a>
+                    </div>
+                </div>
+
+                <!-- Pendaftaran Dropdown -->
+                <div class="relative dropdown">
+                    <button class="text-lg font-medium text-yellow-400 focus:outline-none py-2 px-4 rounded-md active">
+                        Pendaftaran
+                        <svg class="inline-block w-4 h-4 ml-1 -mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="dropdown-menu mt-2">
+                        <a href="persyaratan-daftar.html" class="dropdown-item">Persyaratan Daftar</a>
+                        <a href="download-brosur.html" class="dropdown-item active">Download Brosur</a>
+                        <a href="formulir-online.html" class="dropdown-item">Formulir Online</a>
+                    </div>
+                </div>
+
+                <a href="gallery.html" class="text-lg font-medium text-gray-100 hover:text-yellow-400 nav-link">Gallery</a>
+                <a href="contact.html" class="text-lg font-medium text-gray-100 hover:text-yellow-400 nav-link">Kontak</a>
+            </nav>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-800 mt-4 rounded-lg shadow-lg">
+            <nav class="flex flex-col space-y-2 py-4 px-6">
+                <a href="../index.html" class="text-lg font-medium text-gray-100 hover:text-yellow-400 py-2">Home</a>
+
+                <!-- Mobile Profile Dropdown Toggle -->
+                <button class="text-lg font-medium text-gray-100 hover:text-yellow-400 py-2 flex justify-between items-center w-full text-left" onclick="toggleMobileDropdown('profile-mobile-menu')">
+                    Profile
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div id="profile-mobile-menu" class="mobile-dropdown-menu">
+                    <a href="profile-pesantren.html" class="dropdown-item">Profile Pesantren</a>
+                    <a href="biografi-pengasuh.html" class="dropdown-item">Biografi Pengasuh</a>
+                    <a href="visi-misi.html" class="dropdown-item">Visi Misi</a>
+                </div>
+
+                <!-- Mobile Pendaftaran Dropdown Toggle -->
+                <button class="text-lg font-medium text-yellow-400 py-2 flex justify-between items-center w-full text-left active" onclick="toggleMobileDropdown('pendaftaran-mobile-menu')">
+                    Pendaftaran
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div id="pendaftaran-mobile-menu" class="mobile-dropdown-menu active">
+                    <a href="persyaratan-daftar.html" class="dropdown-item">Persyaratan Daftar</a>
+                    <a href="download-brosur.html" class="dropdown-item active">Download Brosur</a>
+                    <a href="formulir-online.html" class="dropdown-item">Formulir Online</a>
+                </div>
+
+                <a href="gallery.html" class="text-lg font-medium text-gray-100 hover:text-yellow-400 py-2">Gallery</a>
+                <a href="contact.html" class="text-lg font-medium text-gray-100 hover:text-yellow-400 py-2">Kontak</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto py-16 px-4">
+        <section id="download-brosur" class="bg-gray-800 rounded-lg shadow-md p-8 mb-12" data-aos="fade-up" data-aos-duration="1000">
+            <h2 class="text-3xl md:text-4xl font-bold text-yellow-400 text-center mb-8">UNDUH BORSUR</h2>
+            <p class="text-lg text-gray-300 text-center mb-12">Dapatkan informasi lengkap mengenai Pondok Pesantren At-Taufiq dan persyaratan pendaftaran melalui brosur kami.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Brosur Item 1 -->
+                <div class="bg-gray-700 rounded-lg shadow-md overflow-hidden p-6 text-center" data-aos="zoom-in" data-aos-delay="100">
+                    <img src="https://placehold.co/400x300/2d3748/facc15?text=Brosur+Pendaftaran+2025" alt="Brosur Pendaftaran 2025" class="w-full h-auto object-contain mb-4 rounded-md">
+                    <h3 class="text-xl font-semibold text-white mb-2">Brosur Pendaftaran Tahun Ajaran 2025/2026</h3>
+                    <p class="text-gray-400 text-sm mb-4">Berisi informasi terbaru tentang program, fasilitas, dan biaya pendaftaran.</p>
+                    <a href="assets/downloads/brosur-pendaftaran-2025.pdf" download class="inline-block bg-yellow-400 text-gray-900 font-bold py-2 px-6 rounded-md hover:bg-yellow-500 transition duration-300">
+                        Unduh Brosur PDF
+                    </a>
+                </div>
+
+                <!-- Brosur Item 2 (Example for another brochure) -->
+                <div class="bg-gray-700 rounded-lg shadow-md overflow-hidden p-6 text-center" data-aos="zoom-in" data-aos-delay="200">
+                    <img src="https://placehold.co/400x300/2d3748/facc15?text=Panduan+Santri+Baru" alt="Panduan Santri Baru" class="w-full h-auto object-contain mb-4 rounded-md">
+                    <h3 class="text-xl font-semibold text-white mb-2">Panduan Santri Baru</h3>
+                    <p class="text-gray-400 text-sm mb-4">Panduan lengkap untuk santri baru mengenai kehidupan di pondok.</p>
+                    <a href="assets/downloads/panduan-santri-baru.pdf" download class="inline-block bg-yellow-400 text-gray-900 font-bold py-2 px-6 rounded-md hover:bg-yellow-500 transition duration-300">
+                        Unduh Panduan PDF
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-900 text-white py-10 px-6 md:px-12 rounded-t-lg" data-aos="fade-up" data-aos-duration="1000">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 text-left">
+            <!-- Column 1: Logo, Address, Contact -->
+            <div>
+                <a href="../index.html" class="flex items-center space-x-3 mb-4">
+                   <span class="text-2xl font-bold text-yellow-400">AT-TAUFIQ</span>
+                </a>
+                <p class="text-gray-400 mb-4">JL. KH. SHOBARI NO. 48B, BOGEM GROGOL DIWEK JOMBANG JAWA TIMUR INDONESIA</p>
+                
+                <div class="flex flex-col space-y-2">
+                    <div class="flex items-center text-gray-400">
+                        <svg class="w-5 h-5 mr-2 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.103 6.103l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>
+                        <a href="tel:+6285646376653" class="hover:text-white transition-colors duration-300">6285646376653</a>
+                    </div>
+                    <div class="flex items-center text-gray-400">
+                        <svg class="w-5 h-5 mr-2 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+                        <a href="mailto:ponpesattaufiq.bogem@gmailcom" class="hover:text-white transition-colors duration-300">ponpesattaufiq.bogem@gmailcom</a>
+                    </div>
+                    <div class="flex items-center text-gray-400">
+                        <svg class="w-5 h-5 mr-2 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+                        <a href="mailto:attaufiqbogem@gmail.com" class="hover:text-white transition-colors duration-300">attaufiqbogem@gmail.com</a>
+                    </div>
+                </div>
+
+                <div class="flex space-x-4 mt-4">
+                    <a href="https://www.instagram.com/attaufiq_bogem" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-yellow-400 transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.71.01 3.65.05 1.05.05 1.79.22 2.42.47.67.27 1.25.64 1.82 1.21.57.57.94 1.15 1.21 1.82.25.63.42 1.37.47 2.42.04.94.05 1.22.05 3.65s-.01 2.71-.05 3.65c-.05 1.05-.22 1.79-.47 2.42-.27.67-.64 1.25-1.21 1.82-.57.57-.94 1.15-1.82 1.21-.63.25-1.37.42-2.42.47-.94.04-1.22.05-3.65.05s-2.71-.01-3.65-.05c-1.05-.05-1.79-.22-2.42-.47-.67-.27-1.25-.64-1.82-1.21-.57-.57-.94-1.15-1.21-1.82-.25-.63-.42-1.37-.47-2.42-.04-.94-.05-1.22-.05-3.65s.01-2.71.05-3.65c.05-1.05.22-1.79.47-2.42.27-.67.64-1.25 1.21-1.82.57-.57.94-1.15 1.21-1.82.25-.63.42-1.37.47-2.42.04-.94.05-1.22.05-3.65zM12 17.5c-3.03 0-5.5-2.47-5.5-5.5S8.97 6.5 12 6.5s5.5 2.47 5.5 5.5-2.47 5.5-5.5 5.5zm0-9c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5zm6.5-4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" clip-rule="evenodd"></path></svg>
+                    </a>
+                    <a href="https://t.me/attaufiqbogem_bot" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-yellow-400 transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.364 2.136L.364 8.136c-1.071.357-1.071 1.643 0 2l3.214 1.071 9.643-6.428c.428-.285.714-.143.428.143L6.786 14.857v4.286c0 .714.428 1.143 1.071.857l2.143-2.143 3.214 2.143c.571.357 1.071.285 1.428-.285l5.357-8.571c.285-.571.285-1.071 0-1.428z"></path></svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Column 2: Link Penting -->
+            <div>
+                <h3 class="text-xl font-bold text-yellow-400 mb-4">Link Penting</h3>
+                <ul class="space-y-2">
+                    <li><a href="profile-pesantren.html" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><span class="mr-2 text-yellow-400">&gt;</span> Profile Pesantren</a></li>
+                    <li><a href="gallery.html" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><span class="mr-2 text-yellow-400">&gt;</span> Gallery</a></li>
+                    <li><a href="psb-online.html" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><span class="mr-2 text-yellow-400">&gt;</span> PSB Online</a></li>
+                    <li><a href="contact.html" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><span class="mr-2 text-yellow-400">&gt;</span> Kontak Kami</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Jenjang Pendidikan -->
+            <div>
+                <h3 class="text-xl font-bold text-yellow-400 mb-4">Jenjang Pendidikan</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><span class="mr-2 text-yellow-400">&gt;</span> KB / RA</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><span class="mr-2 text-yellow-400">&gt;</span> SD IT</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><span class="mr-2 text-yellow-400">&gt;</span> MTS</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><span class="mr-2 text-yellow-400">&gt;</span> MA</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><span class="mr-2 text-yellow-400">&gt;</span> SMK</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Subscribe Form -->
+            <div>
+                <h3 class="text-xl font-bold text-yellow-400 mb-4">Mau Update Informasi Terbaru Dari Kami?</h3>
+                <p class="text-gray-400 mb-4 text-sm">Silahkan subscribe untuk berlangganan artikel, berita dan informasi terupdate dari kami.</p>
+                <form action="https://example.com/subscribe" method="POST" class="flex flex-col sm:flex-row gap-2">
+                    <input type="email" placeholder="Masukkan email Anda" class="flex-grow p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-yellow-400">
+                    <button type="submit" class="bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-md hover:bg-yellow-500 transition duration-300">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="text-center mt-10 border-t border-gray-700 pt-6">
+            <p class="text-gray-400 text-sm">&copy; 2025 Pondok Pesantren At-Taufiq. Hak Cipta Dilindungi.</p>
+        </div>
+    </footer>
+
+    <!-- AOS (Animate On Scroll) JavaScript -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS library for scroll animations
+        AOS.init({
+            once: true,
+        });
+
+        // Mobile menu toggle functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Toggle mobile dropdown menus
+        function toggleMobileDropdown(id) {
+            const dropdown = document.getElementById(id);
+            dropdown.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
